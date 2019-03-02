@@ -1,6 +1,9 @@
 #ifndef PARSER_H_
 #define PARSER_H_
 
+extern const char binaryToHexSymbols[19][5];
+extern const char hexSymbols[];
+
 /*
     Gets user input from console and performs basic conversionts between systems with different base.
 */
@@ -18,4 +21,8 @@ char *getNumberFromConsole();
 */
 char *convertBinaryToTwosComplement(char *binaryNumber);
 
+/*
+    Converts hexadecimal string representation to binary representation.
+*/
+char *convertHexadecimalToBinary(char *hexadecimalNumber);
 #endif
