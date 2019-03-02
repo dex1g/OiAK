@@ -26,6 +26,20 @@ const char binaryToHexSymbols[19][5] = {
     "."};
 const char hexSymbols[] = "0123456789abcdef-,.";
 
+const char binaryToOctSymbols[11][5] = {
+    "000",
+    "001",
+    "010",
+    "011",
+    "100",
+    "101",
+    "110",
+    "111",
+    "-",
+    ",",
+    "."};
+const char octSymbols[] = "01234567-,.";
+
 char *getNumberFromConsole()
 {
     char *str = NULL;
@@ -71,11 +85,11 @@ char *convertBinaryToTwosComplement(char *binaryNumber)
     {
         // we got a non negative value
         // append 0 at the beginning and it's done
-        char *tmp = strdup(complementRepresentation); // save the contents
-        char zero[2] = "0";                           // zero as string to append
-        strcpy(complementRepresentation, zero);       // copy zero character to array
-        strcat(complementRepresentation, tmp);        // concatenation of "0" + given number
-        free(tmp);                                    // free allocated resources
+        char *tmp = strdup(complementRepresentation);  // save the contents
+        char zero[2] = "0";                            // zero as string to append
+        strcpy(complementRepresentation, zero);        // copy zero character to array
+        strcat(complementRepresentation, tmp);         // concatenation of "0" + given number
+        free(tmp);                                     // free allocated resources
     }
 
     return complementRepresentation;
@@ -83,16 +97,32 @@ char *convertBinaryToTwosComplement(char *binaryNumber)
 
 char *convertHexadecimalToBinary(char *hexadecimalNumber)
 {
-    int numberLength = strlen(hexadecimalNumber) * 4;                 //each symbol is written on 4 chars so allocate proper memory
-    char *binaryRepresentation = malloc(numberLength * sizeof(char)); // allocate new array to not modify parameter
-    binaryRepresentation[0] = '\0';                                   // insert terminating sign
+    int numberLength = strlen(hexadecimalNumber) * 4;                           // each symbol is written on 4 chars so allocate proper memory
+    char *binaryRepresentation = malloc(numberLength * sizeof(char));           // allocate new array to not modify parameter
+    binaryRepresentation[0] = '\0';                                             // insert terminating sign
     int p = 0;
 
     while (hexadecimalNumber[p])
     {
-        char *v = strchr(hexSymbols, tolower(hexadecimalNumber[p++])); // find first occurance of the given hexSymbol
+        char *v = strchr(hexSymbols, tolower(hexadecimalNumber[p++]));          // find first occurance of the given hexSymbol
         if (v)
-            strcat(binaryRepresentation, binaryToHexSymbols[v - hexSymbols]); //append to string the binary representation of hex symbol
+            strcat(binaryRepresentation, binaryToHexSymbols[v - hexSymbols]);   // append to string the binary representation of hex symbol
+    }
+    return binaryRepresentation;
+}
+
+char *convertOctalToBinary(char *octalNumber)
+{
+    int numberLength = strlen(octalNumber) * 3;                                 // each symbol is written on 3 chars so allocate proper memory
+    char *binaryRepresentation = malloc(numberLength * sizeof(char));           // allocate new array to not modify parameter
+    binaryRepresentation[0] = '\0';                                             // insert terminating sign
+    int p = 0;
+
+    while (octalNumber[p])
+    {
+        char *v = strchr(octSymbols, tolower(octalNumber[p++]));                // find first occurance of the given octSymbol
+        if (v)
+            strcat(binaryRepresentation, binaryToOctSymbols[v - octSymbols]);   // append to string the binary representation of oct symbol
     }
     return binaryRepresentation;
 }

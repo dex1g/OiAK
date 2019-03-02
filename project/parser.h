@@ -4,6 +4,9 @@
 extern const char binaryToHexSymbols[19][5];
 extern const char hexSymbols[];
 
+extern const char binaryToOctSymbols[11][5];
+extern const char octSymbols[];
+
 /*
     Gets user input from console and performs basic conversionts between systems with different base.
 */
@@ -25,4 +28,10 @@ char *convertBinaryToTwosComplement(char *binaryNumber);
     Converts hexadecimal string representation to binary representation.
 */
 char *convertHexadecimalToBinary(char *hexadecimalNumber);
+
+/*
+    Converts octal string representation to binary representation.
+*/
+char *convertOctalToBinary(char *octalNumber);
+
 #endif
