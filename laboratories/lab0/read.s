@@ -60,3 +60,5 @@ mov $SYSEXIT, %eax
 mov $EXIT_SUCCESS, %ebx
 int $0x80
 
+/* vim: ft=gas : 
+*/ 
