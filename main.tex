@@ -1,0 +1,75 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage[a4paper,top=2cm, total={6in, 8in}]{geometry}
+
+
+\title{Biblioteka arytmetyki liczb stałoprzecinkowych dowolnej precyzji z wykorzystaniem wewnętrznej reprezentacji U2.}
+
+\author{Leszek Błażewski \\ \\Karol Noga}
+
+\date{Semestr letni 2018/2019}
+
+\begin{document}
+\maketitle
+\clearpage
+\section{Główne założenia projektu}
+Głównym założeniem projektowym jest implementacji biblioteki liczb w języku C o dowolnej precyzji, która wykorzystuje system U2 jako bazowy. Aby możliwe było osiągnięcie nieskończonej dokładności postanowiliśmy, że dane będą przechowywane w postaci tekstowej. W języku C reprezentowane są one przy pomocy dynamicznie alokowanej tablicy charów.
+
+\section{Konwersje}
+\subsection{Opis}
+Zgodnie z założeniami projektu biblioteka musi operować na danych, których wartości wyrażone są w systemie U2. Liczby dodatnie nie posiadają znaku natomiast liczby ujemne przed konwersją reprezentowane są z znakiem minus.
+W zależności od wartości ulegającej konwersji liczba reprezentowana jest w systemie U2 z odpowiadającym jej znakiem.
+
+\vspace{5mm} %5mm vertical space
+
+Poniżej zamieszczono listę konwersji do systemu U2, które oferowane są przez bibliotekę:
+\begin{itemize}
+    \item Konwersja z systemu 16
+    \item Konwersja z systemu 8
+    \item Konwersja z systemu binarnego
+    \item Konwersja z systemu 10
+\end{itemize}
+
+\subsection{Algorytm konwersji}
+W celu wyznaczenia wartości liczby zapisanej w systemie binarnym z znakiem, przechowywanej jako tekst posłużono się prostym algorytmem polegającym na skanowaniu liczby od tyłu w celu znalezienia pierwszej "1" występującej w liczbie oraz negacji wszystkich następnych bitów.
+
+\vspace{5mm} %5mm vertical space
+
+W skrócie algorytm można zapisać następująco:
+\begin{enumerate}
+    \item Skanuj liczbę od tyłu spisując wszystkie "0" aż do momentu wystąpienia pierwszej "1".
+    \item Znalezioną liczbę również przepisz do wyniku.
+    \item Wszystkie kolejne bity liczby konwertowanej neguj.
+    \item Jeśli liczba nie ma znaku - na początku dopisz "0" z przodu liczby w przeciwnym wypadku dopisz "1".
+\end{enumerate}
+
+Liczby zapisane w innych systemach najpierw konwertowane są na reprezentację binarną z znakiem, a następnie według powyższego algorytmu konwertowane są na sytem U2.
+
+\section{Podstawowe operacje arytmetyczne}
+Biblioteka oferuje następujące operacje arytmetyczne na danych reprezentowanych w systemie U2. Operacje te zostaną zaimplementowane przy użyciu instrukcji asemblerowych.
+
+\vspace{5mm} %5mm vertical space
+
+Lista podstawowych operacji artmetycznych:
+\begin{itemize}
+    \item Dodawanie
+    \item Odejmowanie
+    \item Mnożenie
+    \item Dzielenie
+    \item Pierwiastkowanie
+    \item Potęgowanie
+\end{itemize}
+
+\section{Problemy jakie napotkaliśmy dotychczas}
+\begin{enumerate}
+    \item Czy reprezentacja w tablicach charów jest odpowiednia. Jeśli nie czy są jakieś lepsze alternatywy ?
+    \item Jak konwertować liczby z systemu dziesiętnego (trzymane w tablicy charów) na binarny, (część całkowita + ułamkowa), jak usprawnić ten algorytm ?
+    \item Czy założenie że precyzja liczby jest określana na podstawie wprowadzonej danej jest odpowiednia ?
+    \item Czy dokładność wyniku działania powinna być zależna od składnika działania który miał większą precyzję ?
+    \item Co zrobić w przypadku algorytmu pierwiastkowania gdy liczba ma okres który jest bardzo długi i trudno wykrywalny  lub nie jest okresowa ?
+    \item Czy wykonują kod asemblerowy lepiej przekształcić tablice charow z ascii na faktyczne liczby czy zostawić i wykonywać operacje na kodach.
+\end{enumerate}
+\end{document}
