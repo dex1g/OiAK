@@ -34,4 +34,6 @@ char *convertHexadecimalToBinary(char *hexadecimalNumber);
 */
 char *convertOctalToBinary(char *octalNumber);
 
+
+char *hexToBin(char *hexNum);
 #endif

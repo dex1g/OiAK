@@ -126,3 +126,23 @@ char *convertOctalToBinary(char *octalNumber)
     }
     return binaryRepresentation;
 }
+
+char *hexToBin(char *hexNum)
+{
+    int numberLength = (strlen(hexNum) + 1) / 2;
+    char *binRep = malloc(numberLength * sizeof(char)); 
+    for (int i = 0; i < numberLength; i++)
+    {
+        binRep[i] = 0;
+        binRep[i] += hexNum[2*i];
+        binRep[i] = binRep[i] << 4;
+        binRep[i] += hexNum[2*i+1];
+    }
+
+    for (int i = 0; i < numberLength; i++)
+    {
+        printf("%hhx ", binRep[i]);
+    }
+        printf("\n");
+    return binRep;
+}
