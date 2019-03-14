@@ -7,33 +7,42 @@ extern const char hexSymbols[];
 extern const char binaryToOctSymbols[11][5];
 extern const char octSymbols[];
 
+int numberSize;
+
 /*
     Gets user input from console and performs basic conversionts between systems with different base.
 */
 char *getNumberFromConsole();
 
 /*
-    Converts a string containing a binary number in standrd binary system into two's complement.
-
-    This function operates on strings so the most convinient method to calculate two's complement is to traverse the
-    given binaryNumber from end until the first occurance of 1 is present which is not traversed and from that point filp all bits (negate them) until 
-    the beginning of the string.
-
-    * Function also handles the case when not a single 1 is present in given number.
-      In this case append 1 at the beginning of the string.
+    Converts hexadecimal string representation to positive two's complement.
 */
-char *convertBinaryToTwosComplement(char *binaryNumber);
+unsigned char *hexToBin(char *hexNum);
 
 /*
-    Converts hexadecimal string representation to binary representation.
+    Converts up to hexadecimal digit to its binary value.
 */
-char *convertHexadecimalToBinary(char *hexadecimalNumber);
+unsigned char asciiToByte(char digit);
 
 /*
-    Converts octal string representation to binary representation.
+    Negates all bits in the provided table.
 */
-char *convertOctalToBinary(char *octalNumber);
+void onesComplement(unsigned char *number);
 
+/*
+    Increments the binary number in the provided table.
+*/
+void increment(unsigned char *number);
 
-char *hexToBin(char *hexNum);
+/*
+    Prints out the binary number in hex symbols from the provided table,
+    uses the numberSize variable to determine its length.
+*/
+void printNumber(char *number);
+
+/*
+    Returns length of provided hex number in binary representation, increased by 1 byte (extension).
+*/
+int lengthOfHexToBin(char *hexNum)
+
 #endif
