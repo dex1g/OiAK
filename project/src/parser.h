@@ -1,12 +1,6 @@
 #ifndef PARSER_H_
 #define PARSER_H_
 
-extern const char binaryToHexSymbols[19][5];
-extern const char hexSymbols[];
-
-extern const char binaryToOctSymbols[11][5];
-extern const char octSymbols[];
-
 int numberSize;
 
 /*

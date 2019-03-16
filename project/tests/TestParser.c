@@ -10,7 +10,42 @@ void test_hextToBinConversion(void)
     TEST_ASSERT_EQUAL_STRING(expectedResult, convertedValue);
     free(convertedValue);
 }
+void test_hextToBinConversion_multi_digit_number(void)
+{
+    char *numberToConvert = "f0A0";
+    unsigned char expectedResult[2] = {0x00, 0xf0, 0xa0};
+    unsigned char *convertedValue = hexToBin(numberToConvert);
+    TEST_ASSERT_EQUAL_STRING(expectedResult, convertedValue);
+    free(convertedValue);
+}
 
+void test_asciiToByteConversion_digit(void)
+{
+    unsigned char expectedResult = 5;
+    unsigned char convertedValue = asciiToByte('5');
+    TEST_ASSERT_BITS(255, expectedResult, convertedValue);
+}
+
+void test_asciiToByteConversion_small_letter(void)
+{
+    unsigned char expectedResult = 10;
+    unsigned char convertedValue = asciiToByte('a');
+    TEST_ASSERT_BITS(255, expectedResult, convertedValue);
+}
+
+void test_asciiToByteConversion_big_letter(void)
+{
+    unsigned char expectedResult = 10;
+    unsigned char convertedValue = asciiToByte('A');
+    TEST_ASSERT_BITS(255, expectedResult, convertedValue);
+}
+
+void test_asciiToByteConversion_wrong_character(void)
+{
+    unsigned char expectedResult = 0;
+    unsigned char convertedValue = asciiToByte('-');
+    TEST_ASSERT_BITS(255, expectedResult, convertedValue);
+}
 void test_increment_no_carry(void)
 {
     unsigned char number[3] = {0x00, 0x5d, 0xa3};
@@ -69,5 +104,10 @@ int main(void)
     RUN_TEST(test_increment_overflow);
     RUN_TEST(test_increment_overflow_no_extension);
     RUN_TEST(test_onesComplement);
+    RUN_TEST(test_asciiToByteConversion_digit);
+    RUN_TEST(test_asciiToByteConversion_small_letter);
+    RUN_TEST(test_asciiToByteConversion_big_letter);
+    RUN_TEST(test_asciiToByteConversion_wrong_character);
+    RUN_TEST(test_hextToBinConversion_multi_digit_number);
     return UNITY_END();
 }
