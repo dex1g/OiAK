@@ -31,7 +31,7 @@ int lengthOfHexToBin(char *hexNum)
     return numberLength + 1;
 }
 
-unsigned char *hexToBin(char *hexNum)
+/*unsigned char *hexToBin(char *hexNum)
 {
     int numberLength = (strlen(hexNum) + 1) / 2;
     numberSize = numberLength + 1;
@@ -44,6 +44,25 @@ unsigned char *hexToBin(char *hexNum)
 
         binRep[i + 1] = binRep[i + 1] << 4;
         binRep[i + 1] += asciiToByte(hexNum[2 * i + 1]);
+    }
+    return binRep;
+}*/
+
+unsigned char *hexToBin(char *hexNum)
+{
+    int hexNumIndex = strlen(hexNum) - 1;
+    int numberLength = (strlen(hexNum) + 1) / 2;
+    numberSize = numberLength + 1;
+    unsigned char *binRep = malloc(numberLength * sizeof(char) + 1);
+    binRep[0] = 0;
+
+    for (int i = numberLength; i > 0; i--)
+    {
+        if(hexNumIndex - 1 >= 0)
+            binRep[i] = asciiToByte(hexNum[hexNumIndex-1]);
+        binRep[i] = binRep[i] << 4;
+        binRep[i] += asciiToByte(hexNum[hexNumIndex]);
+        hexNumIndex = hexNumIndex - 2;
     }
     return binRep;
 }

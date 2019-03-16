@@ -10,10 +10,20 @@ void test_hextToBinConversion(void)
     TEST_ASSERT_EQUAL_STRING(expectedResult, convertedValue);
     free(convertedValue);
 }
-void test_hextToBinConversion_multi_digit_number(void)
+
+void test_hextToBinConversion_even_digit_number(void)
 {
     char *numberToConvert = "f0A0";
-    unsigned char expectedResult[2] = {0x00, 0xf0, 0xa0};
+    unsigned char expectedResult[3] = {0x00, 0xf0, 0xa0};
+    unsigned char *convertedValue = hexToBin(numberToConvert);
+    TEST_ASSERT_EQUAL_STRING(expectedResult, convertedValue);
+    free(convertedValue);
+}
+
+void test_hextToBinConversion_odd_digit_number(void)
+{
+    char *numberToConvert = "A5b";
+    unsigned char expectedResult[3] = {0x00, 0x0a, 0x5b};
     unsigned char *convertedValue = hexToBin(numberToConvert);
     TEST_ASSERT_EQUAL_STRING(expectedResult, convertedValue);
     free(convertedValue);
@@ -108,6 +118,7 @@ int main(void)
     RUN_TEST(test_asciiToByteConversion_small_letter);
     RUN_TEST(test_asciiToByteConversion_big_letter);
     RUN_TEST(test_asciiToByteConversion_wrong_character);
-    RUN_TEST(test_hextToBinConversion_multi_digit_number);
+    RUN_TEST(test_hextToBinConversion_even_digit_number);
+    RUN_TEST(test_hextToBinConversion_odd_digit_number);
     return UNITY_END();
 }
