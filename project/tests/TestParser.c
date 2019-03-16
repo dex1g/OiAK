@@ -104,6 +104,24 @@ void test_onesComplement(void)
     TEST_ASSERT_EQUAL_HEX(expectedResult[0], number[0]);
 }
 
+void test_octToBin_even_digits(void)
+{
+    char *numberToConvert = "5371";
+    unsigned char expectedResult[2] = {0x0a, 0xf9};
+    unsigned char *convertedValue = octToBin(numberToConvert);
+    TEST_ASSERT_EQUAL_STRING(expectedResult, convertedValue);
+    free(convertedValue);
+}
+
+void test_octToBin_odd_digits(void)
+{
+    char *numberToConvert = "537";
+    unsigned char expectedResult[2] = {0x01, 0x5f};
+    unsigned char *convertedValue = octToBin(numberToConvert);
+    TEST_ASSERT_EQUAL_STRING(expectedResult, convertedValue);
+    free(convertedValue);
+}
+
 int main(void)
 {
     UNITY_BEGIN();
@@ -120,5 +138,7 @@ int main(void)
     RUN_TEST(test_asciiToByteConversion_wrong_character);
     RUN_TEST(test_hextToBinConversion_even_digit_number);
     RUN_TEST(test_hextToBinConversion_odd_digit_number);
+    RUN_TEST(test_octToBin_even_digits);
+    RUN_TEST(test_octToBin_odd_digits);
     return UNITY_END();
 }

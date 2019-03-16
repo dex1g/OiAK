@@ -39,4 +39,10 @@ void printNumber(char *number);
 */
 int lengthOfHexToBin(char *hexNum);
 
+/*
+    Converts octal string representation to positive two's complement.
+*/
+unsigned char *octToBin(char *octNum);
+
+
 #endif
