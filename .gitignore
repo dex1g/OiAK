@@ -52,7 +52,7 @@ Mkfile.old
 dkms.conf
 
 #Viusal studio code configuration 
-.vscode/
+vscode/
 
 #executable files compiled from source
 *.exe

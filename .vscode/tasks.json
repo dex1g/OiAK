@@ -1,0 +1,30 @@
+{
+    "version": "2.0.0",
+    "_runner": "terminal",
+    "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "focus": true,
+    },
+    "tasks": [
+        {
+            "label": "Compile and run",
+            "type": "shell",
+            "command": "gcc",
+            "args": [
+                "-Wall",
+                "-g",
+                "-o",
+                "${workspaceFolder}/project/src/oiakProject.exe",
+                "${workspaceFolder}/project/src/main.c",
+                "${workspaceFolder}/project/src/parser.c",
+                "&&",
+                "${workspaceFolder}/project/src/oiakProject.exe"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}
