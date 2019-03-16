@@ -43,6 +43,6 @@ void printNumber(char *number);
 /*
     Returns length of provided hex number in binary representation, increased by 1 byte (extension).
 */
-int lengthOfHexToBin(char *hexNum)
+int lengthOfHexToBin(char *hexNum);
 
 #endif
