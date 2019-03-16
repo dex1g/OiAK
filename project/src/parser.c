@@ -60,14 +60,13 @@ void onesComplement(unsigned char *number)
 void increment(unsigned char *number)
 {
     int numberLength = numberSize;
-    int breaker = 0;
-    for (int i = numberLength - 1; i > 0; i--)
+    int carry = 1;
+    for (int i = numberLength - 1; i >= 0; i--)
     {
-        number[i]++;
-        if (breaker)
+        if (!carry)
             break;
-        if (!number[i])
-            breaker = 1;
+        if (++number[i])
+            carry = 0;
     }
 }
 
