@@ -1,0 +1,42 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage[a4paper,top=2cm, total={6in, 8in}]{geometry}
+
+
+\title{Biblioteka arytmetyki liczb stałoprzecinkowych dowolnej precyzji z wykorzystaniem wewnętrznej reprezentacji U2.}
+
+\author{Leszek Błażewski \\ \\Karol Noga}
+
+\date{Semestr letni 2018/2019}
+
+\begin{document}
+\maketitle
+\vspace{1mm}
+{\centering \Large{4.04.2019}\par}
+\clearpage
+\section{Reimplementacja konwersji}
+Konwersja z systemu szesnastkowego została przedefiniowana w taki sposób aby 
+z liczby jako ciągu znaków ascii powstał ciąg bajtów odpowiadający wartości tej liczby. W ten sposób liczby zajmują 2 razy mniej miejsca w pamięci w stosunku do poprzedniego rozwiązania i umożliwia to łatwiejszą egzekucję instrukcji asemblerowych na skonwertowanych liczbach.
+
+\section{Wyznaczanie wartości liczby w systemie U2}
+W związku z zmianą kodowania liczb w postaci ciągów bitów, przedefiniowaliśmy również sposób wyznaczania wartości przeciwnej do danej liczby i co za tym idzie jej reprezentacji w systemie U2.
+
+\subsection{Algorytm konwersji}
+Każda z liczb jest początkowo uzupełniania co najmniej jednym zerem jako cyfra rozszerzenia. Po wyznaczeniu liczby w postaci ciągu bajtów dla liczb ujemnych negujemy każdy z bitów oraz dodajemy 1 na najmniej znaczącej pozycji, natomiast liczby dodanie pozostają z rozszerzeniem zerowym.
+
+\section{Testy jednostkowe}
+Do projektu dodane zostały testy jednostkowego, zaimplementowane przy pomocy frameworka Unity. Biblioteka ta jest napisana wyłącznie w języku C, dzięki czemu integracja z obecnie napisanym kodem przebiegła bardzo szybko. Testy jednostkowe zapewniają poprawność wcześniej zdefiniowanych funkcji oraz pozwalają na zaobserwowanie zmian w trakcie kolejnych implementacji.
+
+\section{Automatyzacja z użyciem Makefile}
+Cały proces kompilacji odbywa się przy użyciu narzędzia make, dzięki czemu osiągamy większy stopień automatyzacji zmniejszając jednocześnie liczbę występujących błędów.
+w
+\section{Problemy jakie napotkaliśmy dotychczas}
+\begin{enumerate}
+    \item Czy zapamiętywanie pozycji przecinka w liczbie w kodzie ascii i pomijanie go w trakcie konwersji na bajty, a przy instrukcjach assemblerowych odpowiednie skalowanie liczby względem zapamiętanego miejsca przecinka jest dobrym rozwiązaniem ?
+    \item Jak poradzić sobie z konwersją liczb dziesiętnych zapisanych w postaci znaków ascii ? 
+    \item Konwersja z systemu ósemkowego na reprezentację bajtową przy użyciu assemblera.
+\end{enumerate}
+\end{document}
