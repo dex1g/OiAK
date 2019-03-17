@@ -41,8 +41,8 @@ unsigned char *hexToBin(char *hexNum)
 
     for (int i = numberLength; i > 0; i--)
     {
-        if(hexNumIndex - 1 >= 0)
-            binRep[i] = asciiToByte(hexNum[hexNumIndex-1]);
+        if (hexNumIndex - 1 >= 0)
+            binRep[i] = asciiToByte(hexNum[hexNumIndex - 1]);
         binRep[i] = binRep[i] << 4;
         binRep[i] += asciiToByte(hexNum[hexNumIndex]);
         hexNumIndex = hexNumIndex - 2;
@@ -53,7 +53,7 @@ unsigned char *hexToBin(char *hexNum)
 unsigned char *octToBin(char *octNum)
 {
     int newTableLength = strlen(octNum) + 1;
-    if(!(newTableLength % 8))
+    if (!(newTableLength % 8))
         newTableLength += (8 - (newTableLength % 8));
     unsigned char *bcoNum = calloc(newTableLength, sizeof(char));
     int octNumIndex = newTableLength - 1;
@@ -62,10 +62,9 @@ unsigned char *octToBin(char *octNum)
     int numberLength = iterator * 3;
     numberSize = numberLength;
     unsigned char *binRep = calloc(numberLength, sizeof(char));
-    
-    asm volatile
-    (
-        "movl 0, %%edi;"
+
+    asm volatile(
+        "movl $0, %%edi;"
         "movl (%0), %%ecx;"
         "loop: mov $0, %%eax;"
         "mov $7, %%esi;"
@@ -89,12 +88,12 @@ unsigned char *octToBin(char *octNum)
         "incl %%edi;"
         "movl %1, %%ebx;"
         "cmpl %%ebx, %%edi;"
-        "jb loop;" 
-        : "=r" ( binRep )        /* output */
-        : "r" ( iterator ), "r" ( octNum )         /* input */
-        : "%eax", "%ebx", "%ecx", "%edx", "%esi", "%edi"          /* clobbered register */
-    );    
-    printf("%s\n",binRep);
+        "jb loop;"
+        : "=r"(binRep)                                   /* output */
+        : "r"(iterator), "r"(octNum)                     /* input */
+        : "%eax", "%ebx", "%ecx", "%edx", "%esi", "%edi" /* clobbered register */
+    );
+    printf("%s\n", binRep);
 
     return binRep;
 }
