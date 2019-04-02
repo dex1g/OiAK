@@ -100,24 +100,30 @@ unsigned char *octToBin(char *octNum)
 
 unsigned char *octToBinTest(char *octNum)
 {
-    unsigned char *binRep = calloc(4, sizeof(char));
+    unsigned char binRep[3] = "xxx";
 
     asm volatile(
         "mov $0, %%edi;"
         "mov $0, %%eax;"
-        "loop: shl $3,%%eax;"
-        "mov (%0, %%edi, 1), %%bl;"
-        "sub $0x30, %%bl;"
-        "add %%bl,%%al;"
+        "loop: shl $3, %%eax;"
+        "movb (%[out],%%edi), %%bl;"
+        "sub $'0, %%bl;"
+        "add %%bl, %%al;"
         "inc %%edi;"
         "cmp $8, %%edi;"
         "jne loop;"
-        "mov %%eax, (%1);"
-        : "=r"(binRep)           /* output */
-        : "r"(octNum)            /* input */
-        : "%eax", "%ebx", "%edi" /* clobbered register */
+        "mov %%al, %[rd];"
+        "mov %%ah, %[nd];"
+        "shr $8, %%eax;"
+        "mov %%ah, %[st];"
+        : [st] "=m"(binRep[0]), [nd] "=m"(binRep[1]), [rd] "=m"(binRep[2])         /* output */
+        : [out] "r"(octNum)            /* input */
+        : "memory", "%eax", "%ebx", "%edi" /* clobbered register */
     );
-    return binRep;
+    unsigned char *dynBinRep = calloc(3, sizeof(char));
+    for (int i = 0; i < 3; i++)
+        dynBinRep[i] = binRep[i];
+    return dynBinRep;
 }
 
 void onesComplement(unsigned char *number)
