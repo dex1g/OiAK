@@ -122,6 +122,15 @@ void test_octToBin_odd_digits(void)
     free(convertedValue);
 }
 
+void test_octToBin_test(void)
+{
+    char *numberToConvert = "53715371";
+    unsigned char expectedResult[3] = {0xAF, 0x9A, 0xF9};
+    unsigned char *convertedValue = octToBinTest(numberToConvert);
+    TEST_ASSERT_EQUAL_STRING(expectedResult, convertedValue);
+    free(convertedValue);
+}
+
 int main(void)
 {
     UNITY_BEGIN();
@@ -138,7 +147,8 @@ int main(void)
     RUN_TEST(test_asciiToByteConversion_wrong_character);
     RUN_TEST(test_hextToBinConversion_even_digit_number);
     RUN_TEST(test_hextToBinConversion_odd_digit_number);
-    RUN_TEST(test_octToBin_even_digits);
-    RUN_TEST(test_octToBin_odd_digits);
+    RUN_TEST(test_octToBin_test);
+    //RUN_TEST(test_octToBin_even_digits);
+    //RUN_TEST(test_octToBin_odd_digits);
     return UNITY_END();
 }

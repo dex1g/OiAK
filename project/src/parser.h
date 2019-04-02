@@ -44,5 +44,6 @@ int lengthOfHexToBin(char *hexNum);
 */
 unsigned char *octToBin(char *octNum);
 
+unsigned char *octToBinTest(char *octNum);
 
 #endif

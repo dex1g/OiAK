@@ -66,7 +66,7 @@ unsigned char *octToBin(char *octNum)
     asm volatile(
         "movl $0, %%edi;"
         "movl (%0), %%ecx;"
-        "loop: mov $0, %%eax;"
+        "loop1: mov $0, %%eax;"
         "mov $7, %%esi;"
         "jmp inner;"
         "inner: sall $3, %%eax;"
@@ -89,12 +89,34 @@ unsigned char *octToBin(char *octNum)
         "movl %1, %%ebx;"
         "cmpl %%ebx, %%edi;"
         "jb loop;"
-        : "=r"(binRep)                                   /* output */
-        : "r"(iterator), "r"(octNum)                     /* input */
-        : "%eax", "%ebx", "%ecx", "%edx", "%esi", "%edi" /* clobbered register */
+        : "=r"(binRep)               /* output */
+        : "r"(iterator), "r"(octNum) /* input */
+        : "%eax", "%ebx", "%edi"     /* clobbered register */
     );
     printf("%s\n", binRep);
 
+    return binRep;
+}
+
+unsigned char *octToBinTest(char *octNum)
+{
+    unsigned char *binRep = calloc(4, sizeof(char));
+
+    asm volatile(
+        "mov $0, %%edi;"
+        "mov $0, %%eax;"
+        "loop: shl $3,%%eax;"
+        "mov (%0, %%edi, 1), %%bl;"
+        "sub $0x30, %%bl;"
+        "add %%bl,%%al;"
+        "inc %%edi;"
+        "cmp $8, %%edi;"
+        "jne loop;"
+        "mov %%eax, (%1);"
+        : "=r"(binRep)           /* output */
+        : "r"(octNum)            /* input */
+        : "%eax", "%ebx", "%edi" /* clobbered register */
+    );
     return binRep;
 }
 

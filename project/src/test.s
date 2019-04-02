@@ -1,27 +1,36 @@
-movl 0, %edi;
-movl (binRep), %ecx;
-loop: mov $0, %eax;
-    mov $7, %esi;
-    jmp inner;
+SYSEXIT = 1
+EXIT_SUCCESS = 0
+SYSWRITE = 4
+STDOUT = 1
 
-inner: sall $3, %eax;
-    lea (octnum), %edx;
-    lea (%edx, %edi, 8), %ebx;
-    addl (%ebx, %esi, 1), %eax;
-    decl %esi;
-    cmpl $0, %esi;
-    jge inner;
-    jmp done;
+.align 32
 
-done: movl %edi, %edx;
-    sall %edx;
-    addl %edi, %edx;
-    movl %edx, %esi;
-    incl %esi;
-    movw %ax, (%ecx, %esi, 1);
-    sall $8, %eax;
-    movb %ah, (%ecx, %edx, 1);
-    incl %edi;
-    movl {iterator}, %ebx;
-    cmpl %ebx, %edi;
-    jb loop;
+.data
+nums: .ascii "53715371"
+numsLen = . - nums
+output: .ascii "   "
+
+.global _start
+_start:
+mov $0, %edi
+mov $0, %eax
+
+loop:
+shl $3, %eax
+mov nums(, %edi, 1), %bl
+sub $0x30, %bl
+add %bl,%al
+inc %edi
+cmp $8, %edi
+jne loop
+
+mov $0, %ebx
+mov $1, %edi
+mov %ax, output(, %edi, 1)
+shr $8, %eax
+mov %ah, output
+
+mov $SYSEXIT,%eax
+mov $EXIT_SUCCESS,%ebx
+int $0x80
+
