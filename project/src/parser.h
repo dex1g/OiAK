@@ -1,7 +1,7 @@
 #ifndef PARSER_H_
 #define PARSER_H_
 
-int numberSize;
+unsigned int numberSize;
 
 /*
     Gets user input from console and performs basic conversionts between systems with different base.
@@ -44,6 +44,9 @@ int lengthOfHexToBin(char *hexNum);
 */
 unsigned char *octToBin(char *octNum);
 
-unsigned char *octToBinTest(char *octNum);
+/*
+    Converts a string containing 8 digit octal number to 3 bytes containing its value
+*/
+unsigned char *octToBinTest(unsigned char *octNum);
 
 #endif

@@ -106,17 +106,20 @@ void test_onesComplement(void)
 
 void test_octToBin_even_digits(void)
 {
-    char *numberToConvert = "5371";
-    unsigned char expectedResult[2] = {0x0a, 0xf9};
+    char *numberToConvert = "53715371";
+    unsigned char expectedResult[7] = {0x00, 0x00, 0x00, 0xaf, 0x9a, 0xf9, 0x00};
     unsigned char *convertedValue = octToBin(numberToConvert);
     TEST_ASSERT_EQUAL_STRING(expectedResult, convertedValue);
+    TEST_ASSERT_EQUAL_STRING(expectedResult + 1, convertedValue + 1);
+    TEST_ASSERT_EQUAL_STRING(expectedResult + 2, convertedValue + 2);
+    TEST_ASSERT_EQUAL_STRING(expectedResult + 3, convertedValue + 3);
     free(convertedValue);
 }
 
 void test_octToBin_odd_digits(void)
 {
-    char *numberToConvert = "537";
-    unsigned char expectedResult[2] = {0x01, 0x5f};
+    char *numberToConvert = "6742512";
+    unsigned char expectedResult[4] = {0x1b, 0xc5, 0x4a, 0x00};
     unsigned char *convertedValue = octToBin(numberToConvert);
     TEST_ASSERT_EQUAL_STRING(expectedResult, convertedValue);
     free(convertedValue);
@@ -125,8 +128,8 @@ void test_octToBin_odd_digits(void)
 void test_octToBin_test(void)
 {
     char *numberToConvert = "53715371";
-    unsigned char expectedResult[3] = {0xAF, 0x9A, 0xF9};
-    unsigned char *convertedValue = octToBinTest(numberToConvert);
+    unsigned char expectedResult[4] = {0xAF, 0x9A, 0xF9, 0x00};
+    unsigned char *convertedValue = octToBinTest((unsigned char*)numberToConvert);
     TEST_ASSERT_EQUAL_STRING(expectedResult, convertedValue);
     free(convertedValue);
 }
@@ -148,7 +151,7 @@ int main(void)
     RUN_TEST(test_hextToBinConversion_even_digit_number);
     RUN_TEST(test_hextToBinConversion_odd_digit_number);
     RUN_TEST(test_octToBin_test);
-    //RUN_TEST(test_octToBin_even_digits);
-    //RUN_TEST(test_octToBin_odd_digits);
+    RUN_TEST(test_octToBin_even_digits);
+    RUN_TEST(test_octToBin_odd_digits);
     return UNITY_END();
 }
