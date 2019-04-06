@@ -5,9 +5,9 @@
 void test_hextToBinConversion(void)
 {
     char *numberToConvert = "f";
-    unsigned char expectedResult[2] = {0x0000, 0x00f0};
-    unsigned char *convertedValue = hexToBin(numberToConvert);
-    TEST_ASSERT_EQUAL_STRING(expectedResult, convertedValue);
+    unsigned char expectedResult[2] = {0x00, 0xf0};
+    TCNumber *convertedValue = hexToBin(numberToConvert);
+    TEST_ASSERT_EQUAL_STRING(expectedResult, convertedValue -> number);
     free(convertedValue);
 }
 
@@ -15,8 +15,8 @@ void test_hextToBinConversion_even_digit_number(void)
 {
     char *numberToConvert = "f0A0";
     unsigned char expectedResult[3] = {0x00, 0xf0, 0xa0};
-    unsigned char *convertedValue = hexToBin(numberToConvert);
-    TEST_ASSERT_EQUAL_STRING(expectedResult, convertedValue);
+    TCNumber *convertedValue = hexToBin(numberToConvert);
+    TEST_ASSERT_EQUAL_STRING(expectedResult, convertedValue -> number);
     free(convertedValue);
 }
 
@@ -24,7 +24,16 @@ void test_hextToBinConversion_odd_digit_number(void)
 {
     char *numberToConvert = "A5b";
     unsigned char expectedResult[3] = {0x00, 0x0a, 0x5b};
-    unsigned char *convertedValue = hexToBin(numberToConvert);
+    TCNumber *convertedValue = hexToBin(numberToConvert);
+    TEST_ASSERT_EQUAL_STRING(expectedResult, convertedValue -> number);
+    free(convertedValue);
+}
+
+void test_convertFromHex(void)
+{
+    char *numberToConvert = "53715371";
+    unsigned char expectedResult[4] = {0xAF, 0x9A, 0xF9, 0x00};
+    unsigned char *convertedValue = octToBinTest((unsigned char*)numberToConvert);
     TEST_ASSERT_EQUAL_STRING(expectedResult, convertedValue);
     free(convertedValue);
 }
@@ -60,59 +69,68 @@ void test_increment_no_carry(void)
 {
     unsigned char number[3] = {0x00, 0x5d, 0xa3};
     unsigned char expectedResult[3] = {0x00, 0x5d, 0xa4};
-    increment(number);
-    TEST_ASSERT_EQUAL_STRING(expectedResult, number);
+    TCNumber *n = createTCNumber(number, 3, 0);
+    increment(n);
+    TEST_ASSERT_EQUAL_STRING(expectedResult, n -> number);
+    delete(n);
 }
 
 void test_increment_single_carry(void)
 {
     unsigned char number[3] = {0x00, 0x5d, 0xff};
     unsigned char expectedResult[3] = {0x00, 0x5e, 0x00};
-    increment(number);
-    TEST_ASSERT_EQUAL_STRING(expectedResult, number);
+    TCNumber *n = createTCNumber(number, 3, 0);
+    increment(n);
+    TEST_ASSERT_EQUAL_STRING(expectedResult, n -> number);
+    delete(n);
 }
 
 void test_increment_multiple_carry(void)
 {
     unsigned char number[5] = {0x00, 0xca, 0xff, 0xff, 0xff};
     unsigned char expectedResult[5] = {0x00, 0xcb, 0x0, 0x0, 0x0};
-    increment(number);
-    TEST_ASSERT_EQUAL_STRING(expectedResult, number);
+    TCNumber *n = createTCNumber(number, 5, 0);
+    increment(n);
+    TEST_ASSERT_EQUAL_STRING(expectedResult, n -> number);
+    delete(n);
 }
 
 void test_increment_overflow(void)
 {
     unsigned char number[5] = {0x00, 0xff, 0xff, 0xff, 0xff};
     unsigned char expectedResult[5] = {0x01, 0x00, 0x00, 0x00, 0x00};
-    increment(number);
-    TEST_ASSERT_EQUAL_STRING(expectedResult, number);
+    TCNumber *n = createTCNumber(number, 5, 0);
+    increment(n);
+    TEST_ASSERT_EQUAL_STRING(expectedResult, n -> number);
+    delete(n);
 }
 
 void test_increment_overflow_no_extension(void)
 {
     unsigned char number[4] = {0xff, 0xff, 0xff, 0xff};
     unsigned char expectedResult[4] = {0x00, 0x00, 0x00, 0x00};
-    increment(number);
-    TEST_ASSERT_EQUAL_STRING(expectedResult, number);
+    TCNumber *n = createTCNumber(number, 4, 0);
+    increment(n);
+    TEST_ASSERT_EQUAL_STRING(expectedResult, n -> number);
+    delete(n);
 }
 
 void test_onesComplement(void)
 {
     unsigned char number[4] = {0x00, 0xfa, 0x81, 0xaf};
     unsigned char expectedResult[4] = {0xff, 0x05, 0x7e, 0x50};
-    onesComplement(number);
-    TEST_ASSERT_EQUAL_HEX(expectedResult[0], number[0]);
+    TCNumber *n = createTCNumber(number, 4, 0);
+    onesComplement(n);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult,  n -> number, 4);
+    delete(n);
 }
 
 void test_octToBin_even_digits(void)
 {
     char *numberToConvert = "53715371";
-    unsigned char expectedResult[7] = {0x00, 0x00, 0x00, 0xaf, 0x9a, 0xf9, 0x00};
+    unsigned char expectedResult[6] = {0x00, 0x00, 0x00, 0xaf, 0x9a, 0xf9};
     unsigned char *convertedValue = octToBin(numberToConvert);
-    TEST_ASSERT_EQUAL_STRING(expectedResult, convertedValue);
-    TEST_ASSERT_EQUAL_STRING(expectedResult + 1, convertedValue + 1);
-    TEST_ASSERT_EQUAL_STRING(expectedResult + 2, convertedValue + 2);
-    TEST_ASSERT_EQUAL_STRING(expectedResult + 3, convertedValue + 3);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult, convertedValue, 6);
     free(convertedValue);
 }
 
