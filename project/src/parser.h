@@ -63,6 +63,7 @@ unsigned char *octToBinTest(unsigned char *octNum);
 
 void delete(TCNumber *n);
 
+void scaleUp(TCNumber *n);
 
 TCNumber *convertFromHex(char *number);
 

@@ -181,6 +181,24 @@ void increment(TCNumber *number)
     }
 }
 
+void scaleUp(TCNumber *n)
+{
+    int cnt = 0;
+    for(int i = (int) n -> numberSize - 1; i >= 0; i--)
+    {
+        if(n -> number[i] != 0)
+            break;
+        ++cnt;
+    }
+    unsigned int newSize = n -> numberSize - cnt;
+    int newPos = n -> numberPosition + (cnt * 8);
+    unsigned char *ptr = calloc(newSize, sizeof(char));
+    for (int i = 0; (unsigned) i < newSize; i++)
+        ptr[i] = n -> number[i];
+    delete(n);
+    n = createTCNumber(ptr, newSize, newPos);
+}
+
 void delete(TCNumber *n)
 {
     if (n == NULL)

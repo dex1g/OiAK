@@ -189,6 +189,24 @@ void test_octToBin_test(void)
     free(convertedValue);
 }
 
+void test_scaleUp(void)
+{
+    unsigned char number[6] = {0x0a, 0x2b, 0x6e, 0x00, 0x00, 0x00};
+    unsigned int size = 6;
+    int position = -4;
+    unsigned char expectedNumber[3] = {0x0a, 0x2b, 0x6e};
+    unsigned int expectedSize = 3;
+    int expectedPosition = 20;
+    TCNumber *expectedResult = createTCNumber(expectedNumber, expectedSize, expectedPosition);
+    TCNumber *result = createTCNumber(number, size, position);
+    scaleUp(result);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult -> number, result -> number, 3);
+    TEST_ASSERT_EQUAL_INT(expectedResult -> numberSize, result -> numberSize);
+    TEST_ASSERT_EQUAL_INT(expectedResult -> numberPosition, result -> numberPosition);
+    free(result);
+    free(expectedResult);
+}
+
 int main(void)
 {
     UNITY_BEGIN();
@@ -211,5 +229,6 @@ int main(void)
     RUN_TEST(test_convertFromHex);
     RUN_TEST(test_convertFromHex_period);
     RUN_TEST(test_convertFromHex_negative);
+    RUN_TEST(test_scaleUp);
     return UNITY_END();
 }
