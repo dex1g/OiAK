@@ -67,4 +67,6 @@ void scaleUp(TCNumber *n);
 
 TCNumber *convertFromHex(char *number);
 
+void trimExtension(TCNumber *n);
+
 #endif

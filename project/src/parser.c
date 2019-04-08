@@ -186,7 +186,7 @@ void scaleUp(TCNumber *n)
     int cnt = 0;
     for(int i = (int) n -> numberSize - 1; i >= 0; i--)
     {
-        if(n -> number[i] != 0)
+        if(n -> number[i])
             break;
         ++cnt;
     }
@@ -195,8 +195,49 @@ void scaleUp(TCNumber *n)
     unsigned char *ptr = calloc(newSize, sizeof(char));
     for (int i = 0; (unsigned) i < newSize; i++)
         ptr[i] = n -> number[i];
-    delete(n);
-    n = createTCNumber(ptr, newSize, newPos);
+    free(n -> number);
+    n -> number = ptr;
+    n -> numberSize = newSize;
+    n -> numberPosition = newPos;
+}
+
+void trimExtension(TCNumber *n)
+{
+    unsigned int cnt = 0;
+    unsigned char extByte;
+
+    switch(n -> number[0])
+    {
+        case 0:
+            extByte = 0;
+            break;
+        case 255:
+            extByte = 255;
+            break;
+        default:
+            return;
+    }
+
+    for (int i = 1; i < n -> numberSize; i++)
+    {
+        if (n -> number[i] == extByte)
+        {
+            ++cnt;
+            continue;
+        }
+        if ((n -> number[i] < 128 && extByte == 0) || (n -> number[i] > 127 && extByte == 255))
+            ++cnt;
+        break;
+    }
+    if (!cnt)
+        return;
+    unsigned int newSize = n -> numberSize - cnt;
+    unsigned char *newNum = calloc(newSize, sizeof(char));
+    for (unsigned int i = 0; i < newSize; i++)
+        newNum[i] = n -> number[i + cnt];
+    free(n -> number);
+    n -> number = newNum;
+    n -> numberSize = newSize;
 }
 
 void delete(TCNumber *n)

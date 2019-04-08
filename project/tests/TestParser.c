@@ -203,8 +203,78 @@ void test_scaleUp(void)
     TEST_ASSERT_EQUAL_MEMORY(expectedResult -> number, result -> number, 3);
     TEST_ASSERT_EQUAL_INT(expectedResult -> numberSize, result -> numberSize);
     TEST_ASSERT_EQUAL_INT(expectedResult -> numberPosition, result -> numberPosition);
-    free(result);
-    free(expectedResult);
+    delete(result);
+    delete(expectedResult);
+}
+
+void test_trimExt(void)
+{
+    unsigned char number[6] = {0x00, 0x00, 0x00, 0x0a, 0x2b, 0x6e};
+    unsigned char expectedNumber[3] = {0x0a, 0x2b, 0x6e};
+    TCNumber *expectedResult = createTCNumber(expectedNumber, 3, 0);
+    TCNumber *result = createTCNumber(number, 6, 0);
+    trimExtension(result);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult -> number, result -> number, 3);
+    TEST_ASSERT_EQUAL_INT(expectedResult -> numberSize, result -> numberSize);
+    TEST_ASSERT_EQUAL_INT(expectedResult -> numberPosition, result -> numberPosition);
+    delete(result);
+    delete(expectedResult);
+}
+
+void test_trimExt_negative(void)
+{
+    unsigned char number[6] = {0xff, 0xff, 0xff, 0x0a, 0x2b, 0x6e};
+    unsigned char expectedNumber[4] = {0xff, 0x0a, 0x2b, 0x6e};
+    TCNumber *expectedResult = createTCNumber(expectedNumber, 4, 0);
+    TCNumber *result = createTCNumber(number, 6, 0);
+    trimExtension(result);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult -> number, result -> number, 4);
+    TEST_ASSERT_EQUAL_INT(expectedResult -> numberSize, result -> numberSize);
+    TEST_ASSERT_EQUAL_INT(expectedResult -> numberPosition, result -> numberPosition);
+    delete(result);
+    delete(expectedResult);
+}
+
+void test_trimExt_minus_one(void)
+{
+    unsigned char number[2] = {0xff, 0xff};
+    unsigned char expectedNumber[1] = {0xff};
+    TCNumber *expectedResult = createTCNumber(expectedNumber, 1, 0);
+    TCNumber *result = createTCNumber(number, 2, 0);
+    trimExtension(result);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult -> number, result -> number, 1);
+    TEST_ASSERT_EQUAL_INT(expectedResult -> numberSize, result -> numberSize);
+    TEST_ASSERT_EQUAL_INT(expectedResult -> numberPosition, result -> numberPosition);
+    delete(result);
+    delete(expectedResult);
+}
+
+void test_trimExt_zero(void)
+{
+    unsigned char number[1] = {0x00};
+    unsigned char expectedNumber[1] = {0x00};
+    TCNumber *expectedResult = createTCNumber(expectedNumber, 1, 0);
+    TCNumber *result = createTCNumber(number, 1, 0);
+    trimExtension(result);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult -> number, result -> number, 1);
+    TEST_ASSERT_EQUAL_INT(expectedResult -> numberSize, result -> numberSize);
+    TEST_ASSERT_EQUAL_INT(expectedResult -> numberPosition, result -> numberPosition);
+    delete(result);
+    delete(expectedResult);
+}
+
+void test_trimExt_zero_long(void)
+{
+    unsigned char number[3] = {0x00, 0x00, 0x00};
+    unsigned char expectedNumber[1] = {0x00};
+    TCNumber *expectedResult = createTCNumber(expectedNumber, 1, 0);
+    TCNumber *result = createTCNumber(number, 3, 0);
+    trimExtension(result);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult -> number, result -> number, 1);
+    TEST_ASSERT_EQUAL_INT(expectedResult -> numberSize, result -> numberSize);
+    TEST_ASSERT_EQUAL_INT(expectedResult -> numberPosition, result -> numberPosition);
+    delete(result);
+    delete(expectedResult);
 }
 
 int main(void)
@@ -230,5 +300,10 @@ int main(void)
     RUN_TEST(test_convertFromHex_period);
     RUN_TEST(test_convertFromHex_negative);
     RUN_TEST(test_scaleUp);
+    RUN_TEST(test_trimExt);
+    RUN_TEST(test_trimExt_negative);
+    RUN_TEST(test_trimExt_minus_one);
+    RUN_TEST(test_trimExt_zero);
+    RUN_TEST(test_trimExt_zero_long);
     return UNITY_END();
 }
