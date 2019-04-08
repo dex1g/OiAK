@@ -2,8 +2,11 @@
 
 TCNumber *createTCNumber(unsigned char *number, unsigned int numberSize, int numberPosition)
 {
-    TCNumber *n = malloc(sizeof(TCNumber));
-    n -> number = number;
+    TCNumber *n = calloc(1, sizeof(TCNumber));
+    unsigned char *tmp = calloc(numberSize, sizeof(char));
+    for (int i = 0; i < numberSize; i++)
+        tmp[i] = number[i];
+    n -> number = tmp;
     n -> numberSize = numberSize;
     n -> numberPosition = numberPosition;
     return n;
@@ -20,31 +23,32 @@ TCNumber *convertFromHex(char *number)
 {
     int inputSize = (int)strlen(number);
     int negative = 0;
-    int position;
+    int position = 0;
     if (number[0] == '-')
     {
         negative = 1;
-        number[0] = 0;
+        //number[0] = '0';
     }
-    for (int i = 0; i < inputSize; i++)
+    for (int i = 0, size = inputSize - 1; i <= size; i++)
     {
-        if (number[i] == ',' || number[i] == '.')
+        if (number[size - i] == ',' || number[size - i] == '.')
         {
-                position = - (inputSize - i);
-            char *temp = calloc(--inputSize, sizeof(char));
-            for (int j = 0; j < inputSize; j++)
-                if (j < i)
-                    temp[j] = number[i];
+                position = -i;
+            char *temp = calloc(size, sizeof(char));
+            for (int j = 0; j < size; j++)
+                if (j < (size - i))
+                    temp[j] = number[j];
                 else
-                    temp[j] = number[i + 1];
+                    temp[j] = number[j + 1];
             number = temp;
             break;
         }
     }
     TCNumber *converted = hexToBin(number);
     converted -> numberPosition = position * 4;
+    if (negative)
     {
-        onesComplement(converted -> number);
+        onesComplement(converted);
         increment(converted);
     }
     return converted;
@@ -67,10 +71,9 @@ unsigned char asciiToByte(char digit)
 TCNumber *hexToBin(char *hexNum)
 {
     int hexNumIndex = strlen(hexNum) - 1;
-    unsigned int numberSize = (strlen(hexNum) + 1) / 2 + 1;
-    unsigned char *binRep = malloc(numberSize * sizeof(char));
-    binRep[0] = 0;
-    for (int i = numberSize - 1; i > 0; i--)
+    unsigned int numberSize = (strlen(hexNum) + 2) / 2;
+    unsigned char *binRep = calloc(numberSize, sizeof(char));
+    for (int i = numberSize - 1; i >= 0; i--)
     {
         if (hexNumIndex - 1 >= 0)
             binRep[i] = asciiToByte(hexNum[hexNumIndex - 1]);
@@ -159,10 +162,9 @@ unsigned char *octToBinTest(unsigned char *octNum)
 
 void onesComplement(TCNumber *number)
 {
-    unsigned int numberLength = number -> numberSize;
-    for (int i = 0; i < numberLength; i++)
+    for (int i = 0; i < number -> numberSize; i++)
     {
-        number -> number[i] = ~(number -> number[i]);
+        *(number -> number+i) = ~(number -> number[i]);
     }
 }
 
