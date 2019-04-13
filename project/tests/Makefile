@@ -1,12 +1,18 @@
-all: clean buildUnitTests runUnitTests
+all: clean
 
-sourcePath = ../src/
+buildParserTests: 
+	gcc -m32 $(wildcard ParserTests.c) $(filter-out ../src/main.c, $(wildcard ../src/*.c)) ./unity/src/unity.c -o parserTests.exe
 
-buildUnitTests: 
-	gcc -m32 $(wildcard *.c) $(filter-out ../src/main.c, $(wildcard ../src/*.c)) ./unity/src/unity.c -o tests.exe
+buildArithmeticTests: 
+	gcc -m32 $(wildcard ArithmeticOperationTests.c) $(filter-out ../src/main.c, $(wildcard ../src/*.c)) ./unity/src/unity.c -o testsArithmetic.exe
 
-runUnitTests:
-	./tests.exe
+ParserTests: buildParserTests
+	./parserTests.exe
+
+ArithmeticOperationTests: buildArithmeticTests
+	./testsArithmetic.exe
+
+AllTests: ParserTests OperationTests
 
 clean:
-	rm -f tests.exe
+	rm -f parserTests.exe testsArithmetic.exe
