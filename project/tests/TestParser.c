@@ -277,6 +277,111 @@ void test_trimExt_zero_long(void)
     delete(expectedResult);
 }
 
+void test_scaleNumber(void)
+{
+    unsigned char number[4] = {0xff, 0x0a, 0x2b, 0x6e};
+    TCNumber *temp = createTCNumber(number, 4, 16);
+    unsigned char expectedResult[10] = {0xff, 0xff, 0xff, 0x0a, 0x2b, 0x6e, 0x00, 0x00, 0x00, 0x00};
+    unsigned int expectedSize = 10;
+    int expectedPosition = -16;
+    TCNumber *scaled = scaleNumber(temp, 10, -16);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult, scaled -> number, 10);
+    TEST_ASSERT_EQUAL_INT(expectedSize, scaled -> numberSize);
+    TEST_ASSERT_EQUAL_INT(expectedPosition, scaled -> numberPosition);
+    delete(temp);
+    delete(scaled);
+}
+
+void test_add_simple(void)
+{
+    unsigned char temp1[2] = {0x00, 0x94};
+    unsigned char temp2[2] = {0x00, 0xbe};
+    TCNumber *number1 = createTCNumber(temp1, 2, 0);
+    TCNumber *number2 = createTCNumber(temp2, 2, 0);
+    unsigned char expectedResult[3] = {0x00, 0x01, 0x52};
+    unsigned int expectedSize = 3;
+    int expectedPosition = 0;
+    TCNumber *result = add(number1, number2);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult, result -> number, 3);
+    TEST_ASSERT_EQUAL_INT(expectedSize, result -> numberSize);
+    TEST_ASSERT_EQUAL_INT(expectedPosition, result -> numberPosition);
+    delete(number1);
+    delete(number2);
+    delete(result);
+}
+
+void test_add_positive(void)
+{
+    unsigned char temp1[3] = {0x12, 0x7e, 0x60};
+    unsigned char temp2[4] = {0x5d, 0x0a, 0x2b, 0x6e};
+    TCNumber *number1 = createTCNumber(temp1, 3, 8);
+    TCNumber *number2 = createTCNumber(temp2, 4, -16);
+    unsigned char expectedResult[7] = {0x00, 0x12, 0x7e, 0xbd, 0x0a, 0x2b, 0x6e};
+    unsigned int expectedSize = 7;
+    int expectedPosition = -16;
+    TCNumber *result = add(number1, number2);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult, result -> number, 7);
+    TEST_ASSERT_EQUAL_INT(expectedSize, result -> numberSize);
+    TEST_ASSERT_EQUAL_INT(expectedPosition, result -> numberPosition);
+    delete(number1);
+    delete(number2);
+    delete(result);
+}
+
+void test_add_one_negative(void)
+{
+    unsigned char temp1[3] = {0x12, 0x7e, 0x60};
+    unsigned char temp2[4] = {0xad, 0x0a, 0x2b, 0x6e};
+    TCNumber *number1 = createTCNumber(temp1, 3, 8);
+    TCNumber *number2 = createTCNumber(temp2, 4, -16);
+    unsigned char expectedResult[7] = {0x00, 0x12, 0x7e, 0x0d, 0x0a, 0x2b, 0x6e};
+    unsigned int expectedSize = 7;
+    int expectedPosition = -16;
+    TCNumber *result = add(number1, number2);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult, result -> number, 7);
+    TEST_ASSERT_EQUAL_INT(expectedSize, result -> numberSize);
+    TEST_ASSERT_EQUAL_INT(expectedPosition, result -> numberPosition);
+    delete(number1);
+    delete(number2);
+    delete(result);
+}
+
+void test_add_both_negative(void)
+{
+    unsigned char temp1[3] = {0xb2, 0x7e, 0x60};
+    unsigned char temp2[4] = {0xfd, 0x0a, 0x2b, 0x6e};
+    TCNumber *number1 = createTCNumber(temp1, 3, 8);
+    TCNumber *number2 = createTCNumber(temp2, 4, -16);
+    unsigned char expectedResult[7] = {0xff, 0xb2, 0x7e, 0x5d, 0x0a, 0x2b, 0x6e};
+    unsigned int expectedSize = 7;
+    int expectedPosition = -16;
+    TCNumber *result = add(number1, number2);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult, result -> number, 7);
+    TEST_ASSERT_EQUAL_INT(expectedSize, result -> numberSize);
+    TEST_ASSERT_EQUAL_INT(expectedPosition, result -> numberPosition);
+    delete(number1);
+    delete(number2);
+    delete(result);
+}
+
+void test_subtract_positive(void)
+{
+    unsigned char temp1[3] = {0x12, 0x7e, 0x60};
+    unsigned char temp2[4] = {0x5d, 0x0a, 0x2b, 0x6e};
+    TCNumber *number1 = createTCNumber(temp1, 3, 8);
+    TCNumber *number2 = createTCNumber(temp2, 4, -16);
+    unsigned char expectedResult[7] = {0x00, 0x12, 0x7e, 0x02, 0xf5, 0xd4, 0x92};
+    unsigned int expectedSize = 7;
+    int expectedPosition = -16;
+    TCNumber *result = subtract(number1, number2);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult, result -> number, 7);
+    TEST_ASSERT_EQUAL_INT(expectedSize, result -> numberSize);
+    TEST_ASSERT_EQUAL_INT(expectedPosition, result -> numberPosition);
+    delete(number1);
+    delete(number2);
+    delete(result);
+}
+
 int main(void)
 {
     UNITY_BEGIN();
@@ -305,5 +410,11 @@ int main(void)
     RUN_TEST(test_trimExt_minus_one);
     RUN_TEST(test_trimExt_zero);
     RUN_TEST(test_trimExt_zero_long);
+    RUN_TEST(test_scaleNumber);
+    RUN_TEST(test_add_simple);
+    RUN_TEST(test_add_positive);
+    RUN_TEST(test_add_one_negative);
+    RUN_TEST(test_add_both_negative);
+    RUN_TEST(test_subtract_positive);
     return UNITY_END();
 }

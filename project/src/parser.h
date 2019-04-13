@@ -14,8 +14,8 @@ unsigned int numberSize;
 typedef struct
 {
     unsigned char *number;
-    unsigned int numberSize;
-    int numberPosition;
+    unsigned int numberSize;            // bytewise
+    int numberPosition;                 // bitwise
 } TCNumber;
 
 TCNumber *createTCNumber(unsigned char *number, unsigned int numberSize, int numberPosition);
@@ -68,5 +68,11 @@ void scaleUp(TCNumber *n);
 TCNumber *convertFromHex(char *number);
 
 void trimExtension(TCNumber *n);
+
+TCNumber *scaleNumber(TCNumber *n, unsigned int targetSize, int targetPosition);
+
+TCNumber *add(TCNumber *addend1, TCNumber *addend2);
+
+TCNumber *subtract(TCNumber *minuend, TCNumber *subtrahend);
 
 #endif
