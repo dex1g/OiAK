@@ -1,0 +1,57 @@
+\documentclass[a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage[a4paper,top=2cm,bottom=1in]{geometry}
+
+
+\title{Biblioteka arytmetyki liczb stałoprzecinkowych dowolnej precyzji z wykorzystaniem wewnętrznej reprezentacji U2.}
+
+\author{Karol Noga, 241259 \\ \\Leszek Błażewski, 241264}
+
+\date{Semestr letni 2018/2019}
+\begin{document}
+\maketitle
+\vspace{1mm}
+{\centering \Large{15.04.2019}\par}
+\vspace{1mm}
+{\centering \Large{Środa TP 13:15}\par}
+\clearpage
+\section{Sposób reprezentacji liczby}
+
+Liczba w programie reprezentowana jest jako struktura, która zawiera trzy zasadnicze pola:
+
+\begin{itemize}
+    \item tablicę charów przechowującą reprezentację bajtową danej liczby
+    \item pozycję przecinka identyfikującą miejsce w którym znajduje się przecinek w wprowadzonej liczbie
+    \item Wielkość liczby liczonej w reprezentacji bajtowej
+\end{itemize}
+
+
+Takie rozwiązanie pozwala na swobodne przeprowadzanie operacji arytmetycznych oraz łatwe skalowanie liczby w zależności od danej operacji.
+
+\section{Redukcja ilości cyfr rozszerzenia oraz końcowych \newline bajtów zerowych}
+
+Po konwersji liczby na reprezentację bajtową, dodaliśmy funkcje, które pozwalają na obcięcie nadmiarowych cyfr rozszerzenia oraz końcowych bajtów zerowych. W ten sposób minimalizujemy miejsce potrzebne na przechowywanie danej liczby.
+ 
+\section{Skalowanie liczby}
+
+W operacjach takich jak dodawanie i odejmowanie, kluczowe jest poprawne wyskalowanie liczb tak aby kolejne pozycje o danych wagach sobie odpowiadały. Zakładając wcześniej zaimplementowany sposób przechowywania, całość sprowadza się do poprawnego wyskalowania liczby cyframi rozszerzenia oraz końcowymi zerami. W związku z tym zaimplementowano funkcje pozwalające na wyskalowanie liczby do zadanej precyzji.
+
+
+\section{Algorytm dodawania i odejmowania}
+
+Pierwszym etapem dodawania jest odpowiednie wyskalowanie liczb przy pomocy wcześniej zaimplementowanych funkcji. Skalowanie odbywa się do rozmiaru wyniku wyjściowego operacji, dzięki czemu mamy pewność, że bit rozszerzenia zostanie poprawnie obliczony. Następnie w każdej iteracji pętli po dodania danego bajtu zapamiętujemy przeniesienie, które uwzględniane jest podczas kolejnego dodawania.
+
+Odejmowanie realizowane jest przy pomocy dodawania. Na początku liczby skalowane są do zadanej precyzji a następnie wyznaczana jest liczba przeciwna do odjemnika, która następnie dodawana jest do odjemnej. W ten sposób wykorzystujemy wcześniej zaimplementowane funkcje tym samym utylizując w 100 \% napisany kod.
+
+\section{Refaktoryzacja testów}
+
+Naprawiliśmy asercje w testach tak aby pokazywały one, które konkretne bajty wyniku operacji oraz oczekiwanego rezultatu uległy zmianie. W ten sposób łatwiej możemy zarządzać testami oraz na bieżąco mamy podgląd na dane, które nie spełniają danego testu.
+
+\section{Problemy jakie napotkaliśmy w realizowanym etapie}
+\begin{enumerate}
+    \item Czy rzutowanie wskaźnika tablicy bajtowej na typ zajmujący cztery bajty umożliwi lepsze wykorzystanie dostępnych zasobów procesora poprzez operację na całych rejestrach ?
+\end{enumerate}
+\end{document}

@@ -1,0 +1,44 @@
+\documentclass[a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage[a4paper,top=2cm, total={6in, 8in}]{geometry}
+
+
+\title{Biblioteka arytmetyki liczb stałoprzecinkowych dowolnej precyzji z wykorzystaniem wewnętrznej reprezentacji U2.}
+
+\author{Karol Noga, 241259 \\ \\Leszek Błażewski, 241264}
+
+\date{Semestr letni 2018/2019}
+
+\begin{document}
+\maketitle
+\vspace{1mm}
+{\centering \Large{4.04.2019}\par}
+\vspace{1mm}
+{\centering \Large{Środa TP 13:15}\par}
+\clearpage
+\section{Sposób reprezentacji liczby}
+
+Podczas implementacji operacji na liczbach, zauważyliśmy, że w celu przyśpieszenia wykonywanych operacji, liczby przetrzymywać możemy w postaci tablicy integerów, dzięki czemu operacja dodawania wykorzystać może maximum możliwości procesora wypełniając cały rejestr daną liczbą.
+
+
+\section{Konwersja z użyciem instrukcji asemblerowych}
+ 
+\section{Wyznaczanie wartości liczby w systemie U2}
+
+\subsection{Algorytm konwersji}
+
+\section{Testy jednostkowe}
+
+
+\section{Sposób przechowywania liczb}
+
+
+\section{Problemy jakie napotkaliśmy w realizowanym etapie}
+\begin{enumerate}
+    \item Czy zapamiętywanie pozycji przecinka w liczbie w kodzie ascii i pomijanie go w trakcie konwersji na bajty, a przy instrukcjach assemblerowych odpowiednie skalowanie liczby względem zapamiętanego miejsca przecinka jest dobrym rozwiązaniem ?
+    \item Jak poradzić sobie z konwersją liczb dziesiętnych zapisanych w postaci znaków ascii ? 
+\end{enumerate}
+\end{document}
