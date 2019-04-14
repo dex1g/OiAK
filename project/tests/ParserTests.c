@@ -204,6 +204,21 @@ void test_scaleNumber(void)
     delete (scaled);
 }
 
+void test_GetNumberFromFile(void)
+{
+    char filename[] = "FileWithNumber.txt";
+    unsigned char expectedNumber[4] = {0x00, 0xFA, 0x47, 0xC9};
+    unsigned int expectedSize = 4;
+    int expectedPosition = 0;
+    TCNumber *expectedResult = createTCNumber(expectedNumber, expectedSize, expectedPosition);
+    TCNumber *convertedValue = getNumberFromFile(filename);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult->number, convertedValue->number, 4);
+    TEST_ASSERT_EQUAL_INT(expectedResult->numberSize, convertedValue->numberSize);
+    TEST_ASSERT_EQUAL_INT(expectedResult->numberPosition, convertedValue->numberPosition);
+    free(convertedValue);
+    free(expectedResult);
+}
+
 int main(void)
 {
     UNITY_BEGIN();
@@ -224,5 +239,6 @@ int main(void)
     RUN_TEST(test_trimExt_zero);
     RUN_TEST(test_trimExt_zero_long);
     RUN_TEST(test_scaleNumber);
+    RUN_TEST(test_GetNumberFromFile);
     return UNITY_END();
 }

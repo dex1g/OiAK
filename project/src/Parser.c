@@ -204,3 +204,41 @@ TCNumber *scaleNumber(TCNumber *num, unsigned int targetSize, int targetPosition
     free(temp);
     return result;
 }
+
+TCNumber *getNumberFromFile(char *filename)
+{
+    FILE *handle;
+    int len = 0;
+    char c;
+    char *buffer = NULL;
+
+    handle = fopen(filename, "r");
+
+    if (handle == NULL)
+        return NULL;
+
+    // find the length of the line in file
+    while ((c = fgetc(handle)) != EOF)
+    {
+        if (c == '\n')
+        {
+            break;
+        }
+        len++;
+    }
+
+    // allocate memory for number based on calculated length
+    buffer = malloc(sizeof(char) * len);
+
+    // move to the beginning of file
+    fseek(handle, 0, SEEK_SET);
+
+    fread(buffer, sizeof(char), len, handle);
+
+    // create TCNumber object
+    TCNumber *convertedValue = convertFromHex(buffer);
+
+    fclose(handle);
+    free(buffer);
+    return convertedValue;
+}

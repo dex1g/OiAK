@@ -16,6 +16,9 @@ typedef struct
     int numberPosition;      // bitwise
 } TCNumber;
 
+/*
+    Creates new TCNumber based on the given parameters.
+ */
 TCNumber *createTCNumber(unsigned char *number, unsigned int numberSize, int numberPosition);
 
 /*
@@ -74,5 +77,11 @@ void trimExtension(TCNumber *n);
     Used in arithmetic operations such as addition and substraction.
 */
 TCNumber *scaleNumber(TCNumber *n, unsigned int targetSize, int targetPosition);
+
+/*
+    Reads number stored in file and returns it in TCNumberRepresentation.
+    Reading only one number is supported (number must be in the first line)
+*/
+TCNumber *getNumberFromFile(char *filename);
 
 #endif
