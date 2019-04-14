@@ -1,4 +1,4 @@
-#include "parser.h"
+#include "Parser.h"
 
 TCNumber *createTCNumber(unsigned char *number, unsigned int numberSize, int numberPosition)
 {
@@ -83,81 +83,6 @@ TCNumber *hexToBin(char *hexNum)
     }
     TCNumber *binNum = createTCNumber(binRep, numberSize, 0);
     return binNum;
-}
-
-unsigned char *octToBin(char *octNum)
-{
-    unsigned int octNumLen = strlen(octNum);
-
-    unsigned int newTableLength = strlen(octNum) + 1; // number of digits + one zero of extension
-
-    if (newTableLength % 8)
-        newTableLength += (8 - (newTableLength % 8)); // add extension digits to make total length a multiplication of 8
-
-    unsigned char *bcoNum = calloc(newTableLength + 1, sizeof(char)); // allocating new table to use as input for conversion
-
-    //unsigned int octNumIndex = newTableLength - 1;                        // stores last index of input table
-
-    //int numberLength = ((strlen(octNum)*3)+7)/8;                  // TO DELETE: old calculation of output table size
-
-    unsigned int iterator = newTableLength / 8; // number of octal -> byte conversion function calls
-
-    unsigned int numberLength = iterator * 3; // byte size of output table
-
-    numberSize = numberLength; // TODO: PUT IT INSIDE HANDLER INSTEAD OF GLOBAL VARIABLE
-
-    unsigned char *binRep = calloc(numberLength, sizeof(char)); // allocating output table
-
-    unsigned int lenDif = newTableLength - octNumLen;
-
-    for (unsigned int i = 0; i < newTableLength; i++)
-    {
-        if (i < lenDif)
-            bcoNum[i] = '0';
-        else
-            bcoNum[i] = (unsigned char)octNum[i - lenDif];
-    }
-
-    for (unsigned int i = 0; i < iterator; i++)
-    {
-        unsigned char *temp = octToBinTest(bcoNum + (i * 8));
-        for (unsigned int j = 0; j < 3; j++)
-            binRep[i * 3 + j] = temp[j];
-        free(temp);
-    }
-
-    //printf("%s\n", binRep);                                         // JUST A TEST
-
-    free(bcoNum);
-    return binRep;
-}
-
-unsigned char *octToBinTest(unsigned char *octNum)
-{
-    unsigned char binRep[3] = "xxx";
-
-    asm volatile(
-        "mov $0, %%edi;"
-        "mov $0, %%eax;"
-        "loop: shl $3, %%eax;"
-        "movb (%[out],%%edi), %%bl;"
-        "sub $'0, %%bl;"
-        "add %%bl, %%al;"
-        "inc %%edi;"
-        "cmp $8, %%edi;"
-        "jne loop;"
-        "mov %%al, %[rd];"
-        "mov %%ah, %[nd];"
-        "shr $8, %%eax;"
-        "mov %%ah, %[st];"
-        : [st] "=m"(binRep[0]), [nd] "=m"(binRep[1]), [rd] "=m"(binRep[2]) /* output */
-        : [out] "r"(octNum)                                                /* input */
-        : "memory", "%eax", "%ebx", "%edi"                                 /* clobbered register */
-    );
-    unsigned char *dynBinRep = calloc(3, sizeof(char));
-    for (int i = 0; i < 3; i++)
-        dynBinRep[i] = binRep[i];
-    return dynBinRep;
 }
 
 void onesComplement(TCNumber *number)
@@ -277,46 +202,5 @@ TCNumber *scaleNumber(TCNumber *num, unsigned int targetSize, int targetPosition
             break;
     TCNumber *result = createTCNumber(temp, targetSize, targetPosition);
     free(temp);
-    return result;
-}
-
-TCNumber *add(TCNumber *addend1, TCNumber *addend2)
-{
-    int highestPos = addend1->numberPosition + addend1->numberSize * 8;
-    if (addend2->numberPosition + addend2->numberSize * 8 > highestPos)
-        highestPos = addend2->numberPosition + addend2->numberSize * 8;
-    int lowestPos = addend1->numberPosition;
-    if (addend2->numberPosition < lowestPos)
-        lowestPos = addend2->numberPosition;
-    unsigned int resultSize = (highestPos - lowestPos) / 8 + 1;
-
-    TCNumber *scaledAddend1 = scaleNumber(addend1, resultSize, lowestPos);
-    TCNumber *scaledAddend2 = scaleNumber(addend2, resultSize, lowestPos);
-
-    unsigned char *result = calloc(resultSize, sizeof(char));
-
-    unsigned char carry = 0;
-    for (int i = resultSize - 1; i >= 0; i--)
-    {
-        result[i] = scaledAddend1->number[i] + scaledAddend2->number[i] + carry;
-        if (result[i] < scaledAddend1->number[i] + carry)
-            carry = 1;
-        else
-            carry = 0;
-    }
-
-    TCNumber *finalResult = createTCNumber(result, resultSize, lowestPos);
-    delete (scaledAddend1);
-    delete (scaledAddend2);
-    return finalResult;
-}
-
-TCNumber *subtract(TCNumber *minuend, TCNumber *subtrahend)
-{
-    TCNumber *negated = createTCNumber(subtrahend->number, subtrahend->numberSize, subtrahend->numberPosition);
-    onesComplement(negated);
-    increment(negated);
-    TCNumber *result = add(minuend, negated);
-    delete (negated);
     return result;
 }

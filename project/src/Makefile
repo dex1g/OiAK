@@ -1,7 +1,7 @@
 all: clean buildSource run
 
 buildSource:
-	gcc -g -Wall -o oiakProject.exe $(wildcard *.c)
+	gcc -m32 -g -Wall -o oiakProject.exe $(wildcard *.c)
 run:
 	./oiakProject.exe
 

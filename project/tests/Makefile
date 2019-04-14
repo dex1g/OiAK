@@ -1,18 +1,18 @@
 all: clean
 
 buildParserTests: 
-	gcc -m32 $(wildcard ParserTests.c) $(filter-out ../src/main.c, $(wildcard ../src/*.c)) ./unity/src/unity.c -o parserTests.exe
+	gcc -m32 ParserTests.c ../src/Parser.c ./unity/src/unity.c -o ParserTests.exe
 
 buildArithmeticTests: 
-	gcc -m32 $(wildcard ArithmeticOperationTests.c) $(filter-out ../src/main.c, $(wildcard ../src/*.c)) ./unity/src/unity.c -o testsArithmetic.exe
+	gcc -m32 ArithmeticOperationsTests.c ../src/ArithmeticOperations.c ../src/Parser.c ./unity/src/unity.c -o ArithmeticOperationTests.exe
 
 ParserTests: buildParserTests
-	./parserTests.exe
+	./ParserTests.exe
 
 ArithmeticOperationTests: buildArithmeticTests
-	./testsArithmetic.exe
+	./ArithmeticOperationTests.exe
 
 AllTests: ParserTests OperationTests
 
 clean:
-	rm -f parserTests.exe testsArithmetic.exe
+	rm -f ParserTests.exe ArithmeticOperationTests.exe

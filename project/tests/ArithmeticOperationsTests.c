@@ -1,6 +1,5 @@
 #include "./unity/src/unity.h"
-#include "../src/parser.h"
-#include <stdlib.h>
+#include "../src/ArithmeticOperations.h"
 
 void test_increment_no_carry(void)
 {

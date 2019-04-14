@@ -1,7 +1,6 @@
 // Contains the main funcion which tests the behaviour of library
-#include "parser.h"
-#include <stdio.h>
-#include <stdlib.h>
+#include "Parser.h"
+#include "ArithmeticOperations.h"
 
 int main()
 {

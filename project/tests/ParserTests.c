@@ -1,6 +1,5 @@
 #include "./unity/src/unity.h"
-#include "../src/parser.h"
-#include <stdlib.h>
+#include "../src/Parser.h"
 
 void test_hextToBinConversion(void)
 {
@@ -27,33 +26,6 @@ void test_hextToBinConversion_odd_digit_number(void)
     TCNumber *convertedValue = hexToBin(numberToConvert);
     TEST_ASSERT_EQUAL_MEMORY(expectedResult, convertedValue->number, 2);
     delete (convertedValue);
-}
-
-void test_octToBin_even_digits(void)
-{
-    char *numberToConvert = "53715371";
-    unsigned char expectedResult[6] = {0x00, 0x00, 0x00, 0xaf, 0x9a, 0xf9};
-    unsigned char *convertedValue = octToBin(numberToConvert);
-    TEST_ASSERT_EQUAL_MEMORY(expectedResult, convertedValue, 6);
-    free(convertedValue);
-}
-
-void test_octToBin_odd_digits(void)
-{
-    char *numberToConvert = "6742512";
-    unsigned char expectedResult[4] = {0x1b, 0xc5, 0x4a, 0x00};
-    unsigned char *convertedValue = octToBin(numberToConvert);
-    TEST_ASSERT_EQUAL_MEMORY(expectedResult, convertedValue, 4);
-    free(convertedValue);
-}
-
-void test_octToBin_test(void)
-{
-    char *numberToConvert = "53715371";
-    unsigned char expectedResult[4] = {0xAF, 0x9A, 0xF9, 0x00};
-    unsigned char *convertedValue = octToBinTest((unsigned char *)numberToConvert);
-    TEST_ASSERT_EQUAL_MEMORY(expectedResult, convertedValue, 4);
-    free(convertedValue);
 }
 
 void test_convertFromHex(void)
@@ -242,9 +214,6 @@ int main(void)
     RUN_TEST(test_asciiToByteConversion_wrong_character);
     RUN_TEST(test_hextToBinConversion_even_digit_number);
     RUN_TEST(test_hextToBinConversion_odd_digit_number);
-    RUN_TEST(test_octToBin_test);
-    RUN_TEST(test_octToBin_even_digits);
-    RUN_TEST(test_octToBin_odd_digits);
     RUN_TEST(test_convertFromHex);
     RUN_TEST(test_convertFromHex_period);
     RUN_TEST(test_convertFromHex_negative);

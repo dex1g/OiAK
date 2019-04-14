@@ -6,16 +6,14 @@
 #include <string.h>
 #include <ctype.h>
 
-unsigned int numberSize;
-
 /*
     Structure stores a pointer to number in two's complement system with its length and power of the lowest position.
  */
 typedef struct
 {
     unsigned char *number;
-    unsigned int numberSize;            // bytewise
-    int numberPosition;                 // bitwise
+    unsigned int numberSize; // bytewise
+    int numberPosition;      // bitwise
 } TCNumber;
 
 TCNumber *createTCNumber(unsigned char *number, unsigned int numberSize, int numberPosition);
@@ -52,27 +50,29 @@ void increment(TCNumber *number);
 void printNumber(TCNumber *number);
 
 /*
-    Converts octal string representation to positive two's complement.
+    Deallocates the used resources (array which contains byte representation and the structure itself).
 */
-unsigned char *octToBin(char *octNum);
+void delete (TCNumber *n);
 
 /*
-    Converts a string containing 8 digit octal number to 3 bytes containing its value
+    Removes trailing zeroes from given number.
 */
-unsigned char *octToBinTest(unsigned char *octNum);
-
-void delete(TCNumber *n);
-
 void scaleUp(TCNumber *n);
 
+/*
+    Converts given number in char array format into byte representation which is stored with all additional data in TCNumber structure.
+*/
 TCNumber *convertFromHex(char *number);
 
+/*
+    Trims unnecessary extension bytes from given number.
+*/
 void trimExtension(TCNumber *n);
 
+/*
+    Scales given number to length and size given in parameters.
+    Used in arithmetic operations such as addition and substraction.
+*/
 TCNumber *scaleNumber(TCNumber *n, unsigned int targetSize, int targetPosition);
-
-TCNumber *add(TCNumber *addend1, TCNumber *addend2);
-
-TCNumber *subtract(TCNumber *minuend, TCNumber *subtrahend);
 
 #endif
