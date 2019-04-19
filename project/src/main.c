@@ -1,4 +1,5 @@
-// Contains the main funcion which tests the behaviour of library
+#include <stdio.h>
+
 #include "Parser.h"
 #include "ArithmeticOperations.h"
 
