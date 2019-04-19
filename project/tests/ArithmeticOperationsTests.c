@@ -61,24 +61,6 @@ void test_onesComplement(void)
     delete (n);
 }
 
-void test_add_simple(void)
-{
-    unsigned char temp1[2] = {0x00, 0x94};
-    unsigned char temp2[2] = {0x00, 0xbe};
-    TCNumber *number1 = createTCNumber(temp1, 2, 0);
-    TCNumber *number2 = createTCNumber(temp2, 2, 0);
-    unsigned char expectedResult[3] = {0x00, 0x01, 0x52};
-    unsigned int expectedSize = 3;
-    int expectedPosition = 0;
-    TCNumber *result = add(number1, number2);
-    TEST_ASSERT_EQUAL_MEMORY(expectedResult, result->number, 3);
-    TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
-    TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
-    delete (number1);
-    delete (number2);
-    delete (result);
-}
-
 void test_add_positive(void)
 {
     unsigned char temp1[3] = {0x12, 0x7e, 0x60};
@@ -89,6 +71,24 @@ void test_add_positive(void)
     unsigned int expectedSize = 7;
     int expectedPosition = -16;
     TCNumber *result = add(number1, number2);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult, result->number, 7);
+    TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
+    TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
+    delete (number1);
+    delete (number2);
+    delete (result);
+}
+
+void test_add_positive_asm(void)
+{
+    unsigned char temp1[3] = {0x12, 0x7e, 0x60};
+    unsigned char temp2[4] = {0x5d, 0x0a, 0x2b, 0x6e};
+    TCNumber *number1 = createTCNumber(temp1, 3, 8);
+    TCNumber *number2 = createTCNumber(temp2, 4, -16);
+    unsigned char expectedResult[7] = {0x00, 0x12, 0x7e, 0xbd, 0x0a, 0x2b, 0x6e};
+    unsigned int expectedSize = 7;
+    int expectedPosition = -16;
+    TCNumber *result = add_asm(number1, number2);
     TEST_ASSERT_EQUAL_MEMORY(expectedResult, result->number, 7);
     TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
     TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
@@ -115,6 +115,24 @@ void test_add_one_negative(void)
     delete (result);
 }
 
+void test_add_one_negative_asm(void)
+{
+    unsigned char temp1[3] = {0x12, 0x7e, 0x60};
+    unsigned char temp2[4] = {0xad, 0x0a, 0x2b, 0x6e};
+    TCNumber *number1 = createTCNumber(temp1, 3, 8);
+    TCNumber *number2 = createTCNumber(temp2, 4, -16);
+    unsigned char expectedResult[7] = {0x00, 0x12, 0x7e, 0x0d, 0x0a, 0x2b, 0x6e};
+    unsigned int expectedSize = 7;
+    int expectedPosition = -16;
+    TCNumber *result = add_asm(number1, number2);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult, result->number, 7);
+    TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
+    TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
+    delete (number1);
+    delete (number2);
+    delete (result);
+}
+
 void test_add_both_negative(void)
 {
     unsigned char temp1[3] = {0xb2, 0x7e, 0x60};
@@ -125,6 +143,24 @@ void test_add_both_negative(void)
     unsigned int expectedSize = 7;
     int expectedPosition = -16;
     TCNumber *result = add(number1, number2);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult, result->number, 7);
+    TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
+    TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
+    delete (number1);
+    delete (number2);
+    delete (result);
+}
+
+void test_add_both_negative_asm(void)
+{
+    unsigned char temp1[3] = {0xb2, 0x7e, 0x60};
+    unsigned char temp2[4] = {0xfd, 0x0a, 0x2b, 0x6e};
+    TCNumber *number1 = createTCNumber(temp1, 3, 8);
+    TCNumber *number2 = createTCNumber(temp2, 4, -16);
+    unsigned char expectedResult[7] = {0xff, 0xb2, 0x7e, 0x5d, 0x0a, 0x2b, 0x6e};
+    unsigned int expectedSize = 7;
+    int expectedPosition = -16;
+    TCNumber *result = add_asm(number1, number2);
     TEST_ASSERT_EQUAL_MEMORY(expectedResult, result->number, 7);
     TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
     TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
@@ -151,6 +187,34 @@ void test_subtract_positive(void)
     delete (result);
 }
 
+void test_subtract_positive_asm(void)
+{
+    unsigned char temp1[3] = {0x12, 0x7e, 0x60};
+    unsigned char temp2[4] = {0x5d, 0x0a, 0x2b, 0x6e};
+    TCNumber *number1 = createTCNumber(temp1, 3, 8);
+    TCNumber *number2 = createTCNumber(temp2, 4, -16);
+    unsigned char expectedResult[7] = {0x00, 0x12, 0x7e, 0x02, 0xf5, 0xd4, 0x92};
+    unsigned int expectedSize = 7;
+    int expectedPosition = -16;
+    TCNumber *result = subtract(number1, number2);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult, result->number, 7);
+    TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
+    TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
+    delete (number1);
+    delete (number2);
+    delete (result);
+}
+
+void test_assembly_simple(void)
+{
+    unsigned char temp1[] = {0x00, 0x94, 0x02};
+    unsigned char temp2[] = {0x00, 0xbe, 0x0F};
+    unsigned char expectedResult[] = {0x01, 0x52, 0x11};
+
+    array_adc(temp1, temp2, 3);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult, temp1, 3);
+}
+
 int main(void)
 {
     UNITY_BEGIN();
@@ -160,10 +224,14 @@ int main(void)
     RUN_TEST(test_increment_overflow);
     RUN_TEST(test_increment_overflow_no_extension);
     RUN_TEST(test_onesComplement);
-    RUN_TEST(test_add_simple);
     RUN_TEST(test_add_positive);
     RUN_TEST(test_add_one_negative);
     RUN_TEST(test_add_both_negative);
     RUN_TEST(test_subtract_positive);
+    RUN_TEST(test_assembly_simple);
+    RUN_TEST(test_add_positive_asm);
+    RUN_TEST(test_add_one_negative_asm);
+    RUN_TEST(test_add_both_negative_asm);
+    RUN_TEST(test_subtract_positive_asm);
     return UNITY_END();
 }
