@@ -28,13 +28,26 @@ TCNumber *subtract(TCNumber *minuend, TCNumber *subtrahend);
 TCNumber *subtract_asm(TCNumber *minuend, TCNumber *subtrahend);
 
 /*
+    Performs multiplication on numbers given in parameters and returns the result as new instance of TCNumber.
+    Uses inside assembler implementation stored in array_mul.s
+*/
+// TCNumber *multiply_asm(TCNumber *multiplicand, TCNumber *multiplier);
+
+/*
     Performs addition with carry on numbers given in parameters.
+    The result is stored in the first parameter.
 */
 extern void array_adc(unsigned char *addend1, unsigned char *addend2, int length);
 
 /*
     Performs subtraction with carry on numbers given in parameters.
+    The result is stored in the first parameter.
 */
 extern void array_sbb(unsigned char *minuend, unsigned char *subtrahend, int length);
+
+/*
+    Performs multiplication using mul instruction from the processor instructions list.
+*/
+extern void array_mul(int multiplicandSize, unsigned char *multiplicand, int multiplierSize, unsigned char *multiplier, unsigned char *product);
 
 #endif

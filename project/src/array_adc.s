@@ -15,6 +15,6 @@ loop:
   movl 8(%ebp), %eax      # get again the address of first argument
   movb %bl, (%eax,%edi)   # store the current calculated value in the first argument
   decl %edi
-  jns loop                # chec if sign flat is not set
+  jns loop                # check if sign flag is not set
   popl %ebp
   ret

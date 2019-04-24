@@ -12,7 +12,7 @@ ParserTests: buildParserTests
 ArithmeticOperationTests: buildArithmeticTests
 	./ArithmeticOperationTests.exe
 
-AllTests: ParserTests OperationTests
+AllTests: ParserTests ArithmeticOperationTests
 
 clean:
 	rm -f ParserTests.exe ArithmeticOperationTests.exe
