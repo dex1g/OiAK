@@ -74,8 +74,6 @@ void test_add_positive(void)
     TEST_ASSERT_EQUAL_MEMORY(expectedResult, result->number, 7);
     TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
     TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
-    delete (number1);
-    delete (number2);
     delete (result);
 }
 
@@ -92,8 +90,6 @@ void test_add_positive_asm(void)
     TEST_ASSERT_EQUAL_MEMORY(expectedResult, result->number, 7);
     TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
     TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
-    delete (number1);
-    delete (number2);
     delete (result);
 }
 
@@ -110,8 +106,6 @@ void test_add_one_negative(void)
     TEST_ASSERT_EQUAL_MEMORY(expectedResult, result->number, 7);
     TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
     TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
-    delete (number1);
-    delete (number2);
     delete (result);
 }
 
@@ -128,8 +122,6 @@ void test_add_one_negative_asm(void)
     TEST_ASSERT_EQUAL_MEMORY(expectedResult, result->number, 7);
     TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
     TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
-    delete (number1);
-    delete (number2);
     delete (result);
 }
 
@@ -146,8 +138,6 @@ void test_add_both_negative(void)
     TEST_ASSERT_EQUAL_MEMORY(expectedResult, result->number, 7);
     TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
     TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
-    delete (number1);
-    delete (number2);
     delete (result);
 }
 
@@ -164,8 +154,6 @@ void test_add_both_negative_asm(void)
     TEST_ASSERT_EQUAL_MEMORY(expectedResult, result->number, 7);
     TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
     TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
-    delete (number1);
-    delete (number2);
     delete (result);
 }
 
@@ -182,8 +170,6 @@ void test_subtract_positive(void)
     TEST_ASSERT_EQUAL_MEMORY(expectedResult, result->number, 7);
     TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
     TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
-    delete (number1);
-    delete (number2);
     delete (result);
 }
 
@@ -200,8 +186,6 @@ void test_subtract_positive_asm(void)
     TEST_ASSERT_EQUAL_MEMORY(expectedResult, result->number, 7);
     TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
     TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
-    delete (number1);
-    delete (number2);
     delete (result);
 }
 

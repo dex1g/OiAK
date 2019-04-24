@@ -217,7 +217,7 @@ TCNumber *scaleNumber(TCNumber *num, unsigned int targetSize, int targetPosition
 TCNumber *getNumberFromTxtHexFile(char *filename)
 {
     FILE *handle;
-    int len = 0;
+    unsigned int len = 0;
     char c;
     char *buffer = NULL;
 
@@ -255,7 +255,7 @@ TCNumber *getNumberFromTxtHexFile(char *filename)
 unsigned char *getNumberFromBinaryFile(char *filename)
 {
     FILE *handle;
-    char *buffer = NULL;
+    unsigned char *buffer = NULL;
 
     handle = fopen(filename, "rb");
 
@@ -264,7 +264,7 @@ unsigned char *getNumberFromBinaryFile(char *filename)
 
     //Get file length
     fseek(handle, 0, SEEK_END);
-    long fileLen = ftell(handle);
+    unsigned long fileLen = ftell(handle);
     fseek(handle, 0, SEEK_SET);
 
     // allocate memory for number based on calculated length

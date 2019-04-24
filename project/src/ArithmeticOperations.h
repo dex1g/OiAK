@@ -37,17 +37,17 @@ TCNumber *subtract_asm(TCNumber *minuend, TCNumber *subtrahend);
     Performs addition with carry on numbers given in parameters.
     The result is stored in the first parameter.
 */
-extern void array_adc(unsigned char *addend1, unsigned char *addend2, int length);
+extern void array_adc(unsigned char *addend1, unsigned char *addend2, unsigned int length);
 
 /*
     Performs subtraction with carry on numbers given in parameters.
     The result is stored in the first parameter.
 */
-extern void array_sbb(unsigned char *minuend, unsigned char *subtrahend, int length);
+extern void array_sbb(unsigned char *minuend, unsigned char *subtrahend, unsigned int length);
 
 /*
     Performs multiplication using mul instruction from the processor instructions list.
 */
-extern void array_mul(int multiplicandSize, unsigned char *multiplicand, int multiplierSize, unsigned char *multiplier, unsigned char *product);
+extern void array_mul(unsigned int multiplicandSize, unsigned char *multiplicand, unsigned int multiplierSize, unsigned char *multiplier, unsigned char *product);
 
 #endif
