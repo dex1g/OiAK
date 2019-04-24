@@ -12,6 +12,15 @@ TCNumber *createTCNumber(unsigned char *number, unsigned int numberSize, int num
     return n;
 }
 
+TCNumber *createTCNumber_no_realloc(unsigned char *number, unsigned int numberSize, int numberPosition)
+{
+    TCNumber *n = calloc(1, sizeof(TCNumber));
+    n->number = number;
+    n->numberSize = numberSize;
+    n->numberPosition = numberPosition;
+    return n;
+}
+
 char *getNumberFromConsole()
 {
     char *str = NULL;

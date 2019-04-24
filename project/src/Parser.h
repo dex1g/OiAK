@@ -21,6 +21,8 @@ typedef struct
  */
 TCNumber *createTCNumber(unsigned char *number, unsigned int numberSize, int numberPosition);
 
+TCNumber *createTCNumber_no_realloc(unsigned char *number, unsigned int numberSize, int numberPosition);
+
 /*
     Gets user input from console and performs basic conversionts between systems with different base.
 */
