@@ -48,9 +48,9 @@ TCNumber *add(TCNumber *addend1, TCNumber *addend2)
             carry = 0;
     }
 
-    TCNumber *finalResult = createTCNumber(result, resultSize, lowestPos);
     delete (scaledAddend1);
     delete (scaledAddend2);
+    TCNumber *finalResult = createTCNumber(result, resultSize, lowestPos);
     return finalResult;
 }
 
