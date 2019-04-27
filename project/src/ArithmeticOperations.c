@@ -1,6 +1,6 @@
 #include "ArithmeticOperations.h"
 
-TCNumber *add_asm(TCNumber *addend1, TCNumber *addend2)
+TCNumber *add_asm_realloc(TCNumber *addend1, TCNumber *addend2)
 {
     long long highestPos = addend1->numberPosition + (long long)addend1->numberSize * 8;
     if (addend2->numberPosition + (long long)addend2->numberSize * 8 > highestPos)
@@ -15,13 +15,13 @@ TCNumber *add_asm(TCNumber *addend1, TCNumber *addend2)
     TCNumber *scaledAddend2 = scaleNumber(addend2, resultSize, lowestPos);
     delete (addend2);
 
-    array_adc(scaledAddend1->number, scaledAddend2->number, resultSize);
+    array_adc(scaledAddend1->number, scaledAddend2->number, resultSize, 0);
 
     delete (scaledAddend2);
     return scaledAddend1;
 }
 
-TCNumber *add_asm_no_realloc(TCNumber *addend1, TCNumber *addend2)
+TCNumber *add_asm(TCNumber *addend1, TCNumber *addend2)
 {
     long long highestPos = addend1->numberPosition + (long long)addend1->numberSize * 8;
     if (addend2->numberPosition + (long long)addend2->numberSize * 8 > highestPos)
@@ -31,10 +31,13 @@ TCNumber *add_asm_no_realloc(TCNumber *addend1, TCNumber *addend2)
         lowestPos = addend2->numberPosition;
     unsigned int resultSize = (highestPos - lowestPos) / 8 + 1;
 
+    // Index of the highest position of the second number in first array
+    unsigned int startIndex = ((highestPos - (addend2->numberPosition + (long long)(addend2->numberSize * 8))) / 8) + 1;
+
     TCNumber *scaledAddend1 = scaleNumber(addend1, resultSize, lowestPos);
     delete (addend1);
 
-    array_adc(scaledAddend1->number, addend2->number, addend2->numberSize);
+    array_adc(scaledAddend1->number + startIndex, addend2->number, addend2->numberSize, startIndex);
 
     delete (addend2);
     return scaledAddend1;
@@ -45,7 +48,7 @@ TCNumber *add(TCNumber *addend1, TCNumber *addend2)
     long long highestPos = addend1->numberPosition + (long long)addend1->numberSize * 8;
     if (addend2->numberPosition + (int)addend2->numberSize * 8 > highestPos)
         highestPos = addend2->numberPosition + (long long)addend2->numberSize * 8;
-    int lowestPos = addend1->numberPosition;
+    int lowestPos = addend1->numberPosi0tion;
     if (addend2->numberPosition < lowestPos)
         lowestPos = addend2->numberPosition;
     unsigned int resultSize = (highestPos - lowestPos) / 8 + 1;
@@ -83,7 +86,7 @@ TCNumber *subtract(TCNumber *minuend, TCNumber *subtrahend)
     return result;
 }
 
-TCNumber *subtract_asm(TCNumber *minuend, TCNumber *subtrahend)
+TCNumber *subtract_asm_realloc(TCNumber *minuend, TCNumber *subtrahend)
 {
     long long highestPos = minuend->numberPosition + (long long)minuend->numberSize * 8;
     if (subtrahend->numberPosition + (int)subtrahend->numberSize * 8 > highestPos)
@@ -98,8 +101,30 @@ TCNumber *subtract_asm(TCNumber *minuend, TCNumber *subtrahend)
     TCNumber *scaledSubstrahend = scaleNumber(subtrahend, resultSize, lowestPos);
     delete (subtrahend);
 
-    array_sbb(scaledMinuend->number, scaledSubstrahend->number, resultSize);
+    array_sbb(scaledMinuend->number, scaledSubstrahend->number, resultSize, 0);
 
     delete (scaledSubstrahend);
+    return scaledMinuend;
+}
+
+TCNumber *subtract_asm(TCNumber *minuend, TCNumber *subtrahend)
+{
+    long long highestPos = minuend->numberPosition + (long long)minuend->numberSize * 8;
+    if (subtrahend->numberPosition + (int)subtrahend->numberSize * 8 > highestPos)
+        highestPos = subtrahend->numberPosition + (long long)subtrahend->numberSize * 8;
+    int lowestPos = minuend->numberPosition;
+    if (subtrahend->numberPosition < lowestPos)
+        lowestPos = subtrahend->numberPosition;
+    unsigned int resultSize = (highestPos - lowestPos) / 8 + 1;
+
+    // Index of the highest position of the second number in first array
+    unsigned int startIndex = ((highestPos - (addend2->numberPosition + (long long)(addend2->numberSize * 8))) / 8) + 1;
+
+    TCNumber *scaledMinuend = scaleNumber(minuend, resultSize, lowestPos);
+    delete (minuend);
+
+    array_sbb(scaledMinuend->number, scaledSubstrahend->number, resultSize, startIndex);
+
+    delete subtrahend;
     return scaledMinuend;
 }
