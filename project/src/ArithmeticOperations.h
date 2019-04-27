@@ -28,6 +28,11 @@ TCNumber *subtract(TCNumber *minuend, TCNumber *subtrahend);
 TCNumber *subtract_asm(TCNumber *minuend, TCNumber *subtrahend);
 
 /*
+
+*/
+TCNumber *add_asm_no_realloc(TCNumber *addend1, TCNumber *addend2);
+
+/*
     Performs multiplication on numbers given in parameters and returns the result as new instance of TCNumber.
     Uses inside assembler implementation stored in array_mul.s
 */
