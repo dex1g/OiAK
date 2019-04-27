@@ -21,7 +21,7 @@ borrow:
   dec %esi
   js end
   dec %edx
-  dec (%edx)
+  decb (%edx)
   js borrow
 end:
   popl %esi

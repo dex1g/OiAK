@@ -189,16 +189,6 @@ void test_subtract_positive_asm(void)
     delete (result);
 }
 
-void test_assembly_simple(void)
-{
-    unsigned char temp1[] = {0x00, 0x94, 0x02};
-    unsigned char temp2[] = {0x00, 0xbe, 0x0F};
-    unsigned char expectedResult[] = {0x01, 0x52, 0x11};
-
-    array_adc(temp1, temp2, 3);
-    TEST_ASSERT_EQUAL_MEMORY(expectedResult, temp1, 3);
-}
-
 int main(void)
 {
     UNITY_BEGIN();
@@ -212,7 +202,6 @@ int main(void)
     RUN_TEST(test_add_one_negative);
     RUN_TEST(test_add_both_negative);
     RUN_TEST(test_subtract_positive);
-    RUN_TEST(test_assembly_simple);
     RUN_TEST(test_add_positive_asm);
     RUN_TEST(test_add_one_negative_asm);
     RUN_TEST(test_add_both_negative_asm);

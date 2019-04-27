@@ -21,7 +21,7 @@ carry:
   dec %esi
   js end
   dec %edx
-  inc (%edx)
+  incb (%edx)
   jz carry
 end:
   popl %esi
