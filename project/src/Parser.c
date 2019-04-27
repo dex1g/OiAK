@@ -196,21 +196,21 @@ void printNumber(TCNumber *n)
 TCNumber *scaleNumber(TCNumber *num, unsigned int targetSize, int targetPosition)
 {
     unsigned char *temp = calloc(targetSize, sizeof(char));
-    int zeros = (num->numberPosition - targetPosition) / 8;
-    int numstart = targetSize - zeros - 1;
-    int extstart = numstart - num->numberSize;
+    int zeros = (num->numberPosition - targetPosition) / 8;  // number of zero bytes after the number
+    int numstart = targetSize - zeros - 1;              // index of last byte of the number
+    int extstart = numstart - num->numberSize;          // index of last byte of extension
     unsigned char extension = 0;
+
     if (num->number[0] >= 128)
+    {
         extension = 255;
-    for (int i = numstart; i >= 0; i--)
-        if (i > extstart)
-            temp[i] = num->number[i - extstart - 1];
-        else if (extension)
+        for (int i = 0; i <= extstart; i++)
             temp[i] = extension;
-        else
-            break;
-    TCNumber *result = createTCNumber(temp, targetSize, targetPosition);
-    free(temp);
+    }
+
+    memcpy(temp + extstart + 1, num->number, num->numberSize);
+
+    TCNumber *result = createTCNumber_no_realloc(temp, targetSize, targetPosition);
     return result;
 }
 

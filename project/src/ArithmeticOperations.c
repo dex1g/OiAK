@@ -21,6 +21,25 @@ TCNumber *add_asm(TCNumber *addend1, TCNumber *addend2)
     return scaledAddend1;
 }
 
+TCNumber *add_asm_no_realloc(TCNumber *addend1, TCNumber *addend2)
+{
+    long long highestPos = addend1->numberPosition + (long long)addend1->numberSize * 8;
+    if (addend2->numberPosition + (long long)addend2->numberSize * 8 > highestPos)
+        highestPos = addend2->numberPosition + (long long)addend2->numberSize * 8;
+    int lowestPos = addend1->numberPosition;
+    if (addend2->numberPosition < lowestPos)
+        lowestPos = addend2->numberPosition;
+    unsigned int resultSize = (highestPos - lowestPos) / 8 + 1;
+
+    TCNumber *scaledAddend1 = scaleNumber(addend1, resultSize, lowestPos);
+    delete (addend1);
+
+    array_adc(scaledAddend1->number, addend2->number, addend2->numberSize);
+
+    delete (addend2);
+    return scaledAddend1;
+}
+
 TCNumber *add(TCNumber *addend1, TCNumber *addend2)
 {
     long long highestPos = addend1->numberPosition + (long long)addend1->numberSize * 8;
