@@ -37,7 +37,7 @@ TCNumber *add_asm(TCNumber *addend1, TCNumber *addend2)
     TCNumber *scaledAddend1 = scaleNumber(addend1, resultSize, lowestPos);
     delete (addend1);
 
-	if (addend2[0] > 127)
+	if (addend2->number[0] > 127)
 		array_sbb(scaledAddend1 + startIndex - 1, 1, 1, startIndex - 1);
 
     array_adc(scaledAddend1->number + startIndex, addend2->number, addend2->numberSize, startIndex);
@@ -126,7 +126,7 @@ TCNumber *subtract_asm(TCNumber *minuend, TCNumber *subtrahend)
     TCNumber *scaledMinuend = scaleNumber(minuend, resultSize, lowestPos);
     delete (minuend);
 
-	if (addend2[0] > 127)
+	if (subtrahend->number[0] > 127)
 		array_adc(scaledMinuend + startIndex - 1, 1, 1, startIndex - 1);
 
     array_sbb(scaledMinuend->number, subtrahend->number, resultSize, startIndex);
