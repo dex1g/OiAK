@@ -11,7 +11,7 @@ array_sbb:
   movl 12(%ebp), %ecx     # ecx holds the pointer to the second argument
 loop:
   movb (%ecx,%edi), %al   # second arg in al
-  sbb %al, (%ebx,%edi)    # subtract and store the calculated value in the first argument
+  sbb %al, (%edx,%edi)    # subtract and store the calculated value in the first argument
   decl %edi
   jns loop                # check if sign flag is not set
   popl %edi
