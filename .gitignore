@@ -53,6 +53,7 @@ dkms.conf
 
 #Viusal studio code configuration 
 .vscode/
+.vs/
 data/
 #executable files compiled from source
 *.exe
