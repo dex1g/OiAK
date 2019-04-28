@@ -30,6 +30,15 @@ void testAdditionAlgoC(unsigned char *addend1, unsigned char *addend2, unsigned 
     }
 }
 
+void writeToFile(char *filename, unsigned char *array, int size)
+{
+    FILE *write_ptr;
+
+    write_ptr = fopen(filename, "wb");
+
+    fwrite(array, size, 1, write_ptr);
+}
+
 int main()
 {
     // prepare data
@@ -67,7 +76,7 @@ int main()
     t = clock() - t;
     time_taken = ((double)t) / CLOCKS_PER_SEC; // in seconds
     printf("Addition operation on 500MB numbers with assembly implementation took %f seconds to execute \n", time_taken);
-    free(temp);
+    delete (temp);
 
     // Recreate structures
     firstNumber500MB = getNumberFromBinaryFile("./data/firstNumber500MB");
@@ -81,7 +90,7 @@ int main()
     t = clock() - t;
     time_taken = ((double)t) / CLOCKS_PER_SEC; // in seconds
     printf("Addition operation on 500MB numbers with C implementation took %f seconds to execute \n", time_taken);
-    free(temp);
+    delete (temp);
 
     // Recreate structures
     firstNumber500MB = getNumberFromBinaryFile("./data/firstNumber500MB");
@@ -98,10 +107,11 @@ int main()
 
     // Test whole substraction in C
     t = clock();
-    subtract_C(addend1MBTC, addend2MBTC);
+    temp = subtract_C(addend1MBTC, addend2MBTC);
     t = clock() - t;
     time_taken = ((double)t) / CLOCKS_PER_SEC; // in seconds
     printf("Subtraction operation on 500MB numbers in C took %f seconds to execute \n", time_taken);
+    delete (temp);
 
     // Recreate files
     firstNumber500MB = getNumberFromBinaryFile("./data/firstNumber500MB");
@@ -112,35 +122,24 @@ int main()
 
     // Test whole substraction which uses assembly inside
     t = clock();
-    subtract_asm(addend1MBTC, addend2MBTC);
+    temp = subtract_asm(addend1MBTC, addend2MBTC);
     t = clock() - t;
     time_taken = ((double)t) / CLOCKS_PER_SEC; // in seconds
     printf("Subtraction operation on 500MB numbers with assembly implementation took %f seconds to execute \n", time_taken);
+    delete (temp);
 
-    // Recreate files
+    // Files for multiplication
     unsigned char *firstNumber1MB = getNumberFromBinaryFile("./data/firstNumber1MB");
+    unsigned char *firstNumber20KB = getNumberFromBinaryFile("./data/firstNumber20KB");
 
-    // Test multiplication algorithm asm
-    unsigned char multiplicant = 197;
-    unsigned char *result = calloc(1024 * 1024 + 1, sizeof(char));
-    t = clock();
-    array_mul(1024 * 1024, firstNumber1MB, &multiplicant, result, 0);
-    t = clock() - t;
-    time_taken = ((double)t) / CLOCKS_PER_SEC; // in seconds
-    printf("Multiplication algorithm on 1MB number with 1B number with assembly implementation took %f seconds to execute \n", time_taken);
-    free(result);
-
-    // Test multiplication algorithm
-    unsigned char *secondNumber1MB = calloc(1, sizeof(char));
-    secondNumber1MB[0] = 197;
-    addend1MBTC = createTCNumber_no_realloc(firstNumber1MB, 1024 * 1024, 0);
-    addend2MBTC = createTCNumber_no_realloc(secondNumber1MB, 1, 0);
+    TCNumber *number1MBTC = createTCNumber_no_realloc(firstNumber1MB, 1024 * 1024, 0);
+    TCNumber *number20KBTC = createTCNumber_no_realloc(firstNumber20KB, 1024 * 20, 0);
 
     t = clock();
-    multiply_asm(addend1MBTC, addend2MBTC);
+    TCNumber *result1 = multiply_asm(number1MBTC, number20KBTC);
     t = clock() - t;
     time_taken = ((double)t) / CLOCKS_PER_SEC; // in seconds
-    printf("Multiplication operation on 1MB number with 1B number with assembly implementation took %f seconds to execute \n", time_taken);
-
+    printf("Multiplication operation on 1MB number with 20KB number with assembly implementation took %f seconds to execute \n", time_taken);
+    delete (result1);
     return 0;
 }

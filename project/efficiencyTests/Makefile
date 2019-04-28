@@ -17,6 +17,5 @@ runGprofExe:
 
 GprofTest: buildGprofTest runGprofExe outputGprofToFile
 
-
 clean:
 	rm -f EfficiencyTests.exe EfficiencyGprof.exe profile-data.txt gmon.out
