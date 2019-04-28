@@ -46,7 +46,7 @@ TCNumber *subtract_asm(TCNumber *minuend, TCNumber *subtrahend)
     if (subtrahend->number[0] > 127)
         array_adc(scaledMinuend->number + startIndex - 1, &one, 1, startIndex - 1);
 
-    array_sbb(scaledMinuend->number, subtrahend->number, resultSize, startIndex);
+    array_sbb(scaledMinuend->number + startIndex, subtrahend->number, subtrahend->numberSize, startIndex);
 
     delete (subtrahend);
     return scaledMinuend;

@@ -1,5 +1,6 @@
 #include "./unity/src/unity.h"
 #include "../src/ArithmeticOperations.h"
+#include "../efficiencyTests/PastImplementations/LessEfficientOperations.h"
 
 void test_increment_no_carry(void)
 {
@@ -70,7 +71,7 @@ void test_add_positive(void)
     unsigned char expectedResult[7] = {0x00, 0x12, 0x7e, 0xbd, 0x0a, 0x2b, 0x6e};
     unsigned int expectedSize = 7;
     int expectedPosition = -16;
-    TCNumber *result = add(number1, number2);
+    TCNumber *result = add_C(number1, number2);
     TEST_ASSERT_EQUAL_MEMORY(expectedResult, result->number, 7);
     TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
     TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
@@ -102,7 +103,7 @@ void test_add_one_negative(void)
     unsigned char expectedResult[7] = {0x00, 0x12, 0x7e, 0x0d, 0x0a, 0x2b, 0x6e};
     unsigned int expectedSize = 7;
     int expectedPosition = -16;
-    TCNumber *result = add(number1, number2);
+    TCNumber *result = add_C(number1, number2);
     TEST_ASSERT_EQUAL_MEMORY(expectedResult, result->number, 7);
     TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
     TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
@@ -134,7 +135,7 @@ void test_add_both_negative(void)
     unsigned char expectedResult[7] = {0xff, 0xb2, 0x7e, 0x5d, 0x0a, 0x2b, 0x6e};
     unsigned int expectedSize = 7;
     int expectedPosition = -16;
-    TCNumber *result = add(number1, number2);
+    TCNumber *result = add_C(number1, number2);
     TEST_ASSERT_EQUAL_MEMORY(expectedResult, result->number, 7);
     TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
     TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
@@ -166,7 +167,7 @@ void test_subtract_positive(void)
     unsigned char expectedResult[7] = {0x00, 0x12, 0x7e, 0x02, 0xf5, 0xd4, 0x92};
     unsigned int expectedSize = 7;
     int expectedPosition = -16;
-    TCNumber *result = subtract(number1, number2);
+    TCNumber *result = subtract_C(number1, number2);
     TEST_ASSERT_EQUAL_MEMORY(expectedResult, result->number, 7);
     TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
     TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
@@ -182,7 +183,71 @@ void test_subtract_positive_asm(void)
     unsigned char expectedResult[7] = {0x00, 0x12, 0x7e, 0x02, 0xf5, 0xd4, 0x92};
     unsigned int expectedSize = 7;
     int expectedPosition = -16;
-    TCNumber *result = subtract(number1, number2);
+    TCNumber *result = subtract_asm(number1, number2);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult, result->number, 7);
+    TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
+    TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
+    delete (result);
+}
+
+void test_subtract_one_negative(void)
+{
+    unsigned char temp1[3] = {0x12, 0x7e, 0x60};
+    unsigned char temp2[4] = {0xad, 0x0a, 0x2b, 0x6e};
+    TCNumber *number1 = createTCNumber(temp1, 3, 8);
+    TCNumber *number2 = createTCNumber(temp2, 4, -16);
+    unsigned char expectedResult[7] = {0x00, 0x12, 0x7e, 0xB2, 0xF5, 0xD4, 0x92};
+    unsigned int expectedSize = 7;
+    int expectedPosition = -16;
+    TCNumber *result = subtract_C(number1, number2);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult, result->number, 7);
+    TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
+    TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
+    delete (result);
+}
+
+void test_subtract_one_negativ_asm(void)
+{
+    unsigned char temp1[3] = {0x12, 0x7e, 0x60};
+    unsigned char temp2[4] = {0xad, 0x0a, 0x2b, 0x6e};
+    TCNumber *number1 = createTCNumber(temp1, 3, 8);
+    TCNumber *number2 = createTCNumber(temp2, 4, -16);
+    unsigned char expectedResult[7] = {0x00, 0x12, 0x7e, 0xB2, 0xF5, 0xD4, 0x92};
+    unsigned int expectedSize = 7;
+    int expectedPosition = -16;
+    TCNumber *result = subtract_asm(number1, number2);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult, result->number, 7);
+    TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
+    TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
+    delete (result);
+}
+
+void test_subtract_both_negative(void)
+{
+    unsigned char temp1[3] = {0xb2, 0x7e, 0x60};
+    unsigned char temp2[4] = {0xfd, 0x0a, 0x2b, 0x6e};
+    TCNumber *number1 = createTCNumber(temp1, 3, 8);
+    TCNumber *number2 = createTCNumber(temp2, 4, -16);
+    unsigned char expectedResult[7] = {0xff, 0xb2, 0x7e, 0x62, 0xf5, 0xd4, 0x92};
+    unsigned int expectedSize = 7;
+    int expectedPosition = -16;
+    TCNumber *result = subtract_C(number1, number2);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult, result->number, 7);
+    TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
+    TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
+    delete (result);
+}
+
+void test_subtract_both_negative_asm(void)
+{
+    unsigned char temp1[3] = {0xb2, 0x7e, 0x60};
+    unsigned char temp2[4] = {0xfd, 0x0a, 0x2b, 0x6e};
+    TCNumber *number1 = createTCNumber(temp1, 3, 8);
+    TCNumber *number2 = createTCNumber(temp2, 4, -16);
+    unsigned char expectedResult[7] = {0xff, 0xb2, 0x7e, 0x62, 0xf5, 0xd4, 0x92};
+    unsigned int expectedSize = 7;
+    int expectedPosition = -16;
+    TCNumber *result = subtract_asm(number1, number2);
     TEST_ASSERT_EQUAL_MEMORY(expectedResult, result->number, 7);
     TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
     TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
@@ -199,12 +264,16 @@ int main(void)
     RUN_TEST(test_increment_overflow_no_extension);
     RUN_TEST(test_onesComplement);
     RUN_TEST(test_add_positive);
-    RUN_TEST(test_add_one_negative);
-    RUN_TEST(test_add_both_negative);
-    RUN_TEST(test_subtract_positive);
     RUN_TEST(test_add_positive_asm);
+    RUN_TEST(test_add_one_negative);
     RUN_TEST(test_add_one_negative_asm);
+    RUN_TEST(test_add_both_negative);
     RUN_TEST(test_add_both_negative_asm);
+    RUN_TEST(test_subtract_positive);
     RUN_TEST(test_subtract_positive_asm);
+    RUN_TEST(test_subtract_one_negative);
+    RUN_TEST(test_subtract_one_negativ_asm);
+    RUN_TEST(test_subtract_both_negative);
+    RUN_TEST(test_subtract_both_negative_asm);
     return UNITY_END();
 }
