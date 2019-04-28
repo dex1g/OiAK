@@ -117,5 +117,30 @@ int main()
     time_taken = ((double)t) / CLOCKS_PER_SEC; // in seconds
     printf("Subtraction operation on 500MB numbers with assembly implementation took %f seconds to execute \n", time_taken);
 
+    // Recreate files
+    unsigned char *firstNumber1MB = getNumberFromBinaryFile("./data/firstNumber1MB");
+
+    // Test multiplication algorithm asm
+    unsigned char multiplicant = 197;
+    unsigned char *result = calloc(1024 * 1024 + 1, sizeof(char));
+    t = clock();
+    array_mul(1024 * 1024, firstNumber1MB, &multiplicant, result, 0);
+    t = clock() - t;
+    time_taken = ((double)t) / CLOCKS_PER_SEC; // in seconds
+    printf("Multiplication algorithm on 1MB number with 1B number with assembly implementation took %f seconds to execute \n", time_taken);
+    free(result);
+
+    // Test multiplication algorithm
+    unsigned char *secondNumber1MB = calloc(1, sizeof(char));
+    secondNumber1MB[0] = 197;
+    addend1MBTC = createTCNumber_no_realloc(firstNumber1MB, 1024 * 1024, 0);
+    addend2MBTC = createTCNumber_no_realloc(secondNumber1MB, 1, 0);
+
+    t = clock();
+    multiply_asm(addend1MBTC, addend2MBTC);
+    t = clock() - t;
+    time_taken = ((double)t) / CLOCKS_PER_SEC; // in seconds
+    printf("Multiplication operation on 1MB number with 1B number with assembly implementation took %f seconds to execute \n", time_taken);
+
     return 0;
 }

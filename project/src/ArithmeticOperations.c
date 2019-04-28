@@ -65,10 +65,5 @@ TCNumber *multiply_asm(TCNumber *multiplicand, TCNumber *multiplier)
     delete (multiplicand);
     delete (multiplier);
 
-    TCNumber *product = createTCNumber_no_realloc(result, resultSize, lowestPos);
-
-    if (!product->number[product->numberSize-1])        // If last byte is zeros then we will scale the number up
-        product = scaleUp(product);
-
-    return product;
+    return createTCNumber_no_realloc(result, resultSize, lowestPos);
 }

@@ -103,16 +103,16 @@ void test_asciiToByteConversion_wrong_character(void)
 
 void test_scaleUp(void)
 {
-    unsigned char number[6] = {0x0a, 0x2b, 0x6e, 0x00, 0x00, 0x00};
-    unsigned int size = 6;
-    int position = -4;
-    unsigned char expectedNumber[3] = {0x0a, 0x2b, 0x6e};
-    unsigned int expectedSize = 3;
-    int expectedPosition = 20;
+    unsigned char number[] = {0x00, 0x0a, 0x61, 0x66, 0xef, 0x67, 0x40, 0x00, 0x00};
+    unsigned int size = 9;
+    int position = -48;
+    unsigned char expectedNumber[] = {0x00, 0x0a, 0x61, 0x66, 0xef, 0x67, 0x40};
+    unsigned int expectedSize = 7;
+    int expectedPosition = -32;
     TCNumber *expectedResult = createTCNumber(expectedNumber, expectedSize, expectedPosition);
     TCNumber *result = createTCNumber(number, size, position);
     scaleUp(result);
-    TEST_ASSERT_EQUAL_MEMORY(expectedResult->number, result->number, 3);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult->number, result->number, 7);
     TEST_ASSERT_EQUAL_INT(expectedResult->numberSize, result->numberSize);
     TEST_ASSERT_EQUAL_INT(expectedResult->numberPosition, result->numberPosition);
     delete (result);
