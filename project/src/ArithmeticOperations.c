@@ -57,15 +57,15 @@ TCNumber *multiply_asm(TCNumber *multiplicand, TCNumber *multiplier)
     int lowestPos = multiplicand->numberPosition;
     if (multiplier->numberPosition < lowestPos)
         lowestPos = multiplier->numberPosition;
-    
+
     int resultSize = multiplicand->numberSize + multiplier->numberSize;
     unsigned char *result = calloc(resultSize, sizeof(char));
 
     for (int i = multiplier->numberSize - 1; i >= 0; i--)
-        array_mul(multiplicand->numberSize, multiplicand->number, multiplier->number+i, result, i - multiplicand->numberSize - 1);
+        array_mul(multiplicand->numberSize, multiplicand->number, multiplier->number + i, result, i);
 
-    delete(multiplicand);
-    delete(multiplier);
+    delete (multiplicand);
+    delete (multiplier);
 
     TCNumber *product = createTCNumber_no_realloc(result, resultSize, lowestPos);
 

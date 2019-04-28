@@ -254,15 +254,47 @@ void test_subtract_both_negative_asm(void)
     delete (result);
 }
 
-void test_mul_array_bytes_asm(void)
+void test_array_mul_asm(void)
 {
     unsigned char temp1[] = {0xd5, 0x7a, 0x1f};
     unsigned char temp2[] = {0x5d};
     unsigned char expectedResult[] = {0x4d, 0x8d, 0x5d, 0x43};
     unsigned char *result = calloc(4, sizeof(char));
-    array_mul_byte(3, temp1, temp2, result);
-    TEST_ASSERT_EQUAL_MEMORY(expectedResult + 1, result + 1, 3);
+    array_mul(3, temp1, temp2, result, 0);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult, result, 4);
     free(result);
+}
+
+void test_mul_asm_one_negativ(void)
+{
+    unsigned char temp1[] = {0xd5, 0x7a, 0x1f};
+    unsigned char temp2[] = {0x12, 0xc4};
+    TCNumber *number1 = createTCNumber(temp1, 3, 0);
+    TCNumber *number2 = createTCNumber(temp2, 2, 0);
+    unsigned char expectedResult[] = {0x0f, 0xa6, 0x07, 0xad, 0xbc};
+    unsigned int expectedSize = 5;
+    int expectedPosition = 0;
+    TCNumber *result = multiply_asm(number1, number2);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult, result->number, 5);
+    TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
+    TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
+    delete (result);
+}
+
+void test_mul_asm_positiv(void)
+{
+    unsigned char temp1[] = {0x00, 0xd5, 0xfc};
+    unsigned char temp2[] = {0x0c, 0x6b, 0x2e, 0x30};
+    TCNumber *number1 = createTCNumber(temp1, 3, -24);
+    TCNumber *number2 = createTCNumber(temp2, 4, -8);
+    unsigned char expectedResult[] = {0x0a, 0x61, 0x66, 0xef, 0x67, 0x40};
+    unsigned int expectedSize = 6;
+    int expectedPosition = -8;
+    TCNumber *result = multiply_asm(number1, number2);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult, result->number, 6);
+    TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
+    TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
+    delete (result);
 }
 
 int main(void)
@@ -286,6 +318,8 @@ int main(void)
     // RUN_TEST(test_subtract_one_negativ_asm);
     // RUN_TEST(test_subtract_both_negative);
     // RUN_TEST(test_subtract_both_negative_asm);
-    RUN_TEST(test_mul_array_bytes_asm);
+    RUN_TEST(test_array_mul_asm);
+    RUN_TEST(test_mul_asm_one_negativ);
+    RUN_TEST(test_mul_asm_positiv);
     return UNITY_END();
 }

@@ -1,6 +1,6 @@
-.globl array_mul_byte
-.type array_mul_byte @function  # definicja funkcji
-array_mul_byte:
+.globl array_mul
+.type array_mul @function  # definicja funkcji
+array_mul:
     pushl %ebp
     movl %esp, %ebp         # wskaźnik parametrów wywołania
     pushl %ebx
