@@ -14,11 +14,11 @@ TCNumber *subtract_asm(TCNumber *minuend, TCNumber *subtrahend);
 */
 TCNumber *add_asm(TCNumber *addend1, TCNumber *addend2);
 
-/*
-    Performs multiplication on numbers given in parameters and returns the result as new instance of TCNumber.
-    Uses inside assembler implementation stored in array_mul.s
-*/
-TCNumber *multiply_asm(TCNumber *multiplicand, TCNumber *multiplier);
+// /*
+//     Performs multiplication on numbers given in parameters and returns the result as new instance of TCNumber.
+//     Uses inside assembler implementation stored in array_mul.s
+// */
+// TCNumber *multiply_asm(TCNumber *multiplicand, TCNumber *multiplier);
 
 /*
     Performs addition with carry on numbers given in parameters.

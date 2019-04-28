@@ -254,26 +254,38 @@ void test_subtract_both_negative_asm(void)
     delete (result);
 }
 
+void test_mul_array_bytes_asm(void)
+{
+    unsigned char temp1[] = {0xd5, 0x7a, 0x1f};
+    unsigned char temp2[] = {0x5d};
+    unsigned char expectedResult[] = {0x4d, 0x8d, 0x5d, 0x43};
+    unsigned char *result = calloc(4, sizeof(char));
+    array_mul_byte(3, temp1, temp2, result);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult + 1, result + 1, 3);
+    free(result);
+}
+
 int main(void)
 {
     UNITY_BEGIN();
-    RUN_TEST(test_increment_no_carry);
-    RUN_TEST(test_increment_single_carry);
-    RUN_TEST(test_increment_multiple_carry);
-    RUN_TEST(test_increment_overflow);
-    RUN_TEST(test_increment_overflow_no_extension);
-    RUN_TEST(test_onesComplement);
-    RUN_TEST(test_add_positive);
-    RUN_TEST(test_add_positive_asm);
-    RUN_TEST(test_add_one_negative);
-    RUN_TEST(test_add_one_negative_asm);
-    RUN_TEST(test_add_both_negative);
-    RUN_TEST(test_add_both_negative_asm);
-    RUN_TEST(test_subtract_positive);
-    RUN_TEST(test_subtract_positive_asm);
-    RUN_TEST(test_subtract_one_negative);
-    RUN_TEST(test_subtract_one_negativ_asm);
-    RUN_TEST(test_subtract_both_negative);
-    RUN_TEST(test_subtract_both_negative_asm);
+    // RUN_TEST(test_increment_no_carry);
+    // RUN_TEST(test_increment_single_carry);
+    // RUN_TEST(test_increment_multiple_carry);
+    // RUN_TEST(test_increment_overflow);
+    // RUN_TEST(test_increment_overflow_no_extension);
+    // RUN_TEST(test_onesComplement);
+    // RUN_TEST(test_add_positive);
+    // RUN_TEST(test_add_positive_asm);
+    // RUN_TEST(test_add_one_negative);
+    // RUN_TEST(test_add_one_negative_asm);
+    // RUN_TEST(test_add_both_negative);
+    // RUN_TEST(test_add_both_negative_asm);
+    // RUN_TEST(test_subtract_positive);
+    // RUN_TEST(test_subtract_positive_asm);
+    // RUN_TEST(test_subtract_one_negative);
+    // RUN_TEST(test_subtract_one_negativ_asm);
+    // RUN_TEST(test_subtract_both_negative);
+    // RUN_TEST(test_subtract_both_negative_asm);
+    RUN_TEST(test_mul_array_bytes_asm);
     return UNITY_END();
 }

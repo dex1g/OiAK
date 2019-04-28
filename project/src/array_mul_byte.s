@@ -29,12 +29,14 @@ ptmul:
     adcb %al, (%edx, %esi)	# save lower result
     dec %esi
     adcb %ah, (%edx, %esi)	# save higher result
+    jnc mulcarryout
 mulcarry:
     dec %esi
-    js ptmul
+    js mulcarryout
     incb (%edx, %esi)
     jz mulcarry
-    
+
+mulcarryout:
     movl %edi, %esi         # aktualny indeks LSB iloczynu
     dec %edi                # aktualny indeks mnożnej
     jns ptmul
