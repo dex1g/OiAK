@@ -65,5 +65,9 @@ TCNumber *multiply_asm(TCNumber *multiplicand, TCNumber *multiplier)
     delete(multiplicand);
     delete(multiplier);
 
-    return createTCNumber_no_realloc(result, resultSize, lowestPos);
+    TCNumber *product = createTCNumber_no_realloc(result, resultSize, lowestPos);
+
+    scaleUp(product);
+
+    return product;
 }

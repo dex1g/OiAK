@@ -127,8 +127,7 @@ void scaleUp(TCNumber *n)
     unsigned int newSize = n->numberSize - cnt;
     int newPos = n->numberPosition + (cnt * 8);
     unsigned char *ptr = calloc(newSize, sizeof(char));
-    for (int i = 0; (unsigned)i < newSize; i++)
-        ptr[i] = n->number[i];
+    memcpy(ptr, n->number, newSize);
     free(n->number);
     n->number = ptr;
     n->numberSize = newSize;
