@@ -54,9 +54,7 @@ TCNumber *subtract_asm(TCNumber *minuend, TCNumber *subtrahend)
 
 TCNumber *multiply_asm(TCNumber *multiplicand, TCNumber *multiplier)
 {
-    int lowestPos = multiplicand->numberPosition;
-    if (multiplier->numberPosition < lowestPos)
-        lowestPos = multiplier->numberPosition;
+    int lowestPos = multiplicand->numberPosition + multiplier->numberPosition;
 
     int resultSize = multiplicand->numberSize + multiplier->numberSize;
     unsigned char *result = calloc(resultSize, sizeof(char));
@@ -69,7 +67,8 @@ TCNumber *multiply_asm(TCNumber *multiplicand, TCNumber *multiplier)
 
     TCNumber *product = createTCNumber_no_realloc(result, resultSize, lowestPos);
 
-    scaleUp(product);
+    if (!product->number[product->numberSize-1])        // If last byte is zeros then we will scale the number up
+        product = scaleUp(product);
 
     return product;
 }

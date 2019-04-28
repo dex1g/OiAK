@@ -115,7 +115,7 @@ void increment(TCNumber *number)
     }
 }
 
-void scaleUp(TCNumber *n)
+TCNumber *scaleUp(TCNumber *n)
 {
     int cnt = 0;
     for (int i = (int)n->numberSize - 1; i >= 0; i--)
@@ -128,10 +128,8 @@ void scaleUp(TCNumber *n)
     int newPos = n->numberPosition + (cnt * 8);
     unsigned char *ptr = calloc(newSize, sizeof(char));
     memcpy(ptr, n->number, newSize);
-    free(n->number);
-    n->number = ptr;
-    n->numberSize = newSize;
-    n->numberPosition = newPos;
+    delete(n);
+    return createTCNumber_no_realloc(ptr, newSize, newPos);
 }
 
 void trimExtension(TCNumber *n)

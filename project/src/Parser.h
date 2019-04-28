@@ -62,7 +62,7 @@ void delete (TCNumber *n);
 /*
     Removes trailing zeroes from given number.
 */
-void scaleUp(TCNumber *n);
+TCNumber *scaleUp(TCNumber *n);
 
 /*
     Converts given number in char array format into byte representation which is stored with all additional data in TCNumber structure.
