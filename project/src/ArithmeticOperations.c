@@ -61,7 +61,9 @@ TCNumber *multiply_asm(TCNumber *multiplicand, TCNumber *multiplier)
     int resultSize = multiplicand->numberSize + multiplier->numberSize;
     unsigned char *result = calloc(resultSize, sizeof(char));
 
-    array_mul(multiplicand->numberSize, multiplicand->number, multiplier->number, result);
+    for (int i = multiplier->numberSize - 1; i >= 0; i--)
+        array_mul(multiplicand->numberSize, multiplicand->number, multiplier->number+i, result, i - multiplicand->numberSize - 1);
+
     delete(multiplicand);
     delete(multiplier);
 

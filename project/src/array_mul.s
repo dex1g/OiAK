@@ -10,6 +10,7 @@ array_mul_byte:
     movl 12(%ebp), %ebx     # adres mnożnej ze stosu
     movl 16(%ebp), %ecx     # adres bajtowego mnożnika ze stosu
     movl 20(%ebp), %edx     # adres iloczynu ze stosu
+    movl 24(%ebp), %ebp     # ilosc bardziej znaczacych bitow pozostalych w iloczynie ze stosu
     call ptprod             # obliczenie iloczynu
     popl %esi
     popl %edi
@@ -19,6 +20,7 @@ ret
 
 ptprod:
     movl %edi, %esi         # indeks LSB iloczynu
+    add %ebp, %esi              # TESTTTT
     dec %edi                # last index of mnożna w EDI
     movb (%ecx), %cl        # mnożnik w CL
 
@@ -30,6 +32,7 @@ ptmul:
     dec %esi
     adcb %ah, (%edx, %esi)	# save higher result
     jnc mulcarryout
+
 mulcarry:
     dec %esi
     js mulcarryout
@@ -38,6 +41,7 @@ mulcarry:
 
 mulcarryout:
     movl %edi, %esi         # aktualny indeks LSB iloczynu
+    add %ebp, %esi
     dec %edi                # aktualny indeks mnożnej
     jns ptmul
 
