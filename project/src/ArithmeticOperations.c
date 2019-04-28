@@ -51,3 +51,13 @@ TCNumber *subtract_asm(TCNumber *minuend, TCNumber *subtrahend)
     delete (subtrahend);
     return scaledMinuend;
 }
+
+TCNumber *multiply_asm(TCNumber *multiplicand, TCNumber *multiplier)
+{
+    int resultSize = multiplicand->numberSize + multiplier->numberSize;
+    unsigned char *result = calloc(resultSize, sizeof(char));
+
+    array_mul();
+
+    return result;
+}

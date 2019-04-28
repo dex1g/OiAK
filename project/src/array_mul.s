@@ -8,30 +8,18 @@ array_mul:
     movl 16(%ebp), %eax # rozmiar mnożnika ze stosu
     movl 20(%ebp), %edi # adres mnożnika ze stosu
     movl 24(%ebp), %ebx # adres iloczynu ze stosu
+    movl 28(%ebp), %ebx # rozmiar iloczynu ze stosu
+    pushl %ebx
+    pushl %edi
+    pushl %esi
     clc
     call prod # obliczenie iloczynu
-    pop %ebp
-    ret
+    popl %esi
+    popl %edi
+    popl %ebx
+    popl %ebp
+ret
 
 prod:
-    movl $0, (%ebx) # zerowanie najniższych cyfr iloczynu
-    movl $0, 4(%ebx) # zerowanie najniższych cyfr iloczynu
-accum:
-    pushl %eax # licznik cyfr mnożnika (iloczynów częściowych) 
-    pushl %ebx # bieżący indeks najniższej cyfry iloczynu
-    movl 8(,%ebp,4), %ecx # odtworzenie licznika cyfr mnożnej
-partp:
-    movb (,%esi,1), %al # kolejna cyfra mnożnej
-    movb (,%edi,1), %dl # kolejna cyfra mnożnika
-    mulb %dl # iloczyn częściowy w %ah:al
-    add %al, (,%ebx,1) # aktualizacja niższej cyfry iloczynu częściowego
-    adc %al, 1(,%ebx,1) # aktualizacja wyższej cyfry iloczynu częściowego
-    incl %esi # wskaźnik kolejnej cyfry mnożnej
-    loop partp # zliczanie cyfr mnożnej
-    pop %ebx # przygotowanie obliczenia następnego
-    inc %ebx # iloczynu częściowego
-    inc %edi # wskaźnik kolejnej cyfry mnożnika
-    pop %eax
-    dec %eax # zliczanie cyfr mnożnika
-    jnz accum
-    ret
+    # Tu ma byc wywolywanie bajtowego mula dla kolejnych bajtow mnoznika
+ret
