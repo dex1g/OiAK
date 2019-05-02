@@ -1,13 +1,13 @@
 all: EfficiencyTests
 
 buildEfficiencyTests:
-	gcc -Wall -O3 -m32 EfficiencyTests.c $(wildcard ../src/*.s) ../src/ArithmeticOperations.c ../src/Parser.c ./PastImplementations/LessEfficientOperations.c  -o EfficiencyTests.exe
+	gcc -Wall -std=c99 -Wno-unused-result -O3 -m32 EfficiencyTests.c $(wildcard ../src/*.s) ../src/ArithmeticOperations.c ../src/Parser.c ./PastImplementations/LessEfficientOperations.c  -o EfficiencyTests.exe
 
 EfficiencyTests: buildEfficiencyTests
 	./EfficiencyTests.exe
 
 buildGprofTest:
-	gcc -Wall -m32 -pg EfficiencyTests.c $(wildcard ../src/*.s) ../src/ArithmeticOperations.c ../src/Parser.c ./PastImplementations/LessEfficientOperations.c  -o EfficiencyGprof.exe
+	gcc -Wall -std=c99 -Wno-unused-result -m32 -pg EfficiencyTests.c $(wildcard ../src/*.s) ../src/ArithmeticOperations.c ../src/Parser.c ./PastImplementations/LessEfficientOperations.c  -o EfficiencyGprof.exe
 
 outputGprofToFile:
 	gprof EfficiencyGprof.exe gmon.out > profile-data.txt    
