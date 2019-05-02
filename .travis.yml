@@ -1,0 +1,13 @@
+language: c
+compiler: gcc
+
+script:
+  # RUN ALL UNIT TESTS
+  - cd project/tests
+  - make AllTests
+  # RUN EFFICIENCY TESTS
+  - cd ../efficiencyTests/
+  - make EfficiencyTests
+  # RUN GPROF ANALYSIS
+  - make GprofTest
+  # RUN VALGRIND ANALYSIS
