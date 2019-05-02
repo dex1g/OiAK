@@ -26,5 +26,5 @@ script:
   - cd ../efficiencyTests/
   - make EfficiencyTests
   # RUN GPROF ANALYSIS
-  - make GprofTest
+  - make GprofTest && cat ./profile-data.txt
   # RUN VALGRIND ANALYSIS
