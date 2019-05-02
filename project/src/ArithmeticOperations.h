@@ -24,17 +24,17 @@ TCNumber *multiply_asm(TCNumber *multiplicand, TCNumber *multiplier);
     Performs addition with carry on numbers given in parameters.
     The result is stored in the first parameter.
 */
-extern void array_adc(unsigned char *addend1, unsigned char *addend2, unsigned int length, unsigned numberDifference);
+void array_adc(unsigned char *addend1, unsigned char *addend2, unsigned int length, unsigned numberDifference);
 
 /*
     Performs subtraction with carry on numbers given in parameters.
     The result is stored in the first parameter.
 */
-extern void array_sbb(unsigned char *minuend, unsigned char *subtrahend, unsigned int length, unsigned numberDifference);
+void array_sbb(unsigned char *minuend, unsigned char *subtrahend, unsigned int length, unsigned numberDifference);
 
 /*
     Performs multiplication using mul instruction from the processor instructions list.
 */
-extern void array_mul(unsigned int multiplicandSize, unsigned char *multiplicand, unsigned char *multiplier, unsigned char *product, unsigned int additionalProductSize);
+void array_mul(unsigned int multiplicandSize, unsigned char *multiplicand, unsigned char *multiplier, unsigned char *product, unsigned int additionalProductSize);
 
 #endif
