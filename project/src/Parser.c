@@ -249,7 +249,7 @@ TCNumber *getNumberFromTxtHexFile(char *filename)
     return convertedValue;
 }
 
-unsigned char *getNumberFromBinaryFile(char *filename)
+TCNumber *getNumberFromBinaryFile(char *filename, int numberPosition)
 {
     FILE *handle;
     unsigned char *buffer = NULL;
@@ -271,5 +271,7 @@ unsigned char *getNumberFromBinaryFile(char *filename)
     fread(buffer, fileLen, 1, handle);
 
     fclose(handle);
-    return buffer;
+
+    TCNumber *num = createTCNumber_no_realloc(buffer, fileLen, numberPosition);
+    return num;
 }

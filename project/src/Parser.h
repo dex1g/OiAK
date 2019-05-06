@@ -89,6 +89,6 @@ TCNumber *getNumberFromTxtHexFile(char *filename);
 /*
     Reads number from binary field and returns it as an array of bytes.
 */
-unsigned char *getNumberFromBinaryFile(char *filename);
+TCNumber *getNumberFromBinaryFile(char *filename, int numberPosition);
 
 #endif
