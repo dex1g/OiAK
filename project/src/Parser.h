@@ -26,7 +26,7 @@ TCNumber *createTCNumber_no_realloc(unsigned char *number, unsigned int numberSi
 /*
     Gets user input from console and performs basic conversionts between systems with different base.
 */
-char *getNumberFromConsole(void);
+char *getNumberFromSTDIN(void);
 
 /*
     Converts hexadecimal string representation to positive two's complement.
