@@ -3,8 +3,14 @@ all: EfficiencyTests
 buildEfficiencyTests:
 	gcc -Wall -O3 -std=c99 -Wno-unused-result -m32 EfficiencyTests.c $(wildcard ../src/*.s) ../src/ArithmeticOperations.c ../src/Parser.c ./PastImplementations/LessEfficientOperations.c  -o EfficiencyTests.exe
 
+buildEfficiencyTestsExcel:
+	gcc -g -Wall -std=c99 -Wno-unused-result -m32 EfficiencyTestsExcel.c $(wildcard ../src/*.s) ../src/ArithmeticOperations.c ../src/Parser.c ./PastImplementations/LessEfficientOperations.c  -o EfficiencyTestsExcel.exe
+
 EfficiencyTests: buildEfficiencyTests
 	./EfficiencyTests.exe
+
+EfficiencyTestsExcel: buildEfficiencyTestsExcel
+	./EfficiencyTestsExcel.exe
 
 buildGprofTest:
 	gcc -Wall -std=c99 -Wno-unused-result -m32 -pg EfficiencyTests.c $(wildcard ../src/*.s) ../src/ArithmeticOperations.c ../src/Parser.c ./PastImplementations/LessEfficientOperations.c  -o EfficiencyGprof.exe
