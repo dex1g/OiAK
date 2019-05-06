@@ -11,7 +11,7 @@ TCNumber *add_asm(TCNumber *addend1, TCNumber *addend2)
     unsigned int resultSize = (highestPos - lowestPos) / 8 + 1;
 
     // Index of the highest position of the second number in first array
-    unsigned int startIndex = ((highestPos - (addend2->numberPosition + (long long)(addend2->numberSize * 8))) / 8) + 1;
+    unsigned int startIndex = ((highestPos - (addend2->numberPosition + ((long long)addend2->numberSize * 8))) / 8) + 1;
 
     TCNumber *scaledAddend1 = scaleNumber(addend1, resultSize, lowestPos);
     delete (addend1);
@@ -37,8 +37,7 @@ TCNumber *subtract_asm(TCNumber *minuend, TCNumber *subtrahend)
     unsigned int resultSize = (highestPos - lowestPos) / 8 + 1;
 
     // Index of the highest position of the second number in first array
-    unsigned int startIndex = ((highestPos - (subtrahend->numberPosition + (long long)(subtrahend->numberSize * 8))) / 8) + 1;
-
+    unsigned int startIndex = ((highestPos - (subtrahend->numberPosition + ((long long)subtrahend->numberSize * 8))) / 8) + 1;
     TCNumber *scaledMinuend = scaleNumber(minuend, resultSize, lowestPos);
     delete (minuend);
 

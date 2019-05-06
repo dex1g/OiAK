@@ -128,7 +128,7 @@ TCNumber *scaleUp(TCNumber *n)
     int newPos = n->numberPosition + (cnt * 8);
     unsigned char *ptr = calloc(newSize, sizeof(char));
     memcpy(ptr, n->number, newSize);
-    delete(n);
+    delete (n);
     return createTCNumber_no_realloc(ptr, newSize, newPos);
 }
 
@@ -193,9 +193,9 @@ void printNumber(TCNumber *n)
 TCNumber *scaleNumber(TCNumber *num, unsigned int targetSize, int targetPosition)
 {
     unsigned char *temp = calloc(targetSize, sizeof(char));
-    int zeros = (num->numberPosition - targetPosition) / 8;  // number of zero bytes after the number
-    int numstart = targetSize - zeros - 1;              // index of last byte of the number
-    int extstart = numstart - num->numberSize;          // index of last byte of extension
+    int zeros = (num->numberPosition - targetPosition) / 8; // number of zero bytes after the number
+    int numstart = targetSize - zeros - 1;                  // index of last byte of the number
+    int extstart = numstart - num->numberSize;              // index of last byte of extension
     unsigned char extension = 0;
 
     if (num->number[0] >= 128)
@@ -211,7 +211,7 @@ TCNumber *scaleNumber(TCNumber *num, unsigned int targetSize, int targetPosition
     return result;
 }
 
-TCNumber *getNumberFromTxtHexFile(char *filename)
+TCNumber *getHexNumberFromTxtFile(char *filename)
 {
     FILE *handle;
     unsigned int len = 0;

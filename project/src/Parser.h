@@ -84,7 +84,7 @@ TCNumber *scaleNumber(TCNumber *n, unsigned int targetSize, int targetPosition);
     Reads number stored in file and returns it in TCNumberRepresentation.
     Reading only one number is supported (number must be in the first line)
 */
-TCNumber *getNumberFromTxtHexFile(char *filename);
+TCNumber *getHexNumberFromTxtFile(char *filename);
 
 /*
     Reads number from binary field and returns it as an array of bytes.

@@ -5,8 +5,11 @@
 #include "./PastImplementations/LessEfficientOperations.h"
 
 #define MB 524288000
+#define GB 1073741824
 #define firstNumber500MBPath "./data/firstNumber500MB"
 #define secondNumber500MBPath "./data/secondNumber500MB"
+#define firstNumber1GBPath "./data/firstNumber1GB"
+#define secondNumber1GBPath "./data/secondNumber1GB"
 
 void testAdditionAlgoAsm(unsigned char *addend1, unsigned char *addend2, unsigned int length)
 {
@@ -31,6 +34,10 @@ void testAdditionAlgoC(unsigned char *addend1, unsigned char *addend2, unsigned 
     }
 }
 
+/*
+Function was used to output the result of operation into a file in order to check
+with diff command if the result was calculated correctly.
+*/
 void writeToFile(char *filename, unsigned char *array, int size)
 {
     FILE *write_ptr;
@@ -43,32 +50,27 @@ void writeToFile(char *filename, unsigned char *array, int size)
 int main()
 {
     // prepare data
-    unsigned char *firstNumber500MB = getNumberFromBinaryFile(firstNumber500MBPath);
-    unsigned char *secondNumber500MB = getNumberFromBinaryFile(secondNumber500MBPath);
-
-    TCNumber *firstNumber500MBTC = createTCNumber_no_realloc(firstNumber500MB, MB, 0);
-    TCNumber *secondNumber500MBTC = createTCNumber_no_realloc(secondNumber500MB, MB, 0);
+    TCNumber *firstNumber500MBTC = getNumberFromBinaryFile(firstNumber1GBPath, 0);
+    TCNumber *secondNumber500MBTC = getNumberFromBinaryFile(secondNumber1GBPath, 0);
 
     clock_t t;         //stores the time before measurment
     double time_taken; // holds calculated value
 
     // Test pure asm algorithm for addition
     t = clock();
-    testAdditionAlgoAsm(firstNumber500MB, secondNumber500MB, MB);
+    testAdditionAlgoAsm(firstNumber500MBTC->number, secondNumber500MBTC->number, GB);
     t = clock() - t;
     time_taken = ((double)t) / CLOCKS_PER_SEC; // in seconds
     printf("Array addition operation on 500MB numbers in assembly took %f seconds to execute \n", time_taken);
 
     // Test pure C algorithm for addition
-    unsigned char *resultAdd = calloc(MB, sizeof(char));
+    unsigned char *resultAdd = calloc(GB, sizeof(char));
     t = clock();
-    testAdditionAlgoC(firstNumber500MB, secondNumber500MB, resultAdd, MB);
+    testAdditionAlgoC(firstNumber500MBTC->number, secondNumber500MBTC->number, resultAdd, GB);
     t = clock() - t;
     time_taken = ((double)t) / CLOCKS_PER_SEC; // in seconds
     printf("Array addition operation on 500MB numbers in C took %f seconds to execute \n", time_taken);
     free(resultAdd);
-
-    // Test addition with scaling which uses asm inside.
 
     t = clock();
     TCNumber *temp = add_asm(firstNumber500MBTC, secondNumber500MBTC);
@@ -78,10 +80,8 @@ int main()
     delete (temp);
 
     // Recreate structures
-    firstNumber500MB = getNumberFromBinaryFile(firstNumber500MBPath);
-    secondNumber500MB = getNumberFromBinaryFile(secondNumber500MBPath);
-    firstNumber500MBTC = createTCNumber_no_realloc(firstNumber500MB, MB, 0);
-    secondNumber500MBTC = createTCNumber_no_realloc(secondNumber500MB, MB, 0);
+    firstNumber500MBTC = getNumberFromBinaryFile(firstNumber1GBPath, 0);
+    secondNumber500MBTC = getNumberFromBinaryFile(secondNumber1GBPath, 0);
 
     // Test addition with scaling which uses C implementation inside.
     t = clock();
@@ -92,14 +92,12 @@ int main()
     delete (temp);
 
     // Recreate structures
-    firstNumber500MB = getNumberFromBinaryFile(firstNumber500MBPath);
-    secondNumber500MB = getNumberFromBinaryFile(secondNumber500MBPath);
-    firstNumber500MBTC = createTCNumber_no_realloc(firstNumber500MB, MB, 0);
-    secondNumber500MBTC = createTCNumber_no_realloc(secondNumber500MB, MB, 0);
+    firstNumber500MBTC = getNumberFromBinaryFile(firstNumber1GBPath, 0);
+    secondNumber500MBTC = getNumberFromBinaryFile(secondNumber1GBPath, 0);
 
     // Test pure assembly algorithm for substraction
     t = clock();
-    testSubstractionAlgoAsm(firstNumber500MB, secondNumber500MB, MB);
+    testSubstractionAlgoAsm(firstNumber500MBTC->number, secondNumber500MBTC->number, GB);
     t = clock() - t;
     time_taken = ((double)t) / CLOCKS_PER_SEC; // in seconds
     printf("Array subtraction operation on 500MB numbers in assembly took %f seconds to execute \n", time_taken);
@@ -112,12 +110,9 @@ int main()
     printf("Subtraction operation on 500MB numbers in C took %f seconds to execute \n", time_taken);
     delete (temp);
 
-    // Recreate files
-    firstNumber500MB = getNumberFromBinaryFile(firstNumber500MBPath);
-    secondNumber500MB = getNumberFromBinaryFile(secondNumber500MBPath);
-
-    firstNumber500MBTC = createTCNumber_no_realloc(firstNumber500MB, MB, 0);
-    secondNumber500MBTC = createTCNumber_no_realloc(secondNumber500MB, MB, 0);
+    // Recreate structures
+    firstNumber500MBTC = getNumberFromBinaryFile(firstNumber1GBPath, 0);
+    secondNumber500MBTC = getNumberFromBinaryFile(secondNumber1GBPath, 0);
 
     // Test whole substraction which uses assembly inside
     t = clock();
@@ -128,14 +123,11 @@ int main()
     delete (temp);
 
     // Files for multiplication
-    unsigned char *firstNumber1MB = getNumberFromBinaryFile("./data/firstNumber1MB");
-    unsigned char *firstNumber20KB = getNumberFromBinaryFile("./data/firstNumber20KB");
-
-    TCNumber *number1MBTC = createTCNumber_no_realloc(firstNumber1MB, 1024 * 1024, 0);
-    TCNumber *number20KBTC = createTCNumber_no_realloc(firstNumber20KB, 1024 * 20, 0);
+    TCNumber *firstNumber1MB = getNumberFromBinaryFile("./data/firstNumber1MB", 0);
+    TCNumber *firstNumber20KB = getNumberFromBinaryFile("./data/firstNumber20KB", 0);
 
     t = clock();
-    TCNumber *result1 = multiply_asm(number1MBTC, number20KBTC);
+    TCNumber *result1 = multiply_asm(firstNumber1MB, firstNumber20KB);
     t = clock() - t;
     time_taken = ((double)t) / CLOCKS_PER_SEC; // in seconds
     printf("Multiplication operation on 1MB number with 20KB number with assembly implementation took %f seconds to execute \n", time_taken);
