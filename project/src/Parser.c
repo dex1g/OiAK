@@ -21,7 +21,7 @@ TCNumber *createTCNumber_no_realloc(unsigned char *number, unsigned int numberSi
     return n;
 }
 
-char *getNumberFromConsole()
+char *getNumberFromSTDIN()
 {
     char *str = NULL;
     scanf("%m[^\n]%*c", &str);
@@ -90,7 +90,7 @@ TCNumber *hexToBin(char *hexNum)
         binRep[i] += asciiToByte(hexNum[hexNumIndex]);
         hexNumIndex = hexNumIndex - 2;
     }
-    TCNumber *binNum = createTCNumber(binRep, numberSize, 0);
+    TCNumber *binNum = createTCNumber_no_realloc(binRep, numberSize, 0);
     return binNum;
 }
 
