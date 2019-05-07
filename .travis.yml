@@ -5,9 +5,9 @@ before_install:
   # GENERATE FILES FOR EFFICIENCY TESTS
   - cd project/efficiencyTests/
   - mkdir data && cd ./data/
-  # 500 MB files
-  - dd if=/dev/urandom of=firstNumber500MB bs=1024 count=512000
-  - dd if=/dev/urandom of=secondNumber500MB bs=1024 count=512000
+  # 1 GB files
+  - dd if=/dev/urandom of=firstNumber1GB bs=1024 count=1048576
+  - dd if=/dev/urandom of=secondNumber1GB bs=1024 count=1048576
   # 1 MB file
   - dd if=/dev/urandom of=firstNumber1MB bs=1024 count=1024
   # 20 KB file
