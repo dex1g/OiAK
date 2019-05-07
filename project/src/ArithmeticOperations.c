@@ -69,7 +69,7 @@ TCNumber *multiply_asm(TCNumber *multiplicand, TCNumber *multiplier)
 
 TCNumber *shift_left(TCNumber *num, unsigned amount)
 {
-    if (amount = 0)
+    if (amount == 0)
         return num;
 
     unsigned char extension[8] = {255, 254, 252, 248, 240, 224, 192, 128};
