@@ -37,4 +37,9 @@ void array_sbb(unsigned char *minuend, unsigned char *subtrahend, unsigned int l
 */
 void array_mul(unsigned int multiplicandSize, unsigned char *multiplicand, unsigned char *multiplier, unsigned char *product, unsigned int additionalProductSize);
 
+/*
+
+*/
+TCNumber *shift_left(TCNumber *num, int amount);
+
 #endif

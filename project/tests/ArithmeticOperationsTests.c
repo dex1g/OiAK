@@ -265,6 +265,22 @@ void test_array_mul_asm(void)
     free(result);
 }
 
+void test_mul_asm_positiv(void)
+{
+    unsigned char temp1[] = {0x00, 0xd5, 0xfc};
+    unsigned char temp2[] = {0x0c, 0x6b, 0x2e, 0x30};
+    TCNumber *number1 = createTCNumber(temp1, 3, -24);
+    TCNumber *number2 = createTCNumber(temp2, 4, -8);
+    unsigned char expectedResult[] = {0x00, 0x0a, 0x61, 0x66, 0xef, 0x67, 0x40};
+    unsigned int expectedSize = 7;
+    int expectedPosition = -32;
+    TCNumber *result = multiply_asm(number1, number2);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult, result->number, 7);
+    TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
+    TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
+    delete (result);
+}
+
 void test_mul_asm_one_negativ(void)
 {
     unsigned char temp1[] = {0xd5, 0x7a, 0x1f};
@@ -281,20 +297,32 @@ void test_mul_asm_one_negativ(void)
     delete (result);
 }
 
-void test_mul_asm_positiv(void)
+void test_shift_left_positive(void)
 {
-    unsigned char temp1[] = {0x00, 0xd5, 0xfc};
-    unsigned char temp2[] = {0x0c, 0x6b, 0x2e, 0x30};
-    TCNumber *number1 = createTCNumber(temp1, 3, -24);
-    TCNumber *number2 = createTCNumber(temp2, 4, -8);
-    unsigned char expectedResult[] = {0x00, 0x0a, 0x61, 0x66, 0xef, 0x67, 0x40};
-    unsigned int expectedSize = 7;
-    int expectedPosition = -32;
-    TCNumber *result = multiply_asm(number1, number2);
-    TEST_ASSERT_EQUAL_MEMORY(expectedResult, result->number, 7);
+    unsigned char tab[3] = { 0x55, 0x21, 0x63 };
+    unsigned char expectedTab[4] = { 0x02, 0xA9, 0x0B, 0x18 };
+    TCNumber *num = createTCNumber(tab, 3, 0);
+    unsigned int expectedSize = 4;
+    int expectedPosition = 0;
+    TCNumber *result = shift_left(num, 3);
+    TEST_ASSERT_EQUAL_MEMORY(expectedTab, result->number, 4);
     TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
     TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
-    delete (result);
+    delete(result);
+}
+
+void test_shift_left_negative(void)
+{
+    unsigned char tab[3] = { 0xA5, 0x21, 0x63 };
+    unsigned char expectedTab[4] = { 0xFD, 0x29, 0x0B, 0x18 };
+    TCNumber *num = createTCNumber(tab, 3, 0);
+    unsigned int expectedSize = 4;
+    int expectedPosition = 0;
+    TCNumber *result = shift_left(num, 3);
+    TEST_ASSERT_EQUAL_MEMORY(expectedTab, result->number, 4);
+    TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
+    TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
+    delete(result);
 }
 
 int main(void)
@@ -319,7 +347,9 @@ int main(void)
     RUN_TEST(test_subtract_both_negative);
     RUN_TEST(test_subtract_both_negative_asm);
     RUN_TEST(test_array_mul_asm);
-    RUN_TEST(test_mul_asm_one_negativ);
     RUN_TEST(test_mul_asm_positiv);
+    RUN_TEST(test_mul_asm_one_negativ);
+    RUN_TEST(test_shift_left_positive);
+    RUN_TEST(test_shift_left_negative);
     return UNITY_END();
 }

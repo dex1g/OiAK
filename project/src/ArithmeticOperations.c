@@ -66,3 +66,41 @@ TCNumber *multiply_asm(TCNumber *multiplicand, TCNumber *multiplier)
 
     return createTCNumber_no_realloc(result, resultSize, lowestPos);
 }
+
+TCNumber *shift_left(TCNumber *num, int amount)
+{
+    unsigned char extension[8] = {255, 254, 252, 248, 240, 224, 192, 128};
+
+    int bitAmount = amount % 8;
+    int byteAmount = amount / 8;
+    unsigned char *shifted = calloc(num->numberSize + 1, sizeof(char));
+
+    memcpy(shifted+1, num->number, num->numberSize);
+
+    for (int i = 1; i < num->numberSize; i++)
+    {
+        num->number[i] = num->number[i] >> (8 - bitAmount);
+    }
+
+    if (num->number[0] > 127)
+    {
+        num->number[0] = num->number[0] >> (8 - bitAmount);
+        num->number[0] += extension[bitAmount];
+    }
+    else
+    {
+        num->number[0] = num->number[0] >> (8 - bitAmount);
+    }
+    
+    shifted[num->numberSize] = shifted[num->numberSize] << bitAmount;
+
+    for (int i = 0; i < num->numberSize; i--)
+    {
+        shifted[i] = shifted[i] << bitAmount;
+        shifted[i] += num->number[i];
+    }
+    
+    TCNumber *result = createTCNumber_no_realloc(shifted, num->numberSize + 1, num -> numberPosition);
+    delete(num);
+    return result;
+}
