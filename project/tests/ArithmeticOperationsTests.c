@@ -299,30 +299,30 @@ void test_mul_asm_one_negativ(void)
 
 void test_shift_left_positive(void)
 {
-    unsigned char tab[3] = { 0x55, 0x21, 0x63 };
-    unsigned char expectedTab[4] = { 0x02, 0xA9, 0x0B, 0x18 };
-    TCNumber *num = createTCNumber(tab, 3, 0);
+    unsigned char tab[3] = {0x55, 0x21, 0x63};
+    unsigned char expectedTab[4] = {0x02, 0xA9, 0x0B, 0x18};
+    TCNumber *result = createTCNumber(tab, 3, 0);
     unsigned int expectedSize = 4;
     int expectedPosition = 0;
-    TCNumber *result = shift_left(num, 3);
+    shift_left(result, 3);
     TEST_ASSERT_EQUAL_MEMORY(expectedTab, result->number, 4);
     TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
     TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
-    delete(result);
+    delete (result);
 }
 
 void test_shift_left_negative(void)
 {
-    unsigned char tab[3] = { 0xA5, 0x21, 0x63 };
-    unsigned char expectedTab[4] = { 0xFD, 0x29, 0x0B, 0x18 };
-    TCNumber *num = createTCNumber(tab, 3, 0);
+    unsigned char tab[3] = {0xA5, 0x21, 0x63};
+    unsigned char expectedTab[4] = {0xFD, 0x29, 0x0B, 0x18};
+    TCNumber *result = createTCNumber(tab, 3, 0);
     unsigned int expectedSize = 4;
     int expectedPosition = 0;
-    TCNumber *result = shift_left(num, 3);
+    shift_left(result, 3);
     TEST_ASSERT_EQUAL_MEMORY(expectedTab, result->number, 4);
     TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
     TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
-    delete(result);
+    delete (result);
 }
 
 int main(void)

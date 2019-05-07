@@ -67,10 +67,10 @@ TCNumber *multiply_asm(TCNumber *multiplicand, TCNumber *multiplier)
     return createTCNumber_no_realloc(result, resultSize, lowestPos);
 }
 
-TCNumber *shift_left(TCNumber *num, unsigned amount)
+void shift_left(TCNumber *num, unsigned amount)
 {
     if (amount == 0)
-        return num;
+        return;
 
     unsigned char extension[8] = {255, 254, 252, 248, 240, 224, 192, 128};
 
@@ -79,8 +79,6 @@ TCNumber *shift_left(TCNumber *num, unsigned amount)
 
     unsigned char *number = num->number;
     unsigned int size = num->numberSize;
-    int position = num->numberPosition;
-    free(num);
 
     if (bitAmount)
     {
@@ -124,6 +122,52 @@ TCNumber *shift_left(TCNumber *num, unsigned amount)
         size += byteAmount;
     }
 
-    TCNumber *result = createTCNumber_no_realloc(number, size, position);
-    return result;
+    num->number = number;
+    num->numberSize = size;
+}
+
+TCNumber *divide(TCNumber *dividend, TCNumber *divisor, unsigned precision)
+{
+    typedef enum
+    {
+        bothPositive,
+        dividendNegative,
+        divisorNegative,
+        bothNegative
+    } operantSign;
+
+    operantSign opSignCase;
+
+    if (dividend->number[0] < 128)
+    {
+        if (divisor->number[0] < 128)
+            opSignCase = bothPositive;
+        else
+            opSignCase = divisorNegative;
+    }
+    else
+    {
+        if (divisor->number[0] < 128)
+            opSignCase = dividendNegative;
+        else
+            opSignCase = bothNegative;
+    }
+
+    trimExtension(dividend);
+    int diff = dividend->numberPosition - divisor->numberPosition;
+    scaleNumber(dividend, dividend->numberSize, dividend->numberPosition - diff - precision);
+    trimExtension(divisor);
+
+    unsigned char d1 = dividend->number[0] & 128;
+    unsigned char d2 = divisor->number[0] & 128;
+    bool signsMatch = !(d1 ^ d2);
+
+    if (signsMatch)
+    {
+        array_sbb(dividend->number, divisor->number, divisor->numberSize, 0);
+    }
+    else
+    {
+        array_adc(dividend->number, divisor->number, divisor->numberSize, 0);
+    }
 }

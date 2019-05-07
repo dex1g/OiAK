@@ -1,6 +1,7 @@
 #ifndef ARITHMETICOPERATIONS_H_
 #define ARITHMETICOPERATIONS_H_
 
+#include <stdbool.h>
 #include "Parser.h"
 
 /*
@@ -40,6 +41,6 @@ void array_mul(unsigned int multiplicandSize, unsigned char *multiplicand, unsig
 /*
 
 */
-TCNumber *shift_left(TCNumber *num, unsigned amount);
+void shift_left(TCNumber *num, unsigned amount);
 
 #endif

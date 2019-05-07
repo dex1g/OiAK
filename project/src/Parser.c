@@ -164,8 +164,7 @@ void trimExtension(TCNumber *n)
         return;
     unsigned int newSize = n->numberSize - cnt;
     unsigned char *newNum = calloc(newSize, sizeof(char));
-    for (unsigned int i = 0; i < newSize; i++)
-        newNum[i] = n->number[i + cnt];
+    memcpy(newNum, n->number + cnt, newSize);
     free(n->number);
     n->number = newNum;
     n->numberSize = newSize;
