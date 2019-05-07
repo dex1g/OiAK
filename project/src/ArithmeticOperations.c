@@ -94,7 +94,7 @@ TCNumber *shift_left(TCNumber *num, int amount)
     
     shifted[num->numberSize] = shifted[num->numberSize] << bitAmount;
 
-    for (int i = 0; i < num->numberSize; i--)
+    for (int i = 0; i < num->numberSize; i++)
     {
         shifted[i] = shifted[i] << bitAmount;
         shifted[i] += num->number[i];
