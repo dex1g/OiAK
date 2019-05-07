@@ -40,6 +40,6 @@ void array_mul(unsigned int multiplicandSize, unsigned char *multiplicand, unsig
 /*
 
 */
-TCNumber *shift_left(TCNumber *num, int amount);
+TCNumber *shift_left(TCNumber *num, unsigned amount);
 
 #endif

@@ -67,40 +67,63 @@ TCNumber *multiply_asm(TCNumber *multiplicand, TCNumber *multiplier)
     return createTCNumber_no_realloc(result, resultSize, lowestPos);
 }
 
-TCNumber *shift_left(TCNumber *num, int amount)
+TCNumber *shift_left(TCNumber *num, unsigned amount)
 {
+    if (amount = 0)
+        return num;
+
     unsigned char extension[8] = {255, 254, 252, 248, 240, 224, 192, 128};
 
     int bitAmount = amount % 8;
     int byteAmount = amount / 8;
-    unsigned char *shifted = calloc(num->numberSize + 1, sizeof(char));
 
-    memcpy(shifted+1, num->number, num->numberSize);
+    unsigned char *number = num->number;
+    unsigned int size = num->numberSize;
+    int position = num->numberPosition;
+    free(num);
 
-    for (int i = 1; i < num->numberSize; i++)
+    if (bitAmount)
     {
-        num->number[i] = num->number[i] >> (8 - bitAmount);
+        unsigned char *shifted = calloc(size + 1, sizeof(char));
+
+        memcpy(shifted + 1, number, size);
+
+        for (int i = 1; i < size; i++)
+        {
+            number[i] = number[i] >> (8 - bitAmount);
+        }
+
+        if (number[0] > 127)
+        {
+            number[0] = number[0] >> (8 - bitAmount);
+            number[0] += extension[bitAmount];
+        }
+        else
+        {
+            number[0] = number[0] >> (8 - bitAmount);
+        }
+
+        shifted[size] = shifted[size] << bitAmount;
+
+        for (int i = 0; i < size; i++)
+        {
+            shifted[i] = shifted[i] << bitAmount;
+            shifted[i] += number[i];
+        }
+        free(number);
+        number = shifted;
+        ++size;
     }
 
-    if (num->number[0] > 127)
+    if (byteAmount)
     {
-        num->number[0] = num->number[0] >> (8 - bitAmount);
-        num->number[0] += extension[bitAmount];
+        unsigned char *temp = calloc(size + byteAmount, sizeof(char));
+        memcpy(temp, number, size);
+        free(number);
+        number = temp;
+        size += byteAmount;
     }
-    else
-    {
-        num->number[0] = num->number[0] >> (8 - bitAmount);
-    }
-    
-    shifted[num->numberSize] = shifted[num->numberSize] << bitAmount;
 
-    for (int i = 0; i < num->numberSize; i++)
-    {
-        shifted[i] = shifted[i] << bitAmount;
-        shifted[i] += num->number[i];
-    }
-    
-    TCNumber *result = createTCNumber_no_realloc(shifted, num->numberSize + 1, num -> numberPosition);
-    delete(num);
+    TCNumber *result = createTCNumber_no_realloc(number, size, position);
     return result;
 }
