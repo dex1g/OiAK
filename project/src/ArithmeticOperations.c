@@ -126,48 +126,59 @@ void shift_left(TCNumber *num, unsigned amount)
     num->numberSize = size;
 }
 
+void array_shift_left(unsigned char *array, unsigned size)
+{
+    bool wasCarry = false, isCarry = false;
+    for (long i = size - 1; i >= 0; i--)
+    {
+        isCarry = array[i] & 128;
+        array[i] = array[i] << 1;
+        if (wasCarry)
+            array[i] += 1;
+        wasCarry = isCarry;
+    }
+}
+
 TCNumber *divide(TCNumber *dividend, TCNumber *divisor, unsigned precision)
 {
-    typedef enum
-    {
-        bothPositive,
-        dividendNegative,
-        divisorNegative,
-        bothNegative
-    } operantSign;
+    unsigned char divisorSign = divisor->number[0] & 128;
 
-    operantSign opSignCase;
-
-    if (dividend->number[0] < 128)
-    {
-        if (divisor->number[0] < 128)
-            opSignCase = bothPositive;
-        else
-            opSignCase = divisorNegative;
-    }
-    else
-    {
-        if (divisor->number[0] < 128)
-            opSignCase = dividendNegative;
-        else
-            opSignCase = bothNegative;
-    }
+    bool isDivisorPositive = true;
+    if (divisor->number[0] & 128)
+        isDivisorPositive = false;
 
     trimExtension(dividend);
     int diff = dividend->numberPosition - divisor->numberPosition;
-    scaleNumber(dividend, dividend->numberSize, dividend->numberPosition - diff - precision);
+    scaleNumber(dividend, dividend->numberSize + (diff + precision + 7) / 8, dividend->numberPosition - diff - precision);
     trimExtension(divisor);
+
+    int sizeDiff = dividend->numberSize - divisor->numberSize + 2;
+    if (sizeDiff < 2)
+        sizeDiff = 2;
+    unsigned int resultSize = sizeDiff + precision;
+    unsigned char *result = calloc(resultSize, sizeof(char));
 
     unsigned char d1 = dividend->number[0] & 128;
     unsigned char d2 = divisor->number[0] & 128;
     bool signsMatch = !(d1 ^ d2);
 
     if (signsMatch)
-    {
         array_sbb(dividend->number, divisor->number, divisor->numberSize, 0);
-    }
     else
-    {
         array_adc(dividend->number, divisor->number, divisor->numberSize, 0);
+    for (int i = 0; i < resultSize; i++)
+    {
+        array_shift_left(result, resultSize);
+        if (!((dividend->number[0] & 128) ^ divisorSign)) // if the result and divisor are of the same sign
+        {
+            result[resultSize - 1] += 1;
+            array_sbb(dividend->number + i, divisor->number, divisor->numberSize, i);
+        }
+        else
+        {
+            array_adc(dividend->number + i, divisor->number, divisor->numberSize, i);
+        }
     }
+
+    return createTCNumber_no_realloc(result, resultSize, 0);
 }

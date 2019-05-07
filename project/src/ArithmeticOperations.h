@@ -43,4 +43,6 @@ void array_mul(unsigned int multiplicandSize, unsigned char *multiplicand, unsig
 */
 void shift_left(TCNumber *num, unsigned amount);
 
+void array_shift_left(unsigned char *array, unsigned size);
+
 #endif
