@@ -180,5 +180,5 @@ TCNumber *divide(TCNumber *dividend, TCNumber *divisor, unsigned precision)
         }
     }
 
-    return createTCNumber_no_realloc(result, resultSize, 0);
+    return createTCNumber_no_realloc(result, resultSize, dividend->numberPosition - divisor->numberPosition - precision);
 }
