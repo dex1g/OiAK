@@ -143,10 +143,6 @@ TCNumber *divide(TCNumber *dividend, TCNumber *divisor, unsigned precision)
 {
     unsigned char divisorSign = divisor->number[0] & 128;
 
-    bool isDivisorPositive = true;
-    if (divisor->number[0] & 128)
-        isDivisorPositive = false;
-
     trimExtension(dividend);
     int diff = dividend->numberPosition - divisor->numberPosition;
     scaleNumber(dividend, dividend->numberSize + (diff + precision + 7) / 8, dividend->numberPosition - diff - precision);
@@ -166,6 +162,7 @@ TCNumber *divide(TCNumber *dividend, TCNumber *divisor, unsigned precision)
         array_sbb(dividend->number, divisor->number, divisor->numberSize, 0);
     else
         array_adc(dividend->number, divisor->number, divisor->numberSize, 0);
+
     for (int i = 0; i < resultSize; i++)
     {
         array_shift_left(result, resultSize);

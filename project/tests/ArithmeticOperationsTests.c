@@ -325,6 +325,70 @@ void test_shift_left_negative(void)
     delete (result);
 }
 
+void test_divide_positiv(void)
+{
+    unsigned char temp1[] = {0x00, 0x10};
+    unsigned char temp2[] = {0x00, 0x04};
+    TCNumber *number1 = createTCNumber(temp1, 2, 0);
+    TCNumber *number2 = createTCNumber(temp2, 2, 0);
+    unsigned char expectedResult[] = {0x00, 0x04};
+    unsigned int expectedSize = 2;
+    int expectedPosition = 0;
+    TCNumber *result = divide(number1, number2, 0);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult, result->number, 2);
+    TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
+    TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
+    delete (result);
+}
+
+void test_divide_first_negative(void)
+{
+    unsigned char temp1[] = {0xff, 0xc0};
+    unsigned char temp2[] = {0x00, 0x08};
+    TCNumber *number1 = createTCNumber(temp1, 2, 0);
+    TCNumber *number2 = createTCNumber(temp2, 2, 0);
+    unsigned char expectedResult[] = {0xff, 0xf8};
+    unsigned int expectedSize = 2;
+    int expectedPosition = 0;
+    TCNumber *result = divide(number1, number2, 0);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult, result->number, 2);
+    TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
+    TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
+    delete (result);
+}
+
+void test_divide_second_negative(void)
+{
+    unsigned char temp1[] = {0x00, 0x19};
+    unsigned char temp2[] = {0xff, 0xfb};
+    TCNumber *number1 = createTCNumber(temp1, 2, 0);
+    TCNumber *number2 = createTCNumber(temp2, 2, 0);
+    unsigned char expectedResult[] = {0xff, 0xfb};
+    unsigned int expectedSize = 2;
+    int expectedPosition = 0;
+    TCNumber *result = divide(number1, number2, 0);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult, result->number, 2);
+    TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
+    TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
+    delete (result);
+}
+
+void test_divide_both_negative(void)
+{
+    unsigned char temp1[] = {0xff, 0x9c};
+    unsigned char temp2[] = {0xff, 0xf6};
+    TCNumber *number1 = createTCNumber(temp1, 2, 0);
+    TCNumber *number2 = createTCNumber(temp2, 2, 0);
+    unsigned char expectedResult[] = {0x00, 0x0a};
+    unsigned int expectedSize = 2;
+    int expectedPosition = 0;
+    TCNumber *result = divide(number1, number2, 0);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult, result->number, 2);
+    TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
+    TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
+    delete (result);
+}
+
 int main(void)
 {
     UNITY_BEGIN();
@@ -351,5 +415,9 @@ int main(void)
     RUN_TEST(test_mul_asm_one_negativ);
     RUN_TEST(test_shift_left_positive);
     RUN_TEST(test_shift_left_negative);
+    RUN_TEST(test_divide_positiv);
+    RUN_TEST(test_divide_first_negative);
+    RUN_TEST(test_divide_second_negative);
+    RUN_TEST(test_divide_both_negative);
     return UNITY_END();
 }
