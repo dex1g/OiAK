@@ -21,6 +21,11 @@
 #define secondNumber750MBPath "./data/secondNumber750MB"
 #define firstNumber1GBPath "./data/firstNumber1GB"
 #define secondNumber1GBPath "./data/secondNumber1GB"
+#define firstNumber1KBPath "./data/firstNumber1KB"
+#define firstNumber5KBPath "./data/firstNumber5KB"
+#define firstNumber10KBPath "./data/firstNumber10KB"
+#define firstNumber15KBPath "./data/firstNumber15KB"
+#define firstNumber20KBPath "./data/firstNumber20KB"
 
 void testAdditionAlgoAsm(unsigned char *addend1, unsigned char *addend2, unsigned int length)
 {

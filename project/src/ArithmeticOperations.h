@@ -41,6 +41,7 @@ void array_sbb(unsigned char *minuend, unsigned char *subtrahend, unsigned int l
 
 /*
     Performs multiplication using mul instruction from the processor instructions list.
+    Multiplies the whole multiplicand by given byte from multiplier and saves the result in product.
 */
 void array_mul(unsigned int multiplicandSize, unsigned char *multiplicand, unsigned char *multiplier, unsigned char *product, unsigned int additionalProductSize);
 

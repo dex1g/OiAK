@@ -80,11 +80,25 @@ int main()
     TCNumber *firstNumber1MB = getNumberFromBinaryFile(firstNumber1MBPath, 0);
     TCNumber *firstNumber20KB = getNumberFromBinaryFile(firstNumber20KBPath, 0);
 
+    // Test multiplication algorithm
     t = clock();
     TCNumber *result1 = multiply_asm(firstNumber1MB, firstNumber20KB);
     t = clock() - t;
     time_taken = ((double)t) / CLOCKS_PER_SEC; // in seconds
     printf("Multiplication operation on 1MB number with 20KB number with assembly implementation took %f seconds to execute \n", time_taken);
     delete (result1);
+
+    // Files for division
+    firstNumber1MB = getNumberFromBinaryFile(firstNumber1MBPath, 0);
+    firstNumber20KB = getNumberFromBinaryFile(firstNumber20KBPath, 0);
+
+    // Test division algorithm
+    t = clock();
+    TCNumber *result1 = divide(firstNumber1MB, firstNumber20KB, 0);
+    t = clock() - t;
+    time_taken = ((double)t) / CLOCKS_PER_SEC; // in seconds
+    printf("Division operation on 1MB number by 20KB number took %f seconds to execute \n", time_taken);
+    delete (result1);
+
     return 0;
 }

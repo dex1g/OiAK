@@ -10,8 +10,8 @@ int main()
     double time_taken; // holds calculated value
 
     // Display header in file for current tests
-    printf(";100MB NUMBERS; Optimalization flag O1\n");
-    printf("add_pure_asm;add_pure_c;add_asm_scale;add_c_scale;sbb_pure_asm;sbb_c_scale;sbb_scale_asm\n");
+    printf(";100MB NUMBERS;1MBx1KB; Optimalization flag O1\n");
+    printf("add_pure_asm;add_pure_c;add_asm_scale;add_c_scale;sbb_pure_asm;sbb_c_scale;sbb_scale_asm;mul_asm;divide\n");
 
     // Test pure asm algorithm for addition
     t = clock();
@@ -75,6 +75,30 @@ int main()
     // Test whole substraction which uses assembly inside
     t = clock();
     temp = subtract_asm(firstNumber, secondNumber);
+    t = clock() - t;
+    time_taken = ((double)t) / CLOCKS_PER_SEC; // in seconds
+    printf("%f;", time_taken);
+    delete (temp);
+
+    // Recreate structures
+    firstNumber = getNumberFromBinaryFile(firstNumber1KBPath, 0);
+    secondNumber = getNumberFromBinaryFile(firstNumber1MBPath, 0);
+
+    // Test multiplication which uses assembly inside
+    t = clock();
+    temp = multiply_asm(secondNumber, firstNumber);
+    t = clock() - t;
+    time_taken = ((double)t) / CLOCKS_PER_SEC; // in seconds
+    printf("%f;", time_taken);
+    delete (temp);
+
+    // Recreate structures
+    firstNumber = getNumberFromBinaryFile(firstNumber1KBPath, 0);
+    secondNumber = getNumberFromBinaryFile(firstNumber1MBPath, 0);
+
+    // Test division implemented in c with assembly function from previous operations
+    t = clock();
+    temp = divide(secondNumber, firstNumber, 0);
     t = clock() - t;
     time_taken = ((double)t) / CLOCKS_PER_SEC; // in seconds
     printf("%f", time_taken);
