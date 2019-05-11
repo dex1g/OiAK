@@ -405,36 +405,70 @@ void test_divide_precision(void)
     delete (result);
 }
 
+void test_divide_precision_adv(void)
+{
+    unsigned char temp1[] = {0x36};
+    unsigned char temp2[] = {0x68};
+    TCNumber *number1 = createTCNumber(temp1, 1, 0);
+    TCNumber *number2 = createTCNumber(temp2, 1, -8);
+    unsigned char expectedResult[] = {0x00, 0x84, 0xEC};
+    unsigned int expectedSize = 3;
+    int expectedPosition = -8;
+    TCNumber *result = divide(number1, number2, 1);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult, result->number, 3);
+    TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
+    TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
+    delete (result);
+}
+
+void test_divide_precision_inv(void)
+{
+    unsigned char temp1[] = {0x36};
+    unsigned char temp2[] = {0x68};
+    TCNumber *number1 = createTCNumber(temp1, 1, -8);
+    TCNumber *number2 = createTCNumber(temp2, 1, 8);
+    unsigned char expectedResult[] = {0x00, 0x00, 0x00, 0x00, 0x84, 0xEC};
+    unsigned int expectedSize = 6;
+    int expectedPosition = -32;
+    TCNumber *result = divide(number1, number2, 4);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult, result->number, 6);
+    TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
+    TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
+    delete (result);
+}
+
 int main(void)
 {
     UNITY_BEGIN();
-    RUN_TEST(test_increment_no_carry);
-    RUN_TEST(test_increment_single_carry);
-    RUN_TEST(test_increment_multiple_carry);
-    RUN_TEST(test_increment_overflow);
-    RUN_TEST(test_increment_overflow_no_extension);
-    RUN_TEST(test_onesComplement);
-    RUN_TEST(test_add_positive);
-    RUN_TEST(test_add_positive_asm);
-    RUN_TEST(test_add_one_negative);
-    RUN_TEST(test_add_one_negative_asm);
-    RUN_TEST(test_add_both_negative);
-    RUN_TEST(test_add_both_negative_asm);
-    RUN_TEST(test_subtract_positive);
-    RUN_TEST(test_subtract_positive_asm);
-    RUN_TEST(test_subtract_one_negative);
-    RUN_TEST(test_subtract_one_negativ_asm);
-    RUN_TEST(test_subtract_both_negative);
-    RUN_TEST(test_subtract_both_negative_asm);
-    RUN_TEST(test_array_mul_asm);
-    RUN_TEST(test_mul_asm_positiv);
-    RUN_TEST(test_mul_asm_one_negativ);
-    RUN_TEST(test_shift_left_positive);
-    RUN_TEST(test_shift_left_negative);
+    // RUN_TEST(test_increment_no_carry);
+    // RUN_TEST(test_increment_single_carry);
+    // RUN_TEST(test_increment_multiple_carry);
+    // RUN_TEST(test_increment_overflow);
+    // RUN_TEST(test_increment_overflow_no_extension);
+    // RUN_TEST(test_onesComplement);
+    // RUN_TEST(test_add_positive);
+    // RUN_TEST(test_add_positive_asm);
+    // RUN_TEST(test_add_one_negative);
+    // RUN_TEST(test_add_one_negative_asm);
+    // RUN_TEST(test_add_both_negative);
+    // RUN_TEST(test_add_both_negative_asm);
+    // RUN_TEST(test_subtract_positive);
+    // RUN_TEST(test_subtract_positive_asm);
+    // RUN_TEST(test_subtract_one_negative);
+    // RUN_TEST(test_subtract_one_negativ_asm);
+    // RUN_TEST(test_subtract_both_negative);
+    // RUN_TEST(test_subtract_both_negative_asm);
+    // RUN_TEST(test_array_mul_asm);
+    // RUN_TEST(test_mul_asm_positiv);
+    // RUN_TEST(test_mul_asm_one_negativ);
+    // RUN_TEST(test_shift_left_positive);
+    // RUN_TEST(test_shift_left_negative);
     RUN_TEST(test_divide_positiv);
     RUN_TEST(test_divide_first_negative);
     RUN_TEST(test_divide_second_negative);
     RUN_TEST(test_divide_both_negative);
     RUN_TEST(test_divide_precision);
+    RUN_TEST(test_divide_precision_adv);
+    RUN_TEST(test_divide_precision_inv);
     return UNITY_END();
 }
