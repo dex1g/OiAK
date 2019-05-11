@@ -94,7 +94,7 @@ int main()
 
     // Test division algorithm
     t = clock();
-    TCNumber *result1 = divide(firstNumber1MB, firstNumber20KB, 0);
+    result1 = divide(firstNumber1MB, firstNumber20KB, 0);
     t = clock() - t;
     time_taken = ((double)t) / CLOCKS_PER_SEC; // in seconds
     printf("Division operation on 1MB number by 20KB number took %f seconds to execute \n", time_taken);
