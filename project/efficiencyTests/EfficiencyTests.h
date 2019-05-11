@@ -9,6 +9,7 @@
 #define MB500 524288000
 #define MB750 786432000
 #define GB 1073741824
+#define numberOfTries 10
 #define firstNumber20KBPath "./data/firstNumber20KB"
 #define firstNumber1MBPath "./data/firstNumber1MB"
 #define firstNumber100MBPath "./data/firstNumber100MB"
