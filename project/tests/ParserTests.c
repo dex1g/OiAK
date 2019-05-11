@@ -200,7 +200,6 @@ void test_scaleNumber(void)
     TEST_ASSERT_EQUAL_MEMORY(expectedResult, scaled->number, 10);
     TEST_ASSERT_EQUAL_INT(expectedSize, scaled->numberSize);
     TEST_ASSERT_EQUAL_INT(expectedPosition, scaled->numberPosition);
-    delete (temp);
     delete (scaled);
 }
 

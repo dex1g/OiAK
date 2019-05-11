@@ -11,9 +11,7 @@ TCNumber *add_C(TCNumber *addend1, TCNumber *addend2)
     unsigned int resultSize = (highestPos - lowestPos) / 8 + 1;
 
     TCNumber *scaledAddend1 = scaleNumber(addend1, resultSize, lowestPos);
-    delete (addend1);
     TCNumber *scaledAddend2 = scaleNumber(addend2, resultSize, lowestPos);
-    delete (addend2);
 
     unsigned char *result = calloc(resultSize, sizeof(char));
 
@@ -54,9 +52,7 @@ TCNumber *add_asm_realloc(TCNumber *addend1, TCNumber *addend2)
     unsigned int resultSize = (highestPos - lowestPos) / 8 + 1;
 
     TCNumber *scaledAddend1 = scaleNumber(addend1, resultSize, lowestPos);
-    delete (addend1);
     TCNumber *scaledAddend2 = scaleNumber(addend2, resultSize, lowestPos);
-    delete (addend2);
 
     array_adc(scaledAddend1->number, scaledAddend2->number, resultSize, 0);
 
@@ -75,9 +71,7 @@ TCNumber *subtract_asm_realloc(TCNumber *minuend, TCNumber *subtrahend)
     unsigned int resultSize = (highestPos - lowestPos) / 8 + 1;
 
     TCNumber *scaledMinuend = scaleNumber(minuend, resultSize, lowestPos);
-    delete (minuend);
     TCNumber *scaledSubstrahend = scaleNumber(subtrahend, resultSize, lowestPos);
-    delete (subtrahend);
 
     array_sbb(scaledMinuend->number, scaledSubstrahend->number, resultSize, 0);
 
