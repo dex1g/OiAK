@@ -206,6 +206,8 @@ TCNumber *scaleNumber(TCNumber *num, unsigned int targetSize, int targetPosition
 
     memcpy(temp + extstart + 1, num->number, num->numberSize);
 
+    delete (num);
+
     TCNumber *result = createTCNumber_no_realloc(temp, targetSize, targetPosition);
     return result;
 }

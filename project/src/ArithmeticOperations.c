@@ -132,9 +132,23 @@ void array_shift_left(unsigned char *array, unsigned size)
     for (long i = size - 1; i >= 0; i--)
     {
         isCarry = array[i] & 128;
-        array[i] = array[i] << 1;
+        array[i] <<= 1;
         if (wasCarry)
             array[i] += 1;
+        wasCarry = isCarry;
+    }
+}
+
+void array_shift_right(unsigned char *array, unsigned size)
+{
+    bool wasCarry = false, isCarry = false;
+    wasCarry = array[0] & 128;
+    for (unsigned i = 0; i < size; i++)
+    {
+        isCarry = array[i] & 1;
+        array[i] >>= 1;
+        if (wasCarry)
+            array[i] += 128;
         wasCarry = isCarry;
     }
 }
@@ -145,10 +159,15 @@ TCNumber *divide(TCNumber *dividend, TCNumber *divisor, unsigned precision)
 
     trimExtension(dividend);
     int diff = dividend->numberPosition - divisor->numberPosition;
-    scaleNumber(dividend, dividend->numberSize + (diff + precision + 7) / 8, dividend->numberPosition - diff - precision);
-    trimExtension(divisor);
+    dividend = scaleNumber(dividend, dividend->numberSize + (diff + precision + 7) / 8 + 1, dividend->numberPosition - diff - precision);
 
-    int sizeDiff = dividend->numberSize - divisor->numberSize + 2;
+    trimExtension(divisor);
+    unsigned char *temp = calloc(dividend->numberSize, sizeof(char));
+    memcpy(temp, divisor->number, divisor->numberSize);
+    delete (divisor);
+    divisor = createTCNumber_no_realloc(temp, dividend->numberSize, dividend->numberPosition - precision);
+
+    int sizeDiff = dividend->numberSize - divisor->numberSize + 1;
     if (sizeDiff < 2)
         sizeDiff = 2;
     unsigned int resultSize = sizeDiff + precision;
@@ -163,18 +182,53 @@ TCNumber *divide(TCNumber *dividend, TCNumber *divisor, unsigned precision)
     else
         array_adc(dividend->number, divisor->number, divisor->numberSize, 0);
 
-    for (int i = 0; i < resultSize; i++)
+    array_shift_right(divisor->number, divisor->numberSize);
+
+    if (!((dividend->number[0] & 128) ^ divisorSign)) // if the result and divisor are of the same sign
     {
+        unsigned char one = 1;
+        array_sbb(result + resultSize - 1, &one, 1, resultSize - 1);
+        array_sbb(dividend->number, divisor->number, divisor->numberSize, 0);
+    }
+    else
+    {
+        array_adc(dividend->number, divisor->number, divisor->numberSize, 0);
+    }
+    array_shift_right(divisor->number, divisor->numberSize);
+
+    int limit = (resultSize - 1) * 8;
+    int i = 1;
+    unsigned char zeros = 0;
+
+    for (; i <= limit; i++)
+    {
+        zeros = 0;
+        for (int j = 0; j < dividend->numberSize; j++)
+            zeros |= dividend->number[j];
+
         array_shift_left(result, resultSize);
-        if (!((dividend->number[0] & 128) ^ divisorSign)) // if the result and divisor are of the same sign
+        if (!((dividend->number[0] & 128) ^ divisorSign) || !zeros) // if the result and divisor are of the same sign
         {
             result[resultSize - 1] += 1;
-            array_sbb(dividend->number + i, divisor->number, divisor->numberSize, i);
+
+            if (!zeros)
+                break;
+
+            array_sbb(dividend->number, divisor->number, divisor->numberSize, 0);
         }
         else
         {
-            array_adc(dividend->number + i, divisor->number, divisor->numberSize, i);
+            if (!zeros)
+                break;
+
+            array_adc(dividend->number, divisor->number, divisor->numberSize, 0);
         }
+        array_shift_right(divisor->number, divisor->numberSize);
+    }
+    while (i != limit)
+    {
+        array_shift_left(result, resultSize);
+        ++i;
     }
 
     return createTCNumber_no_realloc(result, resultSize, dividend->numberPosition - divisor->numberPosition - precision);
