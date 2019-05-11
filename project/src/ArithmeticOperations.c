@@ -155,11 +155,11 @@ TCNumber *divide(TCNumber *dividend, TCNumber *divisor, unsigned bytePrecision)
 {
     unsigned precision = bytePrecision * 8;
     unsigned char divisorSign = divisor->number[0] & 128;
-    int resultPrecision = dividend->numberPosition - divisor->numberPosition - precision;
+    int resultPrecision = 0 - precision;
 
     trimExtension(dividend);
     int diff = dividend->numberPosition - divisor->numberPosition;
-    dividend = scaleNumber(dividend, dividend->numberSize + (diff + precision + 7) / 8 + 1, dividend->numberPosition - diff - precision - 7);
+    dividend = scaleNumber(dividend, dividend->numberSize + bytePrecision + 1, dividend->numberPosition - diff - precision - 7); // + (diff + precision + 7) / 8 + 1, dividend->numberPosition - diff - precision - 7);
 
     trimExtension(divisor);
     unsigned char *temp = calloc(dividend->numberSize, sizeof(char));
@@ -170,7 +170,7 @@ TCNumber *divide(TCNumber *dividend, TCNumber *divisor, unsigned bytePrecision)
     int sizeDiff = dividend->numberSize - divisor->numberSize + 1;
     if (sizeDiff < 2)
         sizeDiff = 2;
-    unsigned int resultSize = sizeDiff + ((precision + 7) / 8);
+    unsigned int resultSize = sizeDiff + bytePrecision;
     unsigned char *result = calloc(resultSize, sizeof(char));
 
     unsigned char d1 = dividend->number[0] & 128;
