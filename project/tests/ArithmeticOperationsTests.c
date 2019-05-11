@@ -389,6 +389,22 @@ void test_divide_both_negative(void)
     delete (result);
 }
 
+void test_divide_precision(void)
+{
+    unsigned char temp1[] = {0x1d};
+    unsigned char temp2[] = {0x15};
+    TCNumber *number1 = createTCNumber(temp1, 1, 0);
+    TCNumber *number2 = createTCNumber(temp2, 1, 0);
+    unsigned char expectedResult[] = {0x00, 0x01, 0x61};
+    unsigned int expectedSize = 3;
+    int expectedPosition = -8;
+    TCNumber *result = divide(number1, number2, 1);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult, result->number, 3);
+    TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
+    TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
+    delete (result);
+}
+
 int main(void)
 {
     UNITY_BEGIN();
@@ -419,5 +435,6 @@ int main(void)
     RUN_TEST(test_divide_first_negative);
     RUN_TEST(test_divide_second_negative);
     RUN_TEST(test_divide_both_negative);
+    RUN_TEST(test_divide_precision);
     return UNITY_END();
 }

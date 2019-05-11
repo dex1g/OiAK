@@ -86,24 +86,24 @@ void shift_left(TCNumber *num, unsigned amount)
 
         for (int i = 1; i < size; i++)
         {
-            number[i] = number[i] >> (8 - bitAmount);
+            number[i] >>= (8 - bitAmount);
         }
 
         if (number[0] > 127)
         {
-            number[0] = number[0] >> (8 - bitAmount);
+            number[0] >>= (8 - bitAmount);
             number[0] += extension[bitAmount];
         }
         else
         {
-            number[0] = number[0] >> (8 - bitAmount);
+            number[0] >>= (8 - bitAmount);
         }
 
         shifted[size] = shifted[size] << bitAmount;
 
         for (int i = 0; i < size; i++)
         {
-            shifted[i] = shifted[i] << bitAmount;
+            shifted[i] <<= bitAmount;
             shifted[i] += number[i];
         }
         free(number);
@@ -151,13 +151,15 @@ void array_shift_right(unsigned char *array, unsigned size)
     }
 }
 
-TCNumber *divide(TCNumber *dividend, TCNumber *divisor, unsigned precision)
+TCNumber *divide(TCNumber *dividend, TCNumber *divisor, unsigned bytePrecision)
 {
+    unsigned precision = bytePrecision * 8;
     unsigned char divisorSign = divisor->number[0] & 128;
+    int resultPrecision = dividend->numberPosition - divisor->numberPosition - precision;
 
     trimExtension(dividend);
     int diff = dividend->numberPosition - divisor->numberPosition;
-    dividend = scaleNumber(dividend, dividend->numberSize + (diff + precision + 7) / 8 + 1, dividend->numberPosition - diff - precision);
+    dividend = scaleNumber(dividend, dividend->numberSize + (diff + precision + 7) / 8 + 1, dividend->numberPosition - diff - precision - 7);
 
     trimExtension(divisor);
     unsigned char *temp = calloc(dividend->numberSize, sizeof(char));
@@ -168,7 +170,7 @@ TCNumber *divide(TCNumber *dividend, TCNumber *divisor, unsigned precision)
     int sizeDiff = dividend->numberSize - divisor->numberSize + 1;
     if (sizeDiff < 2)
         sizeDiff = 2;
-    unsigned int resultSize = sizeDiff + precision;
+    unsigned int resultSize = sizeDiff + ((precision + 7) / 8);
     unsigned char *result = calloc(resultSize, sizeof(char));
 
     unsigned char d1 = dividend->number[0] & 128;
@@ -223,11 +225,11 @@ TCNumber *divide(TCNumber *dividend, TCNumber *divisor, unsigned precision)
         }
         array_shift_right(divisor->number, divisor->numberSize);
     }
-    while (i != limit)
+    while (i < limit)
     {
         array_shift_left(result, resultSize);
         ++i;
     }
 
-    return createTCNumber_no_realloc(result, resultSize, dividend->numberPosition - divisor->numberPosition - precision);
+    return createTCNumber_no_realloc(result, resultSize, resultPrecision);
 }
