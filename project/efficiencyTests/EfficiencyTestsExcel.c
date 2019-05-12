@@ -3,21 +3,21 @@
 int main()
 {
     // prepare data
-    TCNumber *firstNumber = getNumberFromBinaryFile(firstNumber100MBPath, 0);
-    TCNumber *secondNumber = getNumberFromBinaryFile(secondNumber100MBPath, 0);
+    TCNumber *firstNumber = getNumberFromBinaryFile(firstNumber1GBPath, 0);
+    TCNumber *secondNumber = getNumberFromBinaryFile(secondNumber1GBPath, 0);
 
     clock_t t;         //stores the time before measurment
     double time_taken; // holds calculated value
 
     // Display header in file for current tests
-    printf(";100MB NUMBERS;1MBx1KB; Optimalization flag O0\n");
+    printf("\n;1GB NUMBERS;20KBx1MB; Optimalization flag O3\n");
     printf("add_pure_asm;add_pure_c;add_asm_scale;add_c_scale;sbb_pure_asm;sbb_c_scale;sbb_scale_asm;mul_asm;divide\n");
 
     // Test pure asm algorithm for addition
     t = clock();
     for (int i = 0; i < numberOfTries; i++)
     {
-        testAdditionAlgoAsm(firstNumber->number, secondNumber->number, MB100);
+        testAdditionAlgoAsm(firstNumber->number, secondNumber->number, GB);
     }
     t = clock() - t;
     time_taken = ((double)t) / CLOCKS_PER_SEC; // in seconds
@@ -26,17 +26,17 @@ int main()
 
     time_taken = 0;
     // Test pure C algorithm for addition
-    unsigned char *resultAdd = calloc(MB100, sizeof(char));
+    //unsigned char *resultAdd = calloc(MB750, sizeof(char));
     for (int i = 0; i < numberOfTries; i++)
     {
         t = clock();
-        testAdditionAlgoC(firstNumber->number, secondNumber->number, resultAdd, MB100);
+        testAdditionAlgoC(firstNumber->number, secondNumber->number, firstNumber->number, GB);
         t = clock() - t;
         time_taken += ((double)t) / CLOCKS_PER_SEC; // in seconds
     }
     time_taken /= numberOfTries;
     printf("%f;", time_taken);
-    free(resultAdd);
+    //free(resultAdd);
 
     time_taken = 0;
     TCNumber *temp = NULL;
@@ -48,8 +48,8 @@ int main()
         t = clock() - t;
         time_taken += ((double)t) / CLOCKS_PER_SEC; // in seconds
         delete (temp);
-        firstNumber = getNumberFromBinaryFile(firstNumber100MBPath, 0);
-        secondNumber = getNumberFromBinaryFile(secondNumber100MBPath, 0);
+        firstNumber = getNumberFromBinaryFile(firstNumber1GBPath, 0);
+        secondNumber = getNumberFromBinaryFile(secondNumber1GBPath, 0);
     }
     time_taken /= numberOfTries;
     printf("%f;", time_taken);
@@ -64,21 +64,22 @@ int main()
         t = clock() - t;
         time_taken += ((double)t) / CLOCKS_PER_SEC; // in seconds
         delete (temp);
-        firstNumber = getNumberFromBinaryFile(firstNumber100MBPath, 0);
-        secondNumber = getNumberFromBinaryFile(secondNumber100MBPath, 0);
+        firstNumber = getNumberFromBinaryFile(firstNumber1GBPath, 0);
+        secondNumber = getNumberFromBinaryFile(secondNumber1GBPath, 0);
     }
     time_taken /= numberOfTries;
     printf("%f;", time_taken);
 
     time_taken = 0;
     // Test pure assembly algorithm for substraction
+    t = clock();
     for (int i = 0; i < numberOfTries; i++)
     {
-        t = clock();
-        testSubstractionAlgoAsm(firstNumber->number, secondNumber->number, MB100);
-        t = clock() - t;
-        time_taken += ((double)t) / CLOCKS_PER_SEC; // in seconds
+
+        testSubstractionAlgoAsm(firstNumber->number, secondNumber->number, GB);
     }
+    t = clock() - t;
+    time_taken = ((double)t) / CLOCKS_PER_SEC; // in seconds
     time_taken /= numberOfTries;
     printf("%f;", time_taken);
 
@@ -91,8 +92,8 @@ int main()
         t = clock() - t;
         time_taken += ((double)t) / CLOCKS_PER_SEC; // in seconds
         delete (temp);
-        firstNumber = getNumberFromBinaryFile(firstNumber100MBPath, 0);
-        secondNumber = getNumberFromBinaryFile(secondNumber100MBPath, 0);
+        firstNumber = getNumberFromBinaryFile(firstNumber1GBPath, 0);
+        secondNumber = getNumberFromBinaryFile(secondNumber1GBPath, 0);
     }
     time_taken /= numberOfTries;
     printf("%f;", time_taken);
@@ -106,8 +107,8 @@ int main()
         t = clock() - t;
         time_taken += ((double)t) / CLOCKS_PER_SEC; // in seconds
         delete (temp);
-        firstNumber = getNumberFromBinaryFile(firstNumber100MBPath, 0);
-        secondNumber = getNumberFromBinaryFile(secondNumber100MBPath, 0);
+        firstNumber = getNumberFromBinaryFile(firstNumber1GBPath, 0);
+        secondNumber = getNumberFromBinaryFile(secondNumber1GBPath, 0);
     }
     time_taken /= numberOfTries;
     printf("%f;", time_taken);
@@ -115,36 +116,41 @@ int main()
     delete (secondNumber);
 
     // Recreate structures
-    firstNumber = getNumberFromBinaryFile(firstNumber1KBPath, 0);
+    firstNumber = getNumberFromBinaryFile(firstNumber20KBPath, 0);
     secondNumber = getNumberFromBinaryFile(firstNumber1MBPath, 0);
 
     time_taken = 0;
     // Test multiplication which uses assembly inside
-    for (int i = 0; i < numberOfTries; i++)
+    for (int i = 0; i < numberOfTries - 90; i++)
     {
         t = clock();
-        temp = multiply_asm(secondNumber, firstNumber);
+        temp = multiply_asm(firstNumber, secondNumber);
         t = clock() - t;
         time_taken += ((double)t) / CLOCKS_PER_SEC; // in seconds
         delete (temp);
-        firstNumber = getNumberFromBinaryFile(firstNumber1KBPath, 0);
+        firstNumber = getNumberFromBinaryFile(firstNumber20KBPath, 0);
         secondNumber = getNumberFromBinaryFile(firstNumber1MBPath, 0);
     }
-    time_taken /= numberOfTries;
+    time_taken /= numberOfTries - 90;
     printf("%f;", time_taken);
+    delete (firstNumber);
+    delete (secondNumber);
+
+    firstNumber = getNumberFromBinaryFile(firstNumber1GBPath, 0);
+    secondNumber = getNumberFromBinaryFile(secondNumber1GBPath, 0);
 
     // Test division implemented in c
-    for (int i = 0; i < numberOfTries; i++)
+    for (int i = 0; i < numberOfTries - 90; i++)
     {
         t = clock();
-        temp = divide(secondNumber, firstNumber, 0);
+        temp = divide(firstNumber, secondNumber, 0);
         t = clock() - t;
         time_taken += ((double)t) / CLOCKS_PER_SEC; // in seconds
         delete (temp);
-        firstNumber = getNumberFromBinaryFile(firstNumber1KBPath, 0);
-        secondNumber = getNumberFromBinaryFile(firstNumber1MBPath, 0);
+        firstNumber = getNumberFromBinaryFile(firstNumber1GBPath, 0);
+        secondNumber = getNumberFromBinaryFile(secondNumber1GBPath, 0);
     }
-    time_taken /= numberOfTries;
+    time_taken /= numberOfTries - 90;
     printf("%f", time_taken);
     delete (firstNumber);
     delete (secondNumber);

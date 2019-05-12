@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <time.h>
 #include "../src/ArithmeticOperations.h"
 #include "../src/Parser.h"
@@ -9,7 +10,7 @@
 #define MB500 524288000
 #define MB750 786432000
 #define GB 1073741824
-#define numberOfTries 10
+#define numberOfTries 100
 #define firstNumber20KBPath "./data/firstNumber20KB"
 #define firstNumber1MBPath "./data/firstNumber1MB"
 #define firstNumber100MBPath "./excelData/firstNumber100MB"

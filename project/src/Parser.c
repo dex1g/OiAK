@@ -253,7 +253,7 @@ TCNumber *getHexNumberFromTxtFile(char *filename)
 TCNumber *getNumberFromBinaryFile(char *filename, int numberPosition)
 {
     FILE *handle;
-    unsigned char *buffer = NULL;
+    unsigned char *buffer;
 
     handle = fopen(filename, "rb");
 
@@ -263,10 +263,13 @@ TCNumber *getNumberFromBinaryFile(char *filename, int numberPosition)
     //Get file length
     fseek(handle, 0, SEEK_END);
     unsigned long fileLen = ftell(handle);
-    fseek(handle, 0, SEEK_SET);
+    fclose(handle);
+
+    //fseek(handle, 0, SEEK_SET);
+    handle = fopen(filename, "rb");
 
     // allocate memory for number based on calculated length
-    buffer = malloc(sizeof(char) * fileLen);
+    buffer = malloc(fileLen);
 
     //Read file contents into buffer
     fread(buffer, fileLen, 1, handle);

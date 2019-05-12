@@ -225,6 +225,8 @@ TCNumber *divide(TCNumber *dividend, TCNumber *divisor, unsigned bytePrecision)
         }
         array_shift_right(divisor->number, divisor->numberSize);
     }
+    delete (dividend);
+    delete (divisor);
     while (i < limit)
     {
         array_shift_left(result, resultSize);

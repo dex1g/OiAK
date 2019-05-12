@@ -17,13 +17,17 @@ int main()
     printf("Array addition operation on 1GB numbers in assembly took %f seconds to execute \n", time_taken);
 
     // Test pure C algorithm for addition
-    unsigned char *resultAdd = calloc(GB, sizeof(char));
     t = clock();
-    testAdditionAlgoC(firstNumber->number, secondNumber->number, resultAdd, GB);
+    testAdditionAlgoC(firstNumber->number, secondNumber->number, firstNumber->number, GB);
     t = clock() - t;
     time_taken = ((double)t) / CLOCKS_PER_SEC; // in seconds
     printf("Array addition operation on 1GB numbers in C took %f seconds to execute \n", time_taken);
-    free(resultAdd);
+
+    delete (firstNumber);
+    delete (secondNumber);
+
+    firstNumber = getNumberFromBinaryFile(firstNumber1GBPath, 0);
+    secondNumber = getNumberFromBinaryFile(secondNumber1GBPath, 0);
 
     // Test whole addition with scalling with asm implementation inside
     t = clock();
@@ -89,15 +93,15 @@ int main()
     delete (result1);
 
     // Files for division
-    firstNumber1MB = getNumberFromBinaryFile(firstNumber1MBPath, 0);
-    firstNumber20KB = getNumberFromBinaryFile(firstNumber20KBPath, 0);
+    firstNumber = getNumberFromBinaryFile(firstNumber1GBPath, 0);
+    secondNumber = getNumberFromBinaryFile(secondNumber1GBPath, 0);
 
     // Test division algorithm
     t = clock();
-    result1 = divide(firstNumber1MB, firstNumber20KB, 0);
+    result1 = divide(firstNumber, secondNumber, 0);
     t = clock() - t;
     time_taken = ((double)t) / CLOCKS_PER_SEC; // in seconds
-    printf("Division operation on 1MB number by 20KB number took %f seconds to execute \n", time_taken);
+    printf("Division operation on 1GB number by 1GB number took %f seconds to execute \n", time_taken);
     delete (result1);
 
     return 0;
