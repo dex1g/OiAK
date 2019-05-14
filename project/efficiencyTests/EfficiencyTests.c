@@ -18,11 +18,13 @@ int main()
 
     // Test pure C algorithm for addition
     t = clock();
-    testAdditionAlgoC(firstNumber->number, secondNumber->number, firstNumber->number, GB);
+    unsigned char *resultAdd = calloc(GB, sizeof(char));
+    testAdditionAlgoC(firstNumber->number, secondNumber->number, resultAdd, GB);
     t = clock() - t;
     time_taken = ((double)t) / CLOCKS_PER_SEC; // in seconds
     printf("Array addition operation on 1GB numbers in C took %f seconds to execute \n", time_taken);
 
+    free(resultAdd);
     delete (firstNumber);
     delete (secondNumber);
 

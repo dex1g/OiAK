@@ -1,10 +1,13 @@
 all: EfficiencyTests
 
-buildEfficiencyTestsExcel:
-	gcc -Wall -Ofast -std=c99 -Wno-unused-result -m32 EfficiencyTestsExcel.c $(wildcard ../src/*.s) ../src/ArithmeticOperations.c ../src/Parser.c ./PastImplementations/LessEfficientOperations.c  -o EfficiencyTestsExcel.exe
+buildEfficiencyTests:
+	gcc -Wall -Ofast -std=c99 -Wno-unused-result -m32 EfficiencyTests.c $(wildcard ../src/*.s) ../src/ArithmeticOperations.c ../src/Parser.c ./PastImplementations/LessEfficientOperations.c  -o EfficiencyTests.exe
 
 EfficiencyTests: buildEfficiencyTests
 	./EfficiencyTests.exe
+
+buildEfficiencyTestsExcel:
+	gcc -Wall -Ofast -std=c99 -Wno-unused-result -m32 EfficiencyTestsExcel.c $(wildcard ../src/*.s) ../src/ArithmeticOperations.c ../src/Parser.c ./PastImplementations/LessEfficientOperations.c  -o EfficiencyTestsExcel.exe
 
 EfficiencyTestsExcel: buildEfficiencyTestsExcel
 	./EfficiencyTestsExcel.exe
@@ -23,5 +26,3 @@ GprofTest: buildGprofTest runGprofExe outputGprofToFile
 clean:
 	rm -f EfficiencyTests.exe EfficiencyGprof.exe profile-data.txt gmon.out EfficiencyTestsExcel.exe
 
-buildEfficiencyTests:
-	gcc -Wall -O0 -std=c99 -Wno-unused-result -m32 EfficiencyTests.c $(wildcard ../src/*.s) ../src/ArithmeticOperations.c ../src/Parser.c ./PastImplementations/LessEfficientOperations.c  -o EfficiencyTests.exe
