@@ -159,7 +159,7 @@ TCNumber *divide(TCNumber *dividend, TCNumber *divisor, unsigned bytePrecision)
 
     trimExtension(dividend);
     int diff = dividend->numberPosition - divisor->numberPosition;
-    dividend = scaleNumber(dividend, dividend->numberSize + bytePrecision + 1, dividend->numberPosition - diff - precision - 7); // + (diff + precision + 7) / 8 + 1, dividend->numberPosition - diff - precision - 7);
+    dividend = scaleNumber(dividend, dividend->numberSize + bytePrecision + (diff + 7 / 8) + 1, dividend->numberPosition - diff - precision - 7);
 
     trimExtension(divisor);
     unsigned char *temp = calloc(dividend->numberSize, sizeof(char));
