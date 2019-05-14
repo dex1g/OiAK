@@ -2,66 +2,6 @@
 #include "../src/ArithmeticOperations.h"
 #include "../efficiencyTests/PastImplementations/LessEfficientOperations.h"
 
-void test_increment_no_carry(void)
-{
-    unsigned char number[3] = {0x00, 0x5d, 0xa3};
-    unsigned char expectedResult[3] = {0x00, 0x5d, 0xa4};
-    TCNumber *n = createTCNumber(number, 3, 0);
-    increment(n);
-    TEST_ASSERT_EQUAL_MEMORY(expectedResult, n->number, 3);
-    delete (n);
-}
-
-void test_increment_single_carry(void)
-{
-    unsigned char number[3] = {0x00, 0x5d, 0xff};
-    unsigned char expectedResult[3] = {0x00, 0x5e, 0x00};
-    TCNumber *n = createTCNumber(number, 3, 0);
-    increment(n);
-    TEST_ASSERT_EQUAL_MEMORY(expectedResult, n->number, 3);
-    delete (n);
-}
-
-void test_increment_multiple_carry(void)
-{
-    unsigned char number[5] = {0x00, 0xca, 0xff, 0xff, 0xff};
-    unsigned char expectedResult[5] = {0x00, 0xcb, 0x0, 0x0, 0x0};
-    TCNumber *n = createTCNumber(number, 5, 0);
-    increment(n);
-    TEST_ASSERT_EQUAL_MEMORY(expectedResult, n->number, 5);
-    delete (n);
-}
-
-void test_increment_overflow(void)
-{
-    unsigned char number[5] = {0x00, 0xff, 0xff, 0xff, 0xff};
-    unsigned char expectedResult[5] = {0x01, 0x00, 0x00, 0x00, 0x00};
-    TCNumber *n = createTCNumber(number, 5, 0);
-    increment(n);
-    TEST_ASSERT_EQUAL_MEMORY(expectedResult, n->number, 5);
-    delete (n);
-}
-
-void test_increment_overflow_no_extension(void)
-{
-    unsigned char number[4] = {0xff, 0xff, 0xff, 0xff};
-    unsigned char expectedResult[4] = {0x00, 0x00, 0x00, 0x00};
-    TCNumber *n = createTCNumber(number, 4, 0);
-    increment(n);
-    TEST_ASSERT_EQUAL_MEMORY(expectedResult, n->number, 4);
-    delete (n);
-}
-
-void test_onesComplement(void)
-{
-    unsigned char number[] = {0x00, 0xfa, 0x81, 0xaf};
-    unsigned char expectedResult[] = {0xff, 0x05, 0x7e, 0x50};
-    TCNumber *n = createTCNumber(number, 4, 0);
-    onesComplement(n);
-    TEST_ASSERT_EQUAL_MEMORY(expectedResult, n->number, 4);
-    delete (n);
-}
-
 void test_add_positive(void)
 {
     unsigned char temp1[3] = {0x12, 0x7e, 0x60};
@@ -156,6 +96,66 @@ void test_add_both_negative_asm(void)
     TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
     TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
     delete (result);
+}
+
+void test_increment_no_carry(void)
+{
+    unsigned char number[3] = {0x00, 0x5d, 0xa3};
+    unsigned char expectedResult[3] = {0x00, 0x5d, 0xa4};
+    TCNumber *n = createTCNumber(number, 3, 0);
+    increment(n);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult, n->number, 3);
+    delete (n);
+}
+
+void test_increment_single_carry(void)
+{
+    unsigned char number[3] = {0x00, 0x5d, 0xff};
+    unsigned char expectedResult[3] = {0x00, 0x5e, 0x00};
+    TCNumber *n = createTCNumber(number, 3, 0);
+    increment(n);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult, n->number, 3);
+    delete (n);
+}
+
+void test_increment_multiple_carry(void)
+{
+    unsigned char number[5] = {0x00, 0xca, 0xff, 0xff, 0xff};
+    unsigned char expectedResult[5] = {0x00, 0xcb, 0x0, 0x0, 0x0};
+    TCNumber *n = createTCNumber(number, 5, 0);
+    increment(n);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult, n->number, 5);
+    delete (n);
+}
+
+void test_increment_overflow(void)
+{
+    unsigned char number[5] = {0x00, 0xff, 0xff, 0xff, 0xff};
+    unsigned char expectedResult[5] = {0x01, 0x00, 0x00, 0x00, 0x00};
+    TCNumber *n = createTCNumber(number, 5, 0);
+    increment(n);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult, n->number, 5);
+    delete (n);
+}
+
+void test_increment_overflow_no_extension(void)
+{
+    unsigned char number[4] = {0xff, 0xff, 0xff, 0xff};
+    unsigned char expectedResult[4] = {0x00, 0x00, 0x00, 0x00};
+    TCNumber *n = createTCNumber(number, 4, 0);
+    increment(n);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult, n->number, 4);
+    delete (n);
+}
+
+void test_onesComplement(void)
+{
+    unsigned char number[] = {0x00, 0xfa, 0x81, 0xaf};
+    unsigned char expectedResult[] = {0xff, 0x05, 0x7e, 0x50};
+    TCNumber *n = createTCNumber(number, 4, 0);
+    onesComplement(n);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult, n->number, 4);
+    delete (n);
 }
 
 void test_subtract_positive(void)

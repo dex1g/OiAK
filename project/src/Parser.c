@@ -4,8 +4,7 @@ TCNumber *createTCNumber(unsigned char *number, unsigned int numberSize, int num
 {
     TCNumber *n = calloc(1, sizeof(TCNumber));
     unsigned char *tmp = calloc(numberSize, sizeof(char));
-    for (int i = 0; i < numberSize; i++)
-        tmp[i] = number[i];
+    memcpy(tmp, number, numberSize);
     n->number = tmp;
     n->numberSize = numberSize;
     n->numberPosition = numberPosition;

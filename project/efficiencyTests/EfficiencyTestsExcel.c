@@ -139,6 +139,7 @@ int main()
     firstNumber = getNumberFromBinaryFile(firstNumber1GBPath, 0);
     secondNumber = getNumberFromBinaryFile(secondNumber1GBPath, 0);
 
+    time_taken = 0;
     // Test division implemented in c
     for (int i = 0; i < numberOfTries - 90; i++)
     {

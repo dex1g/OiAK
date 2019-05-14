@@ -1,8 +1,9 @@
-all: clean buildSource run
+all: clean Source
 
 buildSource:
-	gcc -m32 -g -Wall -o oiakProject.exe $(wildcard *.c) $(wildcard *.s)
-run:
+	gcc -g -m32 -fsanitize=address -fno-omit-frame-pointer -Wall $(wildcard *.c) $(wildcard *.s) -o oiakProject.exe
+
+Source: buildSource
 	./oiakProject.exe
 
 clean:
