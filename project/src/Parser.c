@@ -202,8 +202,15 @@ TCNumber *scaleNumber(TCNumber *num, unsigned int targetSize, int targetPosition
         for (int i = 0; i <= extstart; i++)
             temp[i] = extension;
     }
-
-    memcpy(temp + extstart + 1, num->number, num->numberSize);
+    if (extstart >= 0)
+        memcpy(temp + extstart + 1, num->number, num->numberSize);
+    else
+    {
+        if (num->numberSize <= targetSize)
+            memcpy(temp, num->number, num->numberSize);
+        else
+            memcpy(temp, num->number, targetSize);
+    }
 
     delete (num);
 

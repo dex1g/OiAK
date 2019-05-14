@@ -155,21 +155,30 @@ TCNumber *divide(TCNumber *dividend, TCNumber *divisor, unsigned bytePrecision)
 {
     unsigned precision = bytePrecision * 8;
     unsigned char divisorSign = divisor->number[0] & 128;
-    int resultPrecision = 0 - precision;
+
+    int posDiff = dividend->numberPosition - divisor->numberPosition;
+    int resultPrecision = 0 - precision + posDiff;
 
     trimExtension(dividend);
-    int diff = dividend->numberPosition - divisor->numberPosition;
-    dividend = scaleNumber(dividend, dividend->numberSize + bytePrecision + (diff + 7 / 8) + 1, dividend->numberPosition - diff - precision - 7);
-
     trimExtension(divisor);
+
+    int sizeDiff = dividend->numberSize - divisor->numberSize;
+
+    int limit = (dividend->numberSize) * 8 + precision;
+
+    dividend = scaleNumber(dividend, dividend->numberSize + bytePrecision + sizeDiff + 1, dividend->numberPosition - precision); // dividend->numberPosition - diff - precision - 7);
+
     unsigned char *temp = calloc(dividend->numberSize, sizeof(char));
-    memcpy(temp, divisor->number, divisor->numberSize);
+    if (sizeDiff >= 0)
+        memcpy(temp, divisor->number, divisor->numberSize);
+    else
+        memcpy(temp, divisor->number, dividend->numberSize);
     delete (divisor);
     divisor = createTCNumber_no_realloc(temp, dividend->numberSize, dividend->numberPosition - precision);
 
-    int sizeDiff = dividend->numberSize - divisor->numberSize + 1;
-    if (sizeDiff < 2)
-        sizeDiff = 2;
+    if (sizeDiff < 1)
+        sizeDiff = 1;
+
     unsigned int resultSize = sizeDiff + bytePrecision;
     unsigned char *result = calloc(resultSize, sizeof(char));
 
@@ -196,7 +205,7 @@ TCNumber *divide(TCNumber *dividend, TCNumber *divisor, unsigned bytePrecision)
     }
     array_shift_right(divisor->number, divisor->numberSize);
 
-    int limit = (resultSize - 1) * 8;
+    //int limit = (resultSize - 1) * 8;
     int i = 1;
     unsigned char zeros = 0;
 
