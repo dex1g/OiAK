@@ -3,18 +3,18 @@ compiler: gcc
 
 before_install:
   # GENERATE FILES FOR EFFICIENCY TESTS
-  - cd project/efficiencyTests/data
+  - cd efficiencyTests/data
   - chmod +x ./generateData.sh
   - ./generateData.sh
   # Get back to source folder
-  - cd ../../../
+  - cd ../../
 
 install:
   - sudo apt-get install g++-multilib
 
 script:
   # RUN ALL UNIT TESTS
-  - cd project/tests
+  - cd tests/
   - make AllTests
   # RUN EFFICIENCY TESTS
   - cd ../efficiencyTests/
