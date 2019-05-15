@@ -7,3 +7,5 @@ dd if=/dev/urandom of=secondNumber1GB bs=1024 count=1048576
 dd if=/dev/urandom of=firstNumber1MB bs=1024 count=1024 
 # 20KB number
 dd if=/dev/urandom of=firstNumber20KB bs=1024 count=20
+# 50KB number
+dd if=/dev/urandom of=secondNumber50KB bs=1024 count=50

@@ -271,7 +271,6 @@ TCNumber *getNumberFromBinaryFile(char *filename, int numberPosition)
     unsigned long fileLen = ftell(handle);
     fclose(handle);
 
-    //fseek(handle, 0, SEEK_SET);
     handle = fopen(filename, "rb");
 
     // allocate memory for number based on calculated length

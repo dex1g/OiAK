@@ -10,7 +10,7 @@ int main()
     double time_taken; // holds calculated value
 
     // Display header in file for current tests
-    printf("\n;1GB NUMBERS;20KBx1MB; Optimalization flag O3\n");
+    printf("\n;1GB NUMBERS;20KBx1MB;70KB:20KB; Optimalization flag O3\n");
     printf("add_pure_asm;add_pure_c;add_asm_scale;add_c_scale;sbb_pure_asm;sbb_c_scale;sbb_scale_asm;mul_asm;divide\n");
 
     // Test pure asm algorithm for addition
@@ -136,8 +136,8 @@ int main()
     delete (firstNumber);
     delete (secondNumber);
 
-    firstNumber = getNumberFromBinaryFile(firstNumber1GBPath, 0);
-    secondNumber = getNumberFromBinaryFile(secondNumber1GBPath, 0);
+    firstNumber = getNumberFromBinaryFile(firstNumber70KBPath, 0);
+    secondNumber = getNumberFromBinaryFile(secondNumber20KBPath, 0);
 
     time_taken = 0;
     // Test division implemented in c

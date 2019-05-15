@@ -13,6 +13,9 @@
 #define numberOfTries 100
 #define firstNumber20KBPath "./data/firstNumber20KB"
 #define firstNumber1MBPath "./data/firstNumber1MB"
+#define firstNumber1GBPath "./data/firstNumber1GB"
+#define secondNumber1GBPath "./data/secondNumber1GB"
+#define secondNumber50KBPath "./data/secondNumber50KB"
 #define firstNumber100MBPath "./excelData/firstNumber100MB"
 #define secondNumber100MBPath "./excelData/secondNumber100MB"
 #define firstNumber250MBPath "./excelData/firstNumber250MB"
@@ -21,14 +24,11 @@
 #define secondNumber500MBPath "./excelData/secondNumber500MB"
 #define firstNumber750MBPath "./excelData/firstNumber750MB"
 #define secondNumber750MBPath "./excelData/secondNumber750MB"
-#define firstNumber1GBPath "./data/firstNumber1GB"
-#define secondNumber1GBPath "./data/secondNumber1GB"
 #define firstNumber1KBPath "./excelData/firstNumber1KB"
 #define firstNumber5KBPath "./excelData/firstNumber5KB"
 #define firstNumber10KBPath "./excelData/firstNumber10KB"
 #define firstNumber15KBPath "./excelData/firstNumber15KB"
 #define secondNumber20KBPath "./excelData/secondNumber20KB"
-#define secondNumber50KBPath "./excelData/secondNumber50KB"
 #define firstNumber70KBPath "./excelData/firstNumber70KB"
 
 void testAdditionAlgoAsm(unsigned char *addend1, unsigned char *addend2, unsigned int length)
