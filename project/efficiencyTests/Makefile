@@ -1,7 +1,7 @@
 all: EfficiencyTests
 
 buildEfficiencyTests:
-	gcc -Wall -Ofast -std=c99 -Wno-unused-result -m32 EfficiencyTests.c $(wildcard ../src/*.s) ../src/ArithmeticOperations.c ../src/Parser.c ./PastImplementations/LessEfficientOperations.c  -o EfficiencyTests.exe
+	gcc -Wall -O0 -std=c99 -Wno-unused-result -m32 EfficiencyTests.c $(wildcard ../src/*.s) ../src/ArithmeticOperations.c ../src/Parser.c ./PastImplementations/LessEfficientOperations.c  -o EfficiencyTests.exe
 
 EfficiencyTests: buildEfficiencyTests
 	./EfficiencyTests.exe

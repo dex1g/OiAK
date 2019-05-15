@@ -27,7 +27,9 @@
 #define firstNumber5KBPath "./excelData/firstNumber5KB"
 #define firstNumber10KBPath "./excelData/firstNumber10KB"
 #define firstNumber15KBPath "./excelData/firstNumber15KB"
-#define firstNumber20KBPath "./data/firstNumber20KB"
+#define secondNumber20KBPath "./excelData/secondNumber20KB"
+#define secondNumber50KBPath "./excelData/secondNumber50KB"
+#define firstNumber70KBPath "./excelData/firstNumber70KB"
 
 void testAdditionAlgoAsm(unsigned char *addend1, unsigned char *addend2, unsigned int length)
 {
