@@ -91,4 +91,6 @@ TCNumber *getHexNumberFromTxtFile(char *filename);
 */
 TCNumber *getNumberFromBinaryFile(char *filename, int numberPosition);
 
+char *convertToString(TCNumber *num);
+
 #endif

@@ -218,6 +218,58 @@ void test_getHexNumberFromTxtFile(void)
     free(expectedResult);
 }
 
+void test_convertToString(void)
+{
+    char expectedResult[] = "24FA47C9";
+    unsigned char array[4] = {0x24, 0xFA, 0x47, 0xC9};
+    unsigned int size = 4;
+    int position = 0;
+    TCNumber *number = createTCNumber(array, size, position);
+    char *convertedNum = convertToString(number);
+    TEST_ASSERT_EQUAL_STRING(expectedResult, convertedNum);
+    free(convertedNum);
+    delete (number);
+}
+
+void test_convertToString_pospos(void)
+{
+    char expectedResult[] = "24FA47C90000";
+    unsigned char array[4] = {0x24, 0xFA, 0x47, 0xC9};
+    unsigned int size = 4;
+    int position = 16;
+    TCNumber *number = createTCNumber(array, size, position);
+    char *convertedNum = convertToString(number);
+    TEST_ASSERT_EQUAL_STRING(expectedResult, convertedNum);
+    free(convertedNum);
+    delete (number);
+}
+
+void test_convertToString_negpos(void)
+{
+    char expectedResult[] = "24FA,47C9";
+    unsigned char array[4] = {0x24, 0xFA, 0x47, 0xC9};
+    unsigned int size = 4;
+    int position = -16;
+    TCNumber *number = createTCNumber(array, size, position);
+    char *convertedNum = convertToString(number);
+    TEST_ASSERT_EQUAL_STRING(expectedResult, convertedNum);
+    free(convertedNum);
+    delete (number);
+}
+
+void test_convertToString_verynegpos(void)
+{
+    char expectedResult[] = "0,0024FA47C9";
+    unsigned char array[4] = {0x24, 0xFA, 0x47, 0xC9};
+    unsigned int size = 4;
+    int position = -40;
+    TCNumber *number = createTCNumber(array, size, position);
+    char *convertedNum = convertToString(number);
+    TEST_ASSERT_EQUAL_STRING(expectedResult, convertedNum);
+    free(convertedNum);
+    delete (number);
+}
+
 int main(void)
 {
     UNITY_BEGIN();
@@ -239,5 +291,9 @@ int main(void)
     RUN_TEST(test_trimExt_zero_long);
     RUN_TEST(test_scaleNumber);
     RUN_TEST(test_getHexNumberFromTxtFile);
+    RUN_TEST(test_convertToString);
+    RUN_TEST(test_convertToString_pospos);
+    RUN_TEST(test_convertToString_negpos);
+    RUN_TEST(test_convertToString_verynegpos);
     return UNITY_END();
 }

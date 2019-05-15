@@ -285,3 +285,69 @@ TCNumber *getNumberFromBinaryFile(char *filename, int numberPosition)
     TCNumber *num = createTCNumber_no_realloc(buffer, fileLen, numberPosition);
     return num;
 }
+
+// Function converts byte to 2 ascii characters (hex representation)
+// Used only in convertToString()
+char *byteToAscii(unsigned char *number, unsigned size, char *result)
+{
+    char bufhg, buflw;
+
+    for (int i = 0; i < size; i++)
+    {
+        bufhg = (number[i] >> 4) & 0x0F;
+        buflw = number[i] & 0x0F;
+
+        if (bufhg < 10)
+            result[2 * i] = bufhg + '0';
+        else
+            result[2 * i] = bufhg + 'A' - 10;
+
+        if (buflw < 10)
+            result[2 * i + 1] = buflw + '0';
+        else
+            result[2 * i + 1] = buflw + 'A' - 10;
+    }
+    return result;
+}
+
+char *convertToString(TCNumber *num)
+{
+    char *result;
+
+    if (num->numberPosition > 0)
+    {
+        int size = 2 * num->numberSize + num->numberPosition / 4 + 1;
+        result = calloc(size, sizeof(char));
+        byteToAscii(num->number, num->numberSize, result);
+        for (int i = num->numberSize * 2; i < size - 1; i++)
+            result[i] = '0';
+    }
+    else if (num->numberPosition < 0)
+    {
+        int notFractionBytes = num->numberSize - abs(num->numberPosition) / 8;
+        if (notFractionBytes > 0)
+        {
+            result = calloc(num->numberSize, sizeof(char));
+            byteToAscii(num->number, notFractionBytes, result); // integer part
+            result[notFractionBytes * 2] = ',';
+            byteToAscii(num->number + notFractionBytes, num->numberSize - notFractionBytes, result + notFractionBytes * 2 + 1);
+        }
+        else
+        {
+            result = calloc(abs(num->numberPosition) / 4 + 3, sizeof(char));
+            int zeroBytes = abs(notFractionBytes);
+            result[0] = '0';
+            result[1] = ',';
+            for (int i = 0; i < zeroBytes * 2; i++)
+                result[i + 2] = '0';
+            byteToAscii(num->number, num->numberSize, result + zeroBytes * 2 + 2);
+        }
+    }
+    else if (num->numberPosition == 0)
+    {
+        result = calloc(2 * num->numberSize + 1, sizeof(char));
+        byteToAscii(num->number, num->numberSize, result);
+    }
+
+    return result;
+}
