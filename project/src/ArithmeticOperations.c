@@ -166,7 +166,10 @@ TCNumber *divide(TCNumber *dividend, TCNumber *divisor, unsigned bytePrecision)
 
     long long limit = (dividend->numberSize) * 8 + precision;
 
-    dividend = scaleNumber(dividend, dividend->numberSize + bytePrecision + sizeDiff + 1, dividend->numberPosition - precision); // dividend->numberPosition - diff - precision - 7);
+    if (sizeDiff >= 0)
+        dividend = scaleNumber(dividend, dividend->numberSize + bytePrecision + sizeDiff + 1, dividend->numberPosition - precision);
+    else
+        dividend = scaleNumber(dividend, dividend->numberSize + bytePrecision + 1, dividend->numberPosition - precision);
 
     unsigned char *temp = calloc(dividend->numberSize, sizeof(char));
     if (sizeDiff >= 0)
