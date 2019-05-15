@@ -164,7 +164,7 @@ TCNumber *divide(TCNumber *dividend, TCNumber *divisor, unsigned bytePrecision)
 
     int sizeDiff = dividend->numberSize - divisor->numberSize;
 
-    int limit = (dividend->numberSize) * 8 + precision;
+    long long limit = (dividend->numberSize) * 8 + precision;
 
     dividend = scaleNumber(dividend, dividend->numberSize + bytePrecision + sizeDiff + 1, dividend->numberPosition - precision); // dividend->numberPosition - diff - precision - 7);
 
