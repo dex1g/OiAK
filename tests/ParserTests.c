@@ -110,8 +110,8 @@ void test_scaleUp(void)
     unsigned int expectedSize = 7;
     int expectedPosition = -32;
     TCNumber *expectedResult = createTCNumber(expectedNumber, expectedSize, expectedPosition);
-    TCNumber *result = createTCNumber(number, size, position);
-    scaleUp(result);
+    TCNumber *numToScale = createTCNumber(number, size, position);
+    TCNumber *result = scaleUp(numToScale);
     TEST_ASSERT_EQUAL_MEMORY(expectedResult->number, result->number, 7);
     TEST_ASSERT_EQUAL_INT(expectedResult->numberSize, result->numberSize);
     TEST_ASSERT_EQUAL_INT(expectedResult->numberPosition, result->numberPosition);

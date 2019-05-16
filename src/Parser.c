@@ -221,7 +221,7 @@ TCNumber *getHexNumberFromTxtFile(char *filename)
     }
 
     // allocate memory for number based on calculated length
-    buffer = malloc(sizeof(char) * len);
+    buffer = calloc(len + 1, sizeof(char));
 
     // move to the beginning of file
     fseek(handle, 0, SEEK_SET);
