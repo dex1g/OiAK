@@ -2,7 +2,6 @@
 
 int main()
 {
-
     TCNumber *firstNumber = getNumberFromBinaryFile(firstNumber1GBPath, 0);
     TCNumber *secondNumber = getNumberFromBinaryFile(secondNumber1GBPath, 0);
     TCNumber *result;
