@@ -49,7 +49,7 @@ int main()
     number1 = createTCNumber(firstNumber, 3, 8);
     number2 = createTCNumber(secondNumber, 4, -16);
 
-    result = divide(number1, number2, 0);
+    result = divide(number1, number2, 1);
     asciiResult = convertToString(result);
     printf("Quotient of the numbers equals %s\n", asciiResult);
 

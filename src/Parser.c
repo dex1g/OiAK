@@ -29,7 +29,7 @@ char *getNumberFromSTDIN()
 
 TCNumber *convertFromHex(char *number)
 {
-    int inputSize = (int)strlen(number);
+    int inputSize = strlen(number);
     int negative = 0;
     int position = 0;
     if (number[0] == '-')
@@ -42,7 +42,7 @@ TCNumber *convertFromHex(char *number)
         if (number[size - i] == ',' || number[size - i] == '.')
         {
             position = -i;
-            char *temp = calloc(size, sizeof(char));
+            char *temp = calloc(size + 1, sizeof(char));
             for (int j = 0; j < size; j++)
                 if (j < (size - i))
                     temp[j] = number[j];
@@ -83,12 +83,11 @@ TCNumber *hexToBin(char *hexNum)
     unsigned char *binRep = calloc(numberSize, sizeof(char));
     for (int i = numberSize - 1; i >= 0; i--)
     {
-        //if (hexNumIndex < 0) // TUTAJ SPRAWDZANIE CZY NAM INDEKS NIE WSKOCZY NA UJEMNA ( TAK SIĘ DZIEJE DLA NIEPARZYSTEJ LICZBY CYFR)
-        //break;
         if (hexNumIndex - 1 >= 0)
             binRep[i] = asciiToByte(hexNum[hexNumIndex - 1]);
         binRep[i] = binRep[i] << 4;
-        binRep[i] += asciiToByte(hexNum[hexNumIndex]);
+        if (hexNumIndex >= 0)
+            binRep[i] += asciiToByte(hexNum[hexNumIndex]);
         hexNumIndex -= 2;
     }
     TCNumber *binNum = createTCNumber_no_realloc(binRep, numberSize, 0);
@@ -305,7 +304,7 @@ char *convertToString(TCNumber *num)
         int notFractionBytes = num->numberSize - abs(num->numberPosition) / 8;
         if (notFractionBytes > 0)
         {
-            result = calloc(num->numberSize, sizeof(char));
+            result = calloc(num->numberSize * 2 + 2, sizeof(char));
             byteToAscii(num->number, notFractionBytes, result); // integer part
             result[notFractionBytes * 2] = ',';
             byteToAscii(num->number + notFractionBytes, num->numberSize - notFractionBytes, result + notFractionBytes * 2 + 1);

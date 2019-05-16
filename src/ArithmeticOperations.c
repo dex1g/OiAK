@@ -158,9 +158,14 @@ TCNumber *divide(TCNumber *dividend, TCNumber *divisor, unsigned bytePrecision)
 
     int posDiff = dividend->numberPosition - divisor->numberPosition;
     int resultPrecision = 0 - precision + posDiff;
+    if (dividend->numberSize < divisor->numberSize)
+        resultPrecision = 0 - precision;
 
     trimExtension(dividend);
     trimExtension(divisor);
+
+    int diviendHighestPos = dividend->numberPosition + dividend->numberSize * 8;
+    int divisorHighestPos = divisor->numberPosition + divisor->numberSize * 8;
 
     int sizeDiff = dividend->numberSize - divisor->numberSize;
 
@@ -169,20 +174,27 @@ TCNumber *divide(TCNumber *dividend, TCNumber *divisor, unsigned bytePrecision)
     if (sizeDiff >= 0)
         dividend = scaleNumber(dividend, dividend->numberSize + bytePrecision + sizeDiff + 1, dividend->numberPosition - precision);
     else
-        dividend = scaleNumber(dividend, dividend->numberSize + bytePrecision + 1, dividend->numberPosition - precision);
+        dividend = scaleNumber(dividend, dividend->numberSize + bytePrecision - sizeDiff + 1, dividend->numberPosition - precision);
 
     unsigned char *temp = calloc(dividend->numberSize, sizeof(char));
     if (sizeDiff >= 0)
         memcpy(temp, divisor->number, divisor->numberSize);
     else
-        memcpy(temp, divisor->number, dividend->numberSize);
+        memcpy(temp, divisor->number, divisor->numberSize);
     delete (divisor);
     divisor = createTCNumber_no_realloc(temp, dividend->numberSize, dividend->numberPosition - precision);
 
     if (sizeDiff < 1)
         sizeDiff = 1;
 
-    unsigned int resultSize = sizeDiff + bytePrecision;
+    int highestPosDiff = diviendHighestPos - divisorHighestPos;
+
+    unsigned resultSize = sizeDiff + bytePrecision;
+    if (highestPosDiff > 0)
+    {
+        resultSize += highestPosDiff / 8 - 1;
+        limit += highestPosDiff - 8;
+    }
     unsigned char *result = calloc(resultSize, sizeof(char));
 
     unsigned char d1 = dividend->number[0] & 128;
@@ -208,7 +220,6 @@ TCNumber *divide(TCNumber *dividend, TCNumber *divisor, unsigned bytePrecision)
     }
     array_shift_right(divisor->number, divisor->numberSize);
 
-    //int limit = (resultSize - 1) * 8;
     int i = 1;
     unsigned char zeros = 0;
 

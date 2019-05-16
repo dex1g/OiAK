@@ -437,6 +437,22 @@ void test_divide_precision_inv(void)
     delete (result);
 }
 
+void test_divide_a_hard_case(void)
+{
+    unsigned char firstNumber[3] = {0x12, 0x7e, 0x60};
+    unsigned char secondNumber[4] = {0x5d, 0x0a, 0x2b, 0x6e};
+    TCNumber *number1 = createTCNumber(firstNumber, 3, 8);
+    TCNumber *number2 = createTCNumber(secondNumber, 4, -16);
+    unsigned char expectedResult[] = {0x32, 0xE2, 0xB1};
+    unsigned int expectedSize = 3;
+    int expectedPosition = -8;
+    TCNumber *result = divide(number1, number2, 1);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult, result->number, 3);
+    TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
+    TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
+    delete (result);
+}
+
 int main(void)
 {
     UNITY_BEGIN();
@@ -470,5 +486,6 @@ int main(void)
     RUN_TEST(test_divide_precision);
     RUN_TEST(test_divide_precision_adv);
     RUN_TEST(test_divide_precision_inv);
+    RUN_TEST(test_divide_a_hard_case);
     return UNITY_END();
 }
