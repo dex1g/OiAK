@@ -367,7 +367,7 @@ void test_divide_second_negative(void)
     unsigned int expectedSize = 1;
     int expectedPosition = 0;
     TCNumber *result = divide(number1, number2, 0);
-    TEST_ASSERT_EQUAL_MEMORY(expectedResult, result->number, 2);
+    TEST_ASSERT_EQUAL_MEMORY(expectedResult, result->number, 1);
     TEST_ASSERT_EQUAL_INT(expectedSize, result->numberSize);
     TEST_ASSERT_EQUAL_INT(expectedPosition, result->numberPosition);
     delete (result);

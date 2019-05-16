@@ -9,23 +9,52 @@ int main()
 
     TCNumber *number1 = createTCNumber(firstNumber, 3, 8);
     TCNumber *number2 = createTCNumber(secondNumber, 4, -16);
+
+    char *asciiNumber1 = convertToString(number1);
+    char *asciiNumber2 = convertToString(number2);
+
+    printf("First number is %s\n", asciiNumber1);
+    printf("Second number is %s\n", asciiNumber2);
+
+    free(asciiNumber1);
+    free(asciiNumber2);
+
     TCNumber *result = add(number1, number2);
-    delete (result);
+    char *asciiResult = convertToString(result);
+    printf("Sum of the numbers equals %s\n", asciiResult);
 
-    number1 = createTCNumber(firstNumber, 3, 12);
-    number2 = createTCNumber(secondNumber, 4, -8);
+    delete (result);
+    free(asciiResult);
+
+    number1 = createTCNumber(firstNumber, 3, 8);
+    number2 = createTCNumber(secondNumber, 4, -16);
+
     result = subtract(number1, number2);
-    delete (result);
+    asciiResult = convertToString(result);
+    printf("Difference of the numbers equals %s\n", asciiResult);
 
-    number1 = createTCNumber(firstNumber, 3, 4);
-    number2 = createTCNumber(secondNumber, 4, 1);
+    delete (result);
+    free(asciiResult);
+
+    number1 = createTCNumber(firstNumber, 3, 8);
+    number2 = createTCNumber(secondNumber, 4, -16);
+
     result = multiply(number1, number2);
-    delete (result);
+    asciiResult = convertToString(result);
+    printf("Product of the numbers equals %s\n", asciiResult);
 
-    number1 = createTCNumber(firstNumber, 3, 0);
-    number2 = createTCNumber(secondNumber, 4, -1);
-    result = divide(number1, number2, 0);
     delete (result);
+    free(asciiResult);
+
+    number1 = createTCNumber(firstNumber, 3, 8);
+    number2 = createTCNumber(secondNumber, 4, -16);
+
+    result = divide(number1, number2, 0);
+    asciiResult = convertToString(result);
+    printf("Quotient of the numbers equals %s\n", asciiResult);
+
+    delete (result);
+    free(asciiResult);
 
     return 0;
 }

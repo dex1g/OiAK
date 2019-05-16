@@ -83,11 +83,13 @@ TCNumber *hexToBin(char *hexNum)
     unsigned char *binRep = calloc(numberSize, sizeof(char));
     for (int i = numberSize - 1; i >= 0; i--)
     {
+        //if (hexNumIndex < 0) // TUTAJ SPRAWDZANIE CZY NAM INDEKS NIE WSKOCZY NA UJEMNA ( TAK SIĘ DZIEJE DLA NIEPARZYSTEJ LICZBY CYFR)
+        //break;
         if (hexNumIndex - 1 >= 0)
             binRep[i] = asciiToByte(hexNum[hexNumIndex - 1]);
         binRep[i] = binRep[i] << 4;
         binRep[i] += asciiToByte(hexNum[hexNumIndex]);
-        hexNumIndex = hexNumIndex - 2;
+        hexNumIndex -= 2;
     }
     TCNumber *binNum = createTCNumber_no_realloc(binRep, numberSize, 0);
     return binNum;

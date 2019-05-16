@@ -1,7 +1,7 @@
 all: EfficiencyTests
 
 buildEfficiencyTests:
-	gcc -Wall -O3 -std=c99 -Wno-unused-result -m32 EfficiencyTests.c $(wildcard ../src/*.s) ../src/ArithmeticOperations.c ../src/Parser.c ./PastImplementations/LessEfficientOperations.c  -o EfficiencyTests.exe
+	gcc -g -Wall -fsanitize=address -fno-omit-frame-pointer -O3 -std=c99 -Wno-unused-result -m32 EfficiencyTests.c $(wildcard ../src/*.s) ../src/ArithmeticOperations.c ../src/Parser.c ./PastImplementations/LessEfficientOperations.c  -o EfficiencyTests.exe
 
 EfficiencyTests: buildEfficiencyTests
 	./EfficiencyTests.exe
@@ -13,16 +13,20 @@ EfficiencyTestsExcel: buildEfficiencyTestsExcel
 	./EfficiencyTestsExcel.exe
 
 buildGprofTest:
-	gcc -Wall -std=c99 -Wno-unused-result -m32 -pg EfficiencyTests.c $(wildcard ../src/*.s) ../src/ArithmeticOperations.c ../src/Parser.c ./PastImplementations/LessEfficientOperations.c  -o EfficiencyGprof.exe
+	gcc -Wall -std=c99 -Wno-unused-result -m32 -pg Profiling.c $(wildcard ../src/*.s) ../src/ArithmeticOperations.c ../src/Parser.c -o Profiling.exe
+
+buildGprofTestDebug:
+	gcc -g -fsanitize=address -fno-omit-frame-pointer -Wall -std=c99 -Wno-unused-result -m32 Profiling.c $(wildcard ../src/*.s) ../src/ArithmeticOperations.c ../src/Parser.c -o Profiling.exe
+
 
 outputGprofToFile:
-	gprof EfficiencyGprof.exe gmon.out > profile-data.txt    
+	gprof Profiling.exe gmon.out > profile-data.txt    
 
 runGprofExe:
-	./EfficiencyGprof.exe
+	./Profiling.exe
 
 GprofTest: buildGprofTest runGprofExe outputGprofToFile
 
 clean:
-	rm -f EfficiencyTests.exe EfficiencyGprof.exe profile-data.txt gmon.out EfficiencyTestsExcel.exe
+	rm -f EfficiencyTests.exe EfficiencyTestsExcel.exe Profiling.exe profile-data.txt gmon.out 
 
