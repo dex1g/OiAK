@@ -11,6 +11,7 @@ before_install:
 
 install:
   - sudo apt-get install g++-multilib
+  - sudo apt-get install valgrind
 
 script:
   # RUN ALL UNIT TESTS
