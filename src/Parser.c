@@ -32,6 +32,7 @@ TCNumber *convertFromHex(char *number)
     int inputSize = strlen(number);
     int negative = 0;
     int position = 0;
+    char *temp = NULL;
     if (number[0] == '-')
     {
         negative = 1;
@@ -42,7 +43,7 @@ TCNumber *convertFromHex(char *number)
         if (number[size - i] == ',' || number[size - i] == '.')
         {
             position = -i;
-            char *temp = calloc(size + 1, sizeof(char));
+            temp = calloc(size + 1, sizeof(char));
             for (int j = 0; j < size; j++)
                 if (j < (size - i))
                     temp[j] = number[j];
@@ -53,7 +54,8 @@ TCNumber *convertFromHex(char *number)
         }
     }
     TCNumber *converted = hexToBin(number);
-    free(number);
+    if (temp != NULL)
+        free(temp);
     converted->numberPosition = position * 4;
     if (negative)
     {
