@@ -214,8 +214,8 @@ void test_getHexNumberFromTxtFile(void)
     TEST_ASSERT_EQUAL_MEMORY(expectedResult->number, convertedValue->number, 4);
     TEST_ASSERT_EQUAL_INT(expectedResult->numberSize, convertedValue->numberSize);
     TEST_ASSERT_EQUAL_INT(expectedResult->numberPosition, convertedValue->numberPosition);
-    free(convertedValue);
-    free(expectedResult);
+    delete (convertedValue);
+    delete (expectedResult);
 }
 
 void test_convertToString(void)

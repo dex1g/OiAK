@@ -53,6 +53,7 @@ TCNumber *convertFromHex(char *number)
         }
     }
     TCNumber *converted = hexToBin(number);
+    free(number);
     converted->numberPosition = position * 4;
     if (negative)
     {
