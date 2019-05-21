@@ -39,8 +39,8 @@ void test_convertFromHex(void)
     TEST_ASSERT_EQUAL_MEMORY(expectedResult->number, convertedValue->number, 4);
     TEST_ASSERT_EQUAL_INT(expectedResult->numberSize, convertedValue->numberSize);
     TEST_ASSERT_EQUAL_INT(expectedResult->numberPosition, convertedValue->numberPosition);
-    free(convertedValue);
-    free(expectedResult);
+    delete (convertedValue);
+    delete (expectedResult);
 }
 
 void test_convertFromHex_period(void)
@@ -54,8 +54,8 @@ void test_convertFromHex_period(void)
     TEST_ASSERT_EQUAL_MEMORY(expectedResult->number, convertedValue->number, 4);
     TEST_ASSERT_EQUAL_INT(expectedResult->numberSize, convertedValue->numberSize);
     TEST_ASSERT_EQUAL_INT(expectedResult->numberPosition, convertedValue->numberPosition);
-    free(convertedValue);
-    free(expectedResult);
+    delete (convertedValue);
+    delete (expectedResult);
 }
 
 void test_convertFromHex_negative(void)
@@ -69,8 +69,8 @@ void test_convertFromHex_negative(void)
     TEST_ASSERT_EQUAL_MEMORY(expectedResult->number, convertedValue->number, 4);
     TEST_ASSERT_EQUAL_INT(expectedResult->numberSize, convertedValue->numberSize);
     TEST_ASSERT_EQUAL_INT(expectedResult->numberPosition, convertedValue->numberPosition);
-    free(convertedValue);
-    free(expectedResult);
+    delete (convertedValue);
+    delete (expectedResult);
 }
 
 void test_asciiToByteConversion_digit(void)
