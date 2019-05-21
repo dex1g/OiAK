@@ -12,6 +12,7 @@ before_install:
 install:
   - sudo apt-get install g++-multilib
   - sudo apt-get install valgrind
+  - sudo apt-get install libc6-dbg
   - sudo apt-get install libc6-dbg:i386
 
 script:
