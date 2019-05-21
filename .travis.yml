@@ -3,11 +3,11 @@ compiler: gcc
 
 before_install:
   # GENERATE FILES FOR EFFICIENCY TESTS
-  - cd efficiencyTests/data
-  - chmod +x ./generateData.sh
-  - ./generateData.sh
+  # - cd efficiencyTests/data
+  # - chmod +x ./generateData.sh
+  # - ./generateData.sh
   # Get back to source folder
-  - cd ../../
+  # - cd ../../
 
 install:
   - sudo apt-get install g++-multilib
@@ -17,8 +17,8 @@ script:
   - cd tests/
   - make AllTests
   # RUN EFFICIENCY TESTS
-  - cd ../efficiencyTests/
-  - make EfficiencyTests
+  # - cd ../efficiencyTests/
+  # - make EfficiencyTests
   # RUN VALGRIND ANALYSIS
   - cd ../src/
   - make Valgrind
