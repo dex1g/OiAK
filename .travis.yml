@@ -19,6 +19,6 @@ script:
   # RUN EFFICIENCY TESTS
   - cd ../efficiencyTests/
   - make EfficiencyTests
-  # RUN GPROF ANALYSIS
-  - make GprofTest && cat ./profile-data.txt
   # RUN VALGRIND ANALYSIS
+  - cd ../src/
+  - make Valgrind

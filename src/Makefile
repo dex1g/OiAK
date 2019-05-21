@@ -6,5 +6,8 @@ buildSource:
 Source: buildSource
 	./oiakProject.exe
 
+Valgrind: buildSource
+	valgrind -v --leak-check=full ./oiakProject.exe
+
 clean:
 	rm -f ./oiakProject.exe
