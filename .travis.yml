@@ -3,16 +3,15 @@ compiler: gcc
 
 before_install:
   # GENERATE FILES FOR EFFICIENCY TESTS
-  # - cd efficiencyTests/data
-  # - chmod +x ./generateData.sh
-  # - ./generateData.sh
+  - cd efficiencyTests/data
+  - chmod +x ./generateData.sh
+  - ./generateData.sh
   # Get back to source folder
-  # - cd ../../
+  - cd ../../
 
 install:
   - sudo apt-get install g++-multilib
   - sudo apt-get install valgrind
-  - sudo apt-get install libc6-dbg
   - sudo apt-get install libc6-dbg:i386
 
 script:
@@ -20,8 +19,8 @@ script:
   - cd tests/
   - make AllTests
   # RUN EFFICIENCY TESTS
-  # - cd ../efficiencyTests/
-  # - make EfficiencyTests
+  - cd ../efficiencyTests/
+  - make EfficiencyTests
   # RUN VALGRIND ANALYSIS
   - cd ../src/
   - make Valgrind
