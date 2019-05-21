@@ -35,8 +35,8 @@ TCNumber *convertFromHex(char *number)
     if (number[0] == '-')
     {
         negative = 1;
-        //number[0] = '0';
     }
+
     for (int i = 0, size = inputSize - 1; i <= size; i++)
     {
         if (number[size - i] == ',' || number[size - i] == '.')
